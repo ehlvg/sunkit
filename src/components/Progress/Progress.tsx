@@ -1,4 +1,4 @@
-import React, { useContext, type CSSProperties, type ReactNode } from 'react'
+import { useContext, type CSSProperties, type ReactNode } from 'react'
 import { cn } from '../../lib/utils'
 import { resolveAccent } from '../../lib/accent'
 import { ThemeContext } from '../Theme/ThemeProvider'

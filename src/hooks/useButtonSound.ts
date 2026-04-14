@@ -62,11 +62,11 @@ export function useButtonSound(ref: RefObject<HTMLElement | null>) {
   const onMouseDown = useCallback(() => playPress(actx), [])
   const onMouseUp = useCallback(() => {
     playRelease(actx)
-  }, [ref])
+  }, [])
   const onMouseLeave = useCallback((e: MouseEvent) => {
     if (e.buttons !== 1) return
     playRelease(actx)
-  }, [ref])
+  }, [])
 
   useEffect(() => {
     const el = ref.current

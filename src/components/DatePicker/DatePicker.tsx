@@ -104,12 +104,12 @@ function parseDate(s: string): Date | null {
   if (!t) return null
   const native = new Date(t)
   if (!isNaN(native.getTime()) && native.getFullYear() > 1000 && native.getFullYear() < 3000) return native
-  const mdy = t.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/)
+  const mdy = t.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/)
   if (mdy) {
     const d = new Date(+mdy[3], +mdy[1] - 1, +mdy[2])
     if (!isNaN(d.getTime())) return d
   }
-  const ymd = t.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/)
+  const ymd = t.match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/)
   if (ymd) {
     const d = new Date(+ymd[1], +ymd[2] - 1, +ymd[3])
     if (!isNaN(d.getTime())) return d
@@ -524,7 +524,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
     }
 
     if (mode === 'range') {
-      const parts = text.split(/\s*[–\-]\s*(?=\w)/)
+      const parts = text.split(/\s*[–-]\s*(?=\w)/)
       const s = parseDate(parts[0] ?? '')
       const e = parts[1] ? parseDate(parts[1]) : null
       if (s) {
@@ -633,7 +633,12 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
             aria-label="Toggle calendar"
             onMouseDown={e => {
               e.preventDefault()
-              open ? closePanel() : (inputRef.current?.focus(), openPanel())
+              if (open) {
+                closePanel()
+              } else {
+                inputRef.current?.focus()
+                openPanel()
+              }
             }}
             className="shrink-0 flex items-center justify-center text-[var(--sk-text-muted)] hover:text-[var(--sk-text)] cursor-pointer pr-[10px] transition-colors duration-100 outline-none"
           >

@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     react(),
-    dts({ include: ['src'], exclude: ['src/**/*.stories.tsx'] }),
+    dts({ tsconfigPath: './tsconfig.build.json' }),
   ],
   build: {
     lib: {
@@ -27,5 +27,11 @@ export default defineConfig({
       },
     },
     cssCodeSplit: false,
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/test/setup.ts'],
+    exclude: ['node_modules', 'dist', 'src/**/*.stories.tsx'],
   },
 })

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Select } from './Select'
 import { COLORS } from '../../tokens/colors'
 

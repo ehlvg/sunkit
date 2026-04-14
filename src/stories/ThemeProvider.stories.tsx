@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ThemeProvider } from '../components/Theme'
 import { Button } from '../components/Button'
 import { Input } from '../components/Input'

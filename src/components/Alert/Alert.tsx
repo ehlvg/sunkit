@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode, type CSSProperties } from 'react'
+import { useState, type ReactNode, type CSSProperties } from 'react'
 import { cn } from '../../lib/utils'
 
 export type AlertVariant = 'info' | 'success' | 'warning' | 'error'

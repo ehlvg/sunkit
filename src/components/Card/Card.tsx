@@ -1,4 +1,4 @@
-import React, { useContext, type CSSProperties, type ElementType, type ReactNode, type HTMLAttributes } from 'react'
+import { useContext, type CSSProperties, type ElementType, type ReactNode, type HTMLAttributes } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import { hexToAccentPair } from '../../lib/accent'

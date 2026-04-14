@@ -1,0 +1,12 @@
+src/
+.storybook/
+.github/
+storybook-static/
+*.stories.tsx
+*.test.ts
+*.test.tsx
+tsconfig*.json
+vite.config.ts
+eslint.config.ts
+.prettierrc
+.prettierignore

@@ -51,14 +51,15 @@ const trackTones: Record<string, { off: string; on: string }> = {
 export type ToggleTone = keyof typeof trackTones
 
 export interface ToggleProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'>,
-    VariantProps<typeof toggleVariants> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange' | 'disabled'>,
+    Omit<VariantProps<typeof toggleVariants>, 'disabled'> {
   tone?: ToggleTone
   accentColor?: string
   label?: ReactNode
   description?: ReactNode
   checked?: boolean
   defaultChecked?: boolean
+  disabled?: boolean
   onCheckedChange?: (checked: boolean) => void
 }
 

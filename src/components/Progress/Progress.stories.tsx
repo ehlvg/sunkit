@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Progress } from './Progress'
 import { COLORS } from '../../tokens/colors'
 
