@@ -11,6 +11,7 @@ const meta: Meta<typeof Slider> = {
     tone: { control: 'select', options: COLORS.map(c => c.id) },
     size: { control: 'select', options: ['default', 'sm'] },
     showValue: { control: 'boolean' },
+    showMinMax: { control: 'boolean' },
     disabled: { control: 'boolean' },
     min: { control: { type: 'number' } },
     max: { control: { type: 'number' } },
@@ -33,6 +34,19 @@ export default meta
 type Story = StoryObj<typeof Slider>
 
 export const Default: Story = {}
+
+export const WithMinMax: Story = {
+  args: {
+    label: 'Price range',
+    min: 0,
+    max: 500,
+    step: 10,
+    defaultValue: 150,
+    showValue: true,
+    showMinMax: true,
+    tone: 'sky',
+  },
+}
 
 export const AllTones: Story = {
   render: args => (

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
-import { DatePicker } from './DatePicker'
+import { DatePicker, type DateRange } from './DatePicker'
 import { COLORS } from '../../tokens/colors'
 
 const meta: Meta<typeof DatePicker> = {
@@ -10,11 +10,13 @@ const meta: Meta<typeof DatePicker> = {
   argTypes: {
     tone: { control: 'select', options: COLORS.map(c => c.id) },
     size: { control: 'select', options: ['default', 'sm'] },
+    mode: { control: 'select', options: ['single', 'range'] },
     disabled: { control: 'boolean' },
   },
   args: {
     tone: 'lavender',
     size: 'default',
+    mode: 'single',
     label: 'Date of birth',
     placeholder: 'Pick a date…',
     description: 'We use this to personalise your experience.',
@@ -52,7 +54,7 @@ export const Controlled: Story = {
   render: args => {
     const [date, setDate] = useState<Date | null>(null)
     return (
-      <div style={{ display: 'grid', gap: 10, maxWidth: 280 }}>
+      <div style={{ display: 'grid', gap: 10, maxWidth: 320 }}>
         <DatePicker {...args} value={date} onChange={setDate} description={undefined} />
         <div style={{ fontSize: 12, color: '#666' }}>
           Selected: {date ? date.toLocaleDateString() : '(none)'}
@@ -61,4 +63,27 @@ export const Controlled: Story = {
     )
   },
   args: { tone: 'sky', label: 'Controlled' },
+}
+
+export const DateRangePicker: Story = {
+  render: args => {
+    const [range, setRange] = useState<DateRange>([null, null])
+    return (
+      <div style={{ display: 'grid', gap: 10, maxWidth: 580 }}>
+        <DatePicker
+          {...args}
+          mode="range"
+          rangeValue={range}
+          onRangeChange={setRange}
+          label="Stay dates"
+          placeholder="Pick a range…"
+          description="Select check-in and check-out dates."
+          tone="sky"
+        />
+        <div style={{ fontSize: 12, color: '#666' }}>
+          From: {range[0]?.toLocaleDateString() ?? '—'} &nbsp; To: {range[1]?.toLocaleDateString() ?? '—'}
+        </div>
+      </div>
+    )
+  },
 }

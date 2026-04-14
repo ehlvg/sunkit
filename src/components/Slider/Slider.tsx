@@ -36,6 +36,7 @@ export interface SliderProps {
   label?: ReactNode
   description?: ReactNode
   showValue?: boolean
+  showMinMax?: boolean
   marks?: SliderMark[]
   disabled?: boolean
   id?: string
@@ -69,6 +70,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
     label,
     description,
     showValue = false,
+    showMinMax = false,
     marks,
     disabled = false,
     id,
@@ -213,6 +215,13 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
                 </div>
               )
             })}
+          </div>
+        )}
+
+        {showMinMax && !marks && (
+          <div className="flex justify-between mt-[4px]">
+            <span className="text-[10px] leading-none text-black/35 tabular-nums">{min}</span>
+            <span className="text-[10px] leading-none text-black/35 tabular-nums">{max}</span>
           </div>
         )}
       </div>
