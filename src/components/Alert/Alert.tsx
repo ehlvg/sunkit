@@ -13,41 +13,43 @@ export interface AlertProps {
   className?: string
 }
 
-// Tailwind classes for light mode; dark mode overrides via CSS vars where possible.
-// For these semantic colors we keep the pastel class names since they're variant-specific,
-// but we add a dark-mode-friendly text contrast fallback using opacity adjustments.
 const VARIANT_MAP: Record<
   AlertVariant,
   {
-    bg: string
-    border: string
+    gradientLight: string
+    gradientDark: string
     iconColor: string
     title: string
+    titleDark: string
   }
 > = {
   info: {
-    bg: 'bg-pastel-sky/45 dark:bg-pastel-sky/20',
-    border: 'border-pastel-sky-dark/[0.20] dark:border-pastel-sky-dark/[0.35]',
-    iconColor: 'text-pastel-sky-dark',
+    gradientLight: 'linear-gradient(135deg, rgba(184,223,254,0.55) 0%, rgba(184,223,254,0.20) 100%)',
+    gradientDark: 'linear-gradient(135deg, rgba(184,223,254,0.14) 0%, rgba(184,223,254,0.05) 100%)',
+    iconColor: 'text-pastel-sky-dark dark:text-pastel-sky',
     title: 'text-pastel-sky-dark',
+    titleDark: 'dark:text-pastel-sky',
   },
   success: {
-    bg: 'bg-pastel-mint/45 dark:bg-pastel-mint/20',
-    border: 'border-pastel-mint-dark/[0.20] dark:border-pastel-mint-dark/[0.35]',
-    iconColor: 'text-pastel-mint-dark',
+    gradientLight: 'linear-gradient(135deg, rgba(184,240,216,0.55) 0%, rgba(184,240,216,0.20) 100%)',
+    gradientDark: 'linear-gradient(135deg, rgba(184,240,216,0.14) 0%, rgba(184,240,216,0.05) 100%)',
+    iconColor: 'text-pastel-mint-dark dark:text-pastel-mint',
     title: 'text-pastel-mint-dark',
+    titleDark: 'dark:text-pastel-mint',
   },
   warning: {
-    bg: 'bg-pastel-lemon/50 dark:bg-pastel-lemon/20',
-    border: 'border-pastel-lemon-dark/[0.20] dark:border-pastel-lemon-dark/[0.35]',
-    iconColor: 'text-pastel-lemon-dark',
+    gradientLight: 'linear-gradient(135deg, rgba(255,241,168,0.60) 0%, rgba(255,241,168,0.22) 100%)',
+    gradientDark: 'linear-gradient(135deg, rgba(255,241,168,0.14) 0%, rgba(255,241,168,0.05) 100%)',
+    iconColor: 'text-pastel-lemon-dark dark:text-pastel-lemon',
     title: 'text-pastel-lemon-dark',
+    titleDark: 'dark:text-pastel-lemon',
   },
   error: {
-    bg: 'bg-pastel-rose/45 dark:bg-pastel-rose/20',
-    border: 'border-pastel-rose-dark/[0.20] dark:border-pastel-rose-dark/[0.35]',
-    iconColor: 'text-pastel-rose-dark',
+    gradientLight: 'linear-gradient(135deg, rgba(249,197,209,0.55) 0%, rgba(249,197,209,0.20) 100%)',
+    gradientDark: 'linear-gradient(135deg, rgba(249,197,209,0.14) 0%, rgba(249,197,209,0.05) 100%)',
+    iconColor: 'text-pastel-rose-dark dark:text-pastel-rose',
     title: 'text-pastel-rose-dark',
+    titleDark: 'dark:text-pastel-rose',
   },
 }
 
@@ -150,40 +152,60 @@ export function Alert({
   icon,
   className,
 }: AlertProps) {
-  const [state, setState] = useState<'in' | 'out'>('in')
+  const [state, setState] = useState<'in' | 'dismissing' | 'out'>('in')
   const map = VARIANT_MAP[variant]
 
   if (state === 'out') return null
 
   const handleDismiss = () => {
-    setState('out')
-    onDismiss?.()
+    setState('dismissing')
+  }
+
+  const handleAnimationEnd = () => {
+    if (state === 'dismissing') {
+      setState('out')
+      onDismiss?.()
+    }
   }
 
   const alertStyle: CSSProperties = {
-    animation: `alert-in 220ms cubic-bezier(0.34, 1.42, 0.64, 1) both`,
+    // gradient set via JS so we can react to dark-class at render time;
+    // we rely on a CSS custom prop fallback approach via data attribute instead.
+    animation:
+      state === 'dismissing'
+        ? `alert-out 220ms cubic-bezier(0.4, 0, 1, 1) both`
+        : `alert-in 240ms cubic-bezier(0.34, 1.42, 0.64, 1) both`,
+    overflow: 'hidden',
   }
 
   return (
     <div
       role="alert"
+      data-variant={variant}
       style={alertStyle}
+      onAnimationEnd={handleAnimationEnd}
       className={cn(
+        'alert-gradient',
         'flex gap-[10px] items-start',
-        'rounded-[12px] border px-[14px] py-[12px]',
+        'rounded-[14px] px-[14px] py-[12px]',
         'font-[system-ui,_-apple-system,_sans-serif]',
-        map.bg,
-        map.border,
+        `alert-gradient-${variant}`,
         className,
       )}
     >
-      <span className={cn('shrink-0 mt-[1px]', map.iconColor)}>
+      <span className={cn('shrink-0 mt-[1px]', map.iconColor, map.titleDark)}>
         {icon ?? DEFAULT_ICONS[variant]}
       </span>
 
       <div className="flex-1 min-w-0">
         {title != null && (
-          <div className={cn('text-[13px] font-semibold leading-none mb-[4px]', map.title)}>
+          <div
+            className={cn(
+              'text-[13px] font-semibold leading-none mb-[4px]',
+              map.title,
+              map.titleDark,
+            )}
+          >
             {title}
           </div>
         )}

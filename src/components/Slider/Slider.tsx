@@ -167,7 +167,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
 
   const thumbStyle: CSSProperties = {
     position: 'absolute',
-    top: '50%',
+    top: thumbD / 2 + trackH / 2,
     left: `${pct}%`,
     width: thumbSize,
     height: thumbSize,
@@ -180,6 +180,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
       : `width 200ms ${SPRING}, height 200ms ${SPRING}, box-shadow 150ms ease`,
     pointerEvents: 'none',
     border: '1.5px solid var(--sk-border)',
+    zIndex: 2,
   }
 
   return (
@@ -214,8 +215,10 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
       <div className="relative" style={{ paddingBlock: thumbD / 2 }}>
         <div style={trackStyle}>
           <div style={fillStyle} />
-          <div style={thumbStyle} />
         </div>
+
+        {/* Thumb rendered outside track so it stacks above marks */}
+        <div style={thumbStyle} />
 
         <input
           ref={setRef}
@@ -237,7 +240,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
           onTouchStart={() => !disabled && setPressing(true)}
           onTouchEnd={() => setPressing(false)}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
-          style={{ margin: 0 }}
+          style={{ margin: 0, zIndex: 3 }}
         />
 
         {marks && marks.length > 0 && (

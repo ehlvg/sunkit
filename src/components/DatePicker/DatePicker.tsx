@@ -392,7 +392,9 @@ function MonthCalendar({
               )}
               style={cellStyle}
             >
-              <span>{date.getDate()}</span>
+              <span style={isEdge ? { color: 'rgba(20, 15, 40, 0.82)' } : undefined}>
+                {date.getDate()}
+              </span>
               {isToday && !isEdge && (
                 <span
                   className="absolute bottom-[3px] left-1/2 -translate-x-1/2 w-[3px] h-[3px] rounded-full"
@@ -464,6 +466,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   const [rangePicking, setRangePicking] = useState<'start' | 'end'>('start')
 
   const [open, setOpen] = useState(false)
+  const [closing, setClosing] = useState(false)
 
   // ── text input state ─────────────────────────────────────────────────────────
 
@@ -501,12 +504,13 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
 
   const openPanel = useCallback(() => {
     if (disabled) return
+    setClosing(false)
     setCalView('days')
     setOpen(true)
   }, [disabled])
 
   const closePanel = useCallback(() => {
-    setOpen(false)
+    setClosing(true)
     setHoverDate(null)
   }, [])
 
@@ -739,14 +743,26 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
           </button>
         </div>
 
-        {open && (
+        {(open || closing) && (
           <div
             ref={panelRef}
             id={panelId}
             role="dialog"
             aria-label="Date picker"
             tabIndex={-1}
-            style={panelStyle}
+            style={{
+              ...panelStyle,
+              animation: closing
+                ? 'dropdown-out 150ms cubic-bezier(0.4, 0, 1, 1) both'
+                : 'dropdown-in 220ms cubic-bezier(0.34, 1.42, 0.64, 1) both',
+              transformOrigin: 'top center',
+            }}
+            onAnimationEnd={() => {
+              if (closing) {
+                setOpen(false)
+                setClosing(false)
+              }
+            }}
           >
             {calView === 'years' ? (
               <YearGrid

@@ -178,6 +178,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   const value = isControlled ? valueProp! : valueUncontrolled
 
   const [open, setOpen] = useState(false)
+  const [closing, setClosing] = useState(false)
   const [activeIdx, setActiveIdx] = useState<number>(-1)
   const [search, setSearch] = useState('')
 
@@ -201,6 +202,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
 
   const openPanel = useCallback(() => {
     if (disabled) return
+    setClosing(false)
     setOpen(true)
     setSearch('')
     const idx = filtered.findIndex((o) => o.value === value)
@@ -209,9 +211,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   }, [disabled, filtered, value, actx])
 
   const closePanel = useCallback(() => {
-    setOpen(false)
-    setSearch('')
-    triggerRef.current?.focus()
+    setClosing(true)
   }, [])
 
   const selectOption = useCallback(
@@ -350,13 +350,27 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           </span>
         </button>
 
-        {open && (
+        {(open || closing) && (
           <div
             ref={panelRef}
             role="listbox"
             id={listId}
             onKeyDown={onPanelKeyDown}
-            style={dropdownStyle}
+            style={{
+              ...dropdownStyle,
+              animation: closing
+                ? 'dropdown-out 140ms cubic-bezier(0.4, 0, 1, 1) both'
+                : 'dropdown-in 200ms cubic-bezier(0.34, 1.42, 0.64, 1) both',
+              transformOrigin: 'top center',
+            }}
+            onAnimationEnd={() => {
+              if (closing) {
+                setOpen(false)
+                setClosing(false)
+                setSearch('')
+                triggerRef.current?.focus()
+              }
+            }}
           >
             {searchable && (
               <div className="p-[6px] border-b border-[var(--sk-border-subtle)]">
@@ -390,8 +404,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
                     onMouseEnter={() => setActiveIdx(idx)}
                     onClick={() => selectOption(opt)}
                     className={cn(
-                      'w-full flex items-center justify-between gap-2 px-[10px] py-[7px] rounded-[8px]',
-                      'text-[13px] text-[var(--sk-text)] leading-none text-left outline-none cursor-pointer',
+                      'w-full flex items-center justify-between gap-2 px-[10px] py-[8px] rounded-[8px]',
+                      'text-[13px] text-[var(--sk-text)] leading-[1.2] text-left outline-none cursor-pointer',
                       'transition-colors duration-75',
                       idx === activeIdx && !opt.disabled && 'bg-[var(--sk-surface-filled)]',
                       opt.value === value && 'font-medium',
