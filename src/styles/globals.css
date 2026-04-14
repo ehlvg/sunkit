@@ -220,6 +220,37 @@
   }
 }
 
+@keyframes dialog-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes dialog-overlay-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes dialog-in {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+@keyframes dialog-out {
+  from { opacity: 1; transform: scale(1)    translateY(0); }
+  to   { opacity: 0; transform: scale(0.94) translateY(8px); }
+}
+@keyframes checkbox-check {
+  from { stroke-dashoffset: 20; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes checkbox-indeterminate {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@utility shape-clickable {
+  transition: transform 160ms cubic-bezier(0.34, 1.42, 0.64, 1), filter 150ms ease;
+  &:hover  { filter: brightness(1.09); transform: rotate(var(--shape-rot, 0deg)) scale(1.06); }
+  &:active { filter: brightness(0.94); transform: rotate(var(--shape-rot, 0deg)) scale(0.95); }
+}
+
 @keyframes dropdown-in {
   from {
     opacity: 0;

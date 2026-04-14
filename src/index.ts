@@ -37,6 +37,15 @@ export type {
 export { Alert } from './components/Alert'
 export type { AlertProps, AlertVariant } from './components/Alert'
 
+export { Dialog } from './components/Dialog'
+export type { DialogProps, DialogTone, DialogSize } from './components/Dialog'
+
+export { Checkbox } from './components/Checkbox'
+export type { CheckboxProps, CheckboxTone, CheckboxSize } from './components/Checkbox'
+
+export { Shape } from './components/Shape'
+export type { ShapeProps, ShapeType, ShapeColor } from './components/Shape'
+
 export { ThemeProvider, ThemeContext, useTheme } from './components/Theme'
 export type { ThemeProviderProps, ThemeContextValue } from './components/Theme'
 
