@@ -56,35 +56,16 @@ function playRelease(actx: AudioCtxRef) {
   } catch (_) {}
 }
 
-function springRelease(el: HTMLButtonElement) {
-  el.style.transition = 'none'
-  el.style.transform = 'translateY(3px)'
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      el.style.transition =
-        'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease'
-      el.style.transform = 'translateY(0px)'
-      setTimeout(() => {
-        el.style.transition = ''
-        el.style.transform = ''
-      }, 500)
-    })
-  })
-}
-
-export function useButtonSound(ref: RefObject<HTMLButtonElement | null>) {
+export function useButtonSound(ref: RefObject<HTMLElement | null>) {
   const actx = useRef<AudioContext | null>(null)
 
   const onMouseDown = useCallback(() => playPress(actx), [])
   const onMouseUp = useCallback(() => {
-    if (!ref.current) return
     playRelease(actx)
-    springRelease(ref.current)
   }, [ref])
   const onMouseLeave = useCallback((e: MouseEvent) => {
-    if (e.buttons !== 1 || !ref.current) return
+    if (e.buttons !== 1) return
     playRelease(actx)
-    springRelease(ref.current)
   }, [ref])
 
   useEffect(() => {
@@ -98,7 +79,6 @@ export function useButtonSound(ref: RefObject<HTMLButtonElement | null>) {
     const handleTouchEnd = (e: TouchEvent) => {
       e.preventDefault()
       playRelease(actx)
-      springRelease(el)
     }
 
     el.addEventListener('mousedown', onMouseDown)

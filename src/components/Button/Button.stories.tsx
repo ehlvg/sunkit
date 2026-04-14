@@ -88,8 +88,30 @@ export const WithIcons: Story = {
   render: args => (
     <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
       <Button {...args} icon="none">No icon</Button>
-      <Button {...args} icon="left">Icon left</Button>
-      <Button {...args} icon="right">Icon right</Button>
+      <Button
+        {...args}
+        icon="left"
+        iconLeft={
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2v20" />
+            <path d="M2 12h20" />
+          </svg>
+        }
+      >
+        Custom left
+      </Button>
+      <Button
+        {...args}
+        icon="right"
+        iconRight={
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="M13 5l7 7-7 7" />
+          </svg>
+        }
+      >
+        Custom right
+      </Button>
     </div>
   ),
   args: { color: 'sky', size: 'default' },
@@ -100,11 +122,35 @@ export const IconOnly: Story = {
   render: args => (
     <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
       {COLORS.map(c => (
-        <Button key={c.id} {...args} color={c.id} size="icon-only" icon="only" />
+        <Button
+          key={c.id}
+          {...args}
+          color={c.id}
+          size="icon-only"
+          icon="only"
+          aria-label={`${c.label} icon button`}
+          iconOnly={
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 17l-5 3 1.5-5.7L4 9.8l5.8-.4L12 4l2.2 5.4 5.8.4-4.5 4.5L17 20z" />
+            </svg>
+          }
+        />
       ))}
       <div style={{ width: '100%', marginTop: 8, display: 'flex', gap: 14 }}>
         {COLORS.map(c => (
-          <Button key={c.id} {...args} color={c.id} size="sm" icon="only" />
+          <Button
+            key={c.id}
+            {...args}
+            color={c.id}
+            size="sm"
+            icon="only"
+            aria-label={`${c.label} small icon button`}
+            iconOnly={
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 17l-5 3 1.5-5.7L4 9.8l5.8-.4L12 4l2.2 5.4 5.8.4-4.5 4.5L17 20z" />
+              </svg>
+            }
+          />
         ))}
       </div>
     </div>

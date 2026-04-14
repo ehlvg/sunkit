@@ -15,8 +15,9 @@ const buttonVariants = cva(
     'font-[system-ui,_-apple-system,_sans-serif] font-medium leading-none',
     'cursor-pointer border outline-none select-none relative',
     'rounded-[var(--btn-radius)]',
-    'transition-[transform,box-shadow] duration-[120ms] ease',
+    'btn-transition',
     'active:scale-[0.972]',
+    'hover:brightness-[1.05]',
     'btn-shadow hover:btn-shadow-hover active:btn-shadow-active',
     '[-webkit-tap-highlight-color:transparent]',
   ].join(' '),
@@ -59,6 +60,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ButtonColor
   size?: ButtonSize
   icon?: ButtonIconPosition
+  iconLeft?: ReactNode
+  iconRight?: ReactNode
+  iconOnly?: ReactNode
   radius?: number
   children?: ReactNode
 }
@@ -80,6 +84,9 @@ export function Button({
   color = 'lavender',
   size = 'default',
   icon = 'none',
+  iconLeft,
+  iconRight,
+  iconOnly,
   radius = 10,
   children,
   className,
@@ -112,15 +119,21 @@ export function Button({
       {...rest}
     >
       {isIconOnly ? (
-        <span className="flex items-center leading-none shrink-0"><StarIcon /></span>
+        <span className="flex items-center leading-none shrink-0">
+          {iconOnly ?? <StarIcon />}
+        </span>
       ) : (
         <>
           {icon === 'left' && (
-            <span className="flex items-center leading-none shrink-0"><PlayIcon /></span>
+            <span className="flex items-center leading-none shrink-0">
+              {iconLeft ?? <PlayIcon />}
+            </span>
           )}
           <span className="[text-shadow:0_1px_0_rgba(255,255,255,0.55)]">{children}</span>
           {icon === 'right' && (
-            <span className="flex items-center leading-none shrink-0"><PlayIcon /></span>
+            <span className="flex items-center leading-none shrink-0">
+              {iconRight ?? <PlayIcon />}
+            </span>
           )}
         </>
       )}
