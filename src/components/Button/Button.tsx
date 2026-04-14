@@ -54,90 +54,107 @@ const buttonVariants = cva(
     compoundVariants: [
       // ── SOLID ──────────────────────────────────────────────────────────────
       {
-        variant: 'solid', color: 'rose',
+        variant: 'solid',
+        color: 'rose',
         className: 'bg-pastel-rose text-pastel-rose-dark border-pastel-rose-dark/[0.22]',
       },
       {
-        variant: 'solid', color: 'peach',
+        variant: 'solid',
+        color: 'peach',
         className: 'bg-pastel-peach text-pastel-peach-dark border-pastel-peach-dark/[0.22]',
       },
       {
-        variant: 'solid', color: 'lemon',
+        variant: 'solid',
+        color: 'lemon',
         className: 'bg-pastel-lemon text-pastel-lemon-dark border-pastel-lemon-dark/[0.22]',
       },
       {
-        variant: 'solid', color: 'mint',
+        variant: 'solid',
+        color: 'mint',
         className: 'bg-pastel-mint text-pastel-mint-dark border-pastel-mint-dark/[0.22]',
       },
       {
-        variant: 'solid', color: 'sky',
+        variant: 'solid',
+        color: 'sky',
         className: 'bg-pastel-sky text-pastel-sky-dark border-pastel-sky-dark/[0.22]',
       },
       {
-        variant: 'solid', color: 'lavender',
-        className: 'bg-pastel-lavender text-pastel-lavender-dark border-pastel-lavender-dark/[0.22]',
+        variant: 'solid',
+        color: 'lavender',
+        className:
+          'bg-pastel-lavender text-pastel-lavender-dark border-pastel-lavender-dark/[0.22]',
       },
       {
-        variant: 'solid', color: 'lilac',
+        variant: 'solid',
+        color: 'lilac',
         className: 'bg-pastel-lilac text-pastel-lilac-dark border-pastel-lilac-dark/[0.22]',
       },
       {
-        variant: 'solid', color: 'neutral',
+        variant: 'solid',
+        color: 'neutral',
         className: 'bg-pastel-neutral text-pastel-neutral-dark border-pastel-neutral-dark/[0.22]',
       },
 
       // ── OUTLINE ────────────────────────────────────────────────────────────
       {
-        variant: 'outline', color: 'rose',
+        variant: 'outline',
+        color: 'rose',
         className: [
           'text-pastel-rose-dark border-pastel-rose-dark/[0.38] hover:bg-pastel-rose/[0.18]',
           'dark:text-pastel-rose dark:border-pastel-rose/[0.42] dark:hover:bg-pastel-rose/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'outline', color: 'peach',
+        variant: 'outline',
+        color: 'peach',
         className: [
           'text-pastel-peach-dark border-pastel-peach-dark/[0.38] hover:bg-pastel-peach/[0.18]',
           'dark:text-pastel-peach dark:border-pastel-peach/[0.42] dark:hover:bg-pastel-peach/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'outline', color: 'lemon',
+        variant: 'outline',
+        color: 'lemon',
         className: [
           'text-pastel-lemon-dark border-pastel-lemon-dark/[0.38] hover:bg-pastel-lemon/[0.18]',
           'dark:text-pastel-lemon dark:border-pastel-lemon/[0.42] dark:hover:bg-pastel-lemon/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'outline', color: 'mint',
+        variant: 'outline',
+        color: 'mint',
         className: [
           'text-pastel-mint-dark border-pastel-mint-dark/[0.38] hover:bg-pastel-mint/[0.18]',
           'dark:text-pastel-mint dark:border-pastel-mint/[0.42] dark:hover:bg-pastel-mint/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'outline', color: 'sky',
+        variant: 'outline',
+        color: 'sky',
         className: [
           'text-pastel-sky-dark border-pastel-sky-dark/[0.38] hover:bg-pastel-sky/[0.18]',
           'dark:text-pastel-sky dark:border-pastel-sky/[0.42] dark:hover:bg-pastel-sky/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'outline', color: 'lavender',
+        variant: 'outline',
+        color: 'lavender',
         className: [
           'text-pastel-lavender-dark border-pastel-lavender-dark/[0.38] hover:bg-pastel-lavender/[0.18]',
           'dark:text-pastel-lavender dark:border-pastel-lavender/[0.42] dark:hover:bg-pastel-lavender/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'outline', color: 'lilac',
+        variant: 'outline',
+        color: 'lilac',
         className: [
           'text-pastel-lilac-dark border-pastel-lilac-dark/[0.38] hover:bg-pastel-lilac/[0.18]',
           'dark:text-pastel-lilac dark:border-pastel-lilac/[0.42] dark:hover:bg-pastel-lilac/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'outline', color: 'neutral',
+        variant: 'outline',
+        color: 'neutral',
         className: [
           'text-pastel-neutral-dark border-pastel-neutral-dark/[0.38] hover:bg-pastel-neutral/[0.18]',
           'dark:text-pastel-neutral dark:border-pastel-neutral/[0.42] dark:hover:bg-pastel-neutral/[0.13]',
@@ -146,56 +163,64 @@ const buttonVariants = cva(
 
       // ── GHOST ──────────────────────────────────────────────────────────────
       {
-        variant: 'ghost', color: 'rose',
+        variant: 'ghost',
+        color: 'rose',
         className: [
           'text-pastel-rose-dark hover:bg-pastel-rose/[0.18]',
           'dark:text-pastel-rose dark:hover:bg-pastel-rose/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'ghost', color: 'peach',
+        variant: 'ghost',
+        color: 'peach',
         className: [
           'text-pastel-peach-dark hover:bg-pastel-peach/[0.18]',
           'dark:text-pastel-peach dark:hover:bg-pastel-peach/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'ghost', color: 'lemon',
+        variant: 'ghost',
+        color: 'lemon',
         className: [
           'text-pastel-lemon-dark hover:bg-pastel-lemon/[0.18]',
           'dark:text-pastel-lemon dark:hover:bg-pastel-lemon/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'ghost', color: 'mint',
+        variant: 'ghost',
+        color: 'mint',
         className: [
           'text-pastel-mint-dark hover:bg-pastel-mint/[0.18]',
           'dark:text-pastel-mint dark:hover:bg-pastel-mint/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'ghost', color: 'sky',
+        variant: 'ghost',
+        color: 'sky',
         className: [
           'text-pastel-sky-dark hover:bg-pastel-sky/[0.18]',
           'dark:text-pastel-sky dark:hover:bg-pastel-sky/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'ghost', color: 'lavender',
+        variant: 'ghost',
+        color: 'lavender',
         className: [
           'text-pastel-lavender-dark hover:bg-pastel-lavender/[0.18]',
           'dark:text-pastel-lavender dark:hover:bg-pastel-lavender/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'ghost', color: 'lilac',
+        variant: 'ghost',
+        color: 'lilac',
         className: [
           'text-pastel-lilac-dark hover:bg-pastel-lilac/[0.18]',
           'dark:text-pastel-lilac dark:hover:bg-pastel-lilac/[0.13]',
         ].join(' '),
       },
       {
-        variant: 'ghost', color: 'neutral',
+        variant: 'ghost',
+        color: 'neutral',
         className: [
           'text-pastel-neutral-dark hover:bg-pastel-neutral/[0.18]',
           'dark:text-pastel-neutral dark:hover:bg-pastel-neutral/[0.13]',
@@ -360,8 +385,13 @@ export function Button({
           )}
           <span
             className={cn(
-              variant === 'solid' && !resolvedAccent && '[text-shadow:0_1px_0_rgba(255,255,255,0.32)]',
-              variant === 'solid' && resolvedAccent && isColorLight(hexToAccentPair(resolvedAccent).fill) && '[text-shadow:0_1px_0_rgba(255,255,255,0.32)]',
+              variant === 'solid' &&
+                !resolvedAccent &&
+                '[text-shadow:0_1px_0_rgba(255,255,255,0.32)]',
+              variant === 'solid' &&
+                resolvedAccent &&
+                isColorLight(hexToAccentPair(resolvedAccent).fill) &&
+                '[text-shadow:0_1px_0_rgba(255,255,255,0.32)]',
             )}
           >
             {children}

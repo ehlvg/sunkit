@@ -37,15 +37,21 @@ export const Controlled: Story = {
     const [open, setOpen] = useState(false)
     return (
       <>
-        <Button color="lavender" onClick={() => setOpen(true)}>Open Dialog</Button>
+        <Button color="lavender" onClick={() => setOpen(true)}>
+          Open Dialog
+        </Button>
         <Dialog
           {...args}
           open={open}
           onOpenChange={setOpen}
           footer={
             <>
-              <Button variant="ghost" color="neutral" onClick={() => setOpen(false)}>Cancel</Button>
-              <Button color="lavender" onClick={() => setOpen(false)}>Confirm</Button>
+              <Button variant="ghost" color="neutral" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button color="lavender" onClick={() => setOpen(false)}>
+                Confirm
+              </Button>
             </>
           }
         >
@@ -68,8 +74,8 @@ export const WithTrigger: Story = {
       footer={<Button color="sky">Got it</Button>}
     >
       <p style={{ margin: 0, lineHeight: 1.6, color: 'var(--sk-text-desc)' }}>
-        The <code>trigger</code> prop wraps any element to become the dialog opener.
-        No state management needed on your side.
+        The <code>trigger</code> prop wraps any element to become the dialog opener. No state
+        management needed on your side.
       </p>
     </Dialog>
   ),
@@ -86,8 +92,16 @@ export const AllTones: Story = {
           tone={c.id as any}
           title={c.label}
           description="Tone accent on border and close button."
-          trigger={<Button color={c.id as any} size="sm">{c.label}</Button>}
-          footer={<Button color={c.id as any} size="sm">Close</Button>}
+          trigger={
+            <Button color={c.id as any} size="sm">
+              {c.label}
+            </Button>
+          }
+          footer={
+            <Button color={c.id as any} size="sm">
+              Close
+            </Button>
+          }
         >
           <p style={{ margin: 0, lineHeight: 1.6, color: 'var(--sk-text-desc)' }}>
             Dialog with <strong>{c.label}</strong> tone accent.
@@ -108,13 +122,20 @@ export const Sizes: Story = {
           size={size}
           title={`Size: ${size}`}
           description="Dialog size controls the max width."
-          trigger={<Button variant="outline" color="lavender" size="sm">{size}</Button>}
-          footer={<Button color="lavender" size="sm">OK</Button>}
+          trigger={
+            <Button variant="outline" color="lavender" size="sm">
+              {size}
+            </Button>
+          }
+          footer={
+            <Button color="lavender" size="sm">
+              OK
+            </Button>
+          }
         >
           <p style={{ margin: 0, lineHeight: 1.6, color: 'var(--sk-text-desc)' }}>
-            This is a <strong>{size}</strong> dialog. Width: {
-              { sm: '360px', default: '480px', lg: '640px' }[size]
-            }.
+            This is a <strong>{size}</strong> dialog. Width:{' '}
+            {{ sm: '360px', default: '480px', lg: '640px' }[size]}.
           </p>
         </Dialog>
       ))}
@@ -125,10 +146,7 @@ export const Sizes: Story = {
 export const NoFooter: Story = {
   name: 'No Footer',
   render: (args) => (
-    <Dialog
-      {...args}
-      trigger={<Button color="mint">Info only</Button>}
-    >
+    <Dialog {...args} trigger={<Button color="mint">Info only</Button>}>
       <p style={{ margin: 0, lineHeight: 1.6, color: 'var(--sk-text-desc)' }}>
         A dialog without a footer — just dismiss via the × button or Escape key.
       </p>

@@ -211,10 +211,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         </label>
       )}
 
-      <div
-        className="relative w-full"
-        style={{ '--field-radius': `${radius}px` } as CSSProperties}
-      >
+      <div className="relative w-full" style={{ '--field-radius': `${radius}px` } as CSSProperties}>
         {leftAdornment != null && (
           <div className="absolute left-0 top-1/2 -translate-y-1/2 pl-[11px] flex items-center text-[var(--sk-text-muted)] pointer-events-none z-[1]">
             {leftAdornment}

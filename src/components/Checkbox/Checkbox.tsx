@@ -15,8 +15,14 @@ import { ThemeContext } from '../Theme/ThemeProvider'
 import { useCheckboxSound } from '../../hooks/useCheckboxSound'
 
 export type CheckboxTone =
-  | 'rose' | 'peach' | 'lemon' | 'mint'
-  | 'sky' | 'lavender' | 'lilac' | 'neutral'
+  | 'rose'
+  | 'peach'
+  | 'lemon'
+  | 'mint'
+  | 'sky'
+  | 'lavender'
+  | 'lilac'
+  | 'neutral'
 
 export type CheckboxSize = 'default' | 'sm'
 
@@ -42,17 +48,32 @@ export interface CheckboxProps {
 }
 
 const TONE_FILL: Record<CheckboxTone, string> = {
-  rose: '#F9C5D1', peach: '#FDDBB4', lemon: '#FFF1A8', mint: '#B8F0D8',
-  sky: '#B8DFFE', lavender: '#D4C5F9', lilac: '#F0C8F0', neutral: '#E8E4DC',
+  rose: '#F9C5D1',
+  peach: '#FDDBB4',
+  lemon: '#FFF1A8',
+  mint: '#B8F0D8',
+  sky: '#B8DFFE',
+  lavender: '#D4C5F9',
+  lilac: '#F0C8F0',
+  neutral: '#E8E4DC',
 }
 const TONE_BORDER: Record<CheckboxTone, string> = {
-  rose: '#c2607a', peach: '#b87a3a', lemon: '#8a7820', mint: '#2a7a58',
-  sky: '#2a68a0', lavender: '#5a3eaa', lilac: '#8a3a8a', neutral: '#5a5550',
+  rose: '#c2607a',
+  peach: '#b87a3a',
+  lemon: '#8a7820',
+  mint: '#2a7a58',
+  sky: '#2a68a0',
+  lavender: '#5a3eaa',
+  lilac: '#8a3a8a',
+  neutral: '#5a5550',
 }
 
-const BOX: Record<CheckboxSize, { size: number; radius: number; stroke: number; viewBox: string; path: string }> = {
+const BOX: Record<
+  CheckboxSize,
+  { size: number; radius: number; stroke: number; viewBox: string; path: string }
+> = {
   default: { size: 18, radius: 5, stroke: 2, viewBox: '0 0 16 16', path: 'M3 8 L6.5 11.5 L13 4.5' },
-  sm:      { size: 14, radius: 4, stroke: 1.8, viewBox: '0 0 12 12', path: 'M2 6 L5 9 L10 3' },
+  sm: { size: 14, radius: 4, stroke: 1.8, viewBox: '0 0 12 12', path: 'M2 6 L5 9 L10 3' },
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
@@ -241,7 +262,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
                 className={cn(
                   'leading-snug text-[var(--sk-text)]',
                   size === 'default' ? 'text-[13px]' : 'text-[12px]',
-                  required && "after:content-['*'] after:ml-[2px] after:text-[var(--sk-text-muted)]",
+                  required &&
+                    "after:content-['*'] after:ml-[2px] after:text-[var(--sk-text-muted)]",
                 )}
               >
                 {label}

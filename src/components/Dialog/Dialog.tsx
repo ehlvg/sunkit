@@ -16,8 +16,14 @@ import { ThemeContext } from '../Theme/ThemeProvider'
 import { useDialogSound } from '../../hooks/useDialogSound'
 
 export type DialogTone =
-  | 'rose' | 'peach' | 'lemon' | 'mint'
-  | 'sky' | 'lavender' | 'lilac' | 'neutral'
+  | 'rose'
+  | 'peach'
+  | 'lemon'
+  | 'mint'
+  | 'sky'
+  | 'lavender'
+  | 'lilac'
+  | 'neutral'
 
 export type DialogSize = 'sm' | 'default' | 'lg' | 'full'
 
@@ -40,12 +46,24 @@ export interface DialogProps {
 }
 
 const TONE_FILL: Record<DialogTone, string> = {
-  rose: '#F9C5D1', peach: '#FDDBB4', lemon: '#FFF1A8', mint: '#B8F0D8',
-  sky: '#B8DFFE', lavender: '#D4C5F9', lilac: '#F0C8F0', neutral: '#E8E4DC',
+  rose: '#F9C5D1',
+  peach: '#FDDBB4',
+  lemon: '#FFF1A8',
+  mint: '#B8F0D8',
+  sky: '#B8DFFE',
+  lavender: '#D4C5F9',
+  lilac: '#F0C8F0',
+  neutral: '#E8E4DC',
 }
 const TONE_BORDER: Record<DialogTone, string> = {
-  rose: '#c2607a', peach: '#b87a3a', lemon: '#8a7820', mint: '#2a7a58',
-  sky: '#2a68a0', lavender: '#5a3eaa', lilac: '#8a3a8a', neutral: '#5a5550',
+  rose: '#c2607a',
+  peach: '#b87a3a',
+  lemon: '#8a7820',
+  mint: '#2a7a58',
+  sky: '#2a68a0',
+  lavender: '#5a3eaa',
+  lilac: '#8a3a8a',
+  neutral: '#5a5550',
 }
 
 const SIZE_W: Record<DialogSize, string> = {
@@ -59,8 +77,16 @@ const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
 
 const XIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <line x1="18" y1="6" x2="6" y2="18" />
     <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
@@ -92,7 +118,10 @@ export function Dialog({
   const { accentColor: ctxAccent } = useContext(ThemeContext)
   const resolvedAccentHex = accentColorProp ?? ctxAccent
   const { fill: accentFill, border: accentBorder } = resolveAccent(
-    tone, TONE_FILL, TONE_BORDER, resolvedAccentHex,
+    tone,
+    TONE_FILL,
+    TONE_BORDER,
+    resolvedAccentHex,
   )
 
   const sound = useDialogSound()
@@ -131,7 +160,9 @@ export function Dialog({
     if (animState !== 'closed') {
       const prev = document.body.style.overflow
       document.body.style.overflow = 'hidden'
-      return () => { document.body.style.overflow = prev }
+      return () => {
+        document.body.style.overflow = prev
+      }
     }
   }, [animState])
 
@@ -166,9 +197,15 @@ export function Dialog({
     const first = els[0]
     const last = els[els.length - 1]
     if (e.shiftKey) {
-      if (document.activeElement === first) { e.preventDefault(); last.focus() }
+      if (document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      }
     } else {
-      if (document.activeElement === last) { e.preventDefault(); first.focus() }
+      if (document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
     }
   }
 
@@ -180,23 +217,28 @@ export function Dialog({
     background: 'var(--sk-bg)',
     backdropFilter: 'blur(16px)',
     WebkitBackdropFilter: 'blur(16px)',
-    boxShadow: '0 24px 60px -12px var(--sk-shadow-a), 0 8px 24px -4px var(--sk-shadow-b), inset 0 0 0 1px var(--sk-border)',
+    boxShadow:
+      '0 24px 60px -12px var(--sk-shadow-a), 0 8px 24px -4px var(--sk-shadow-b), inset 0 0 0 1px var(--sk-border)',
     display: 'flex',
     flexDirection: 'column',
-    animation: animState === 'closing'
-      ? 'dialog-out 200ms cubic-bezier(0.4,0,1,1) both'
-      : 'dialog-in 280ms cubic-bezier(0.34,1.42,0.64,1) both',
+    animation:
+      animState === 'closing'
+        ? 'dialog-out 200ms cubic-bezier(0.4,0,1,1) both'
+        : 'dialog-in 280ms cubic-bezier(0.34,1.42,0.64,1) both',
   }
 
   const overlayStyle: CSSProperties = {
-    animation: animState === 'closing'
-      ? 'dialog-overlay-out 200ms ease both'
-      : 'dialog-overlay-in 200ms ease both',
+    animation:
+      animState === 'closing'
+        ? 'dialog-overlay-out 200ms ease both'
+        : 'dialog-overlay-in 200ms ease both',
   }
 
   if (animState === 'closed') {
     return trigger ? (
-      <span onClick={open} style={{ display: 'contents' }}>{trigger}</span>
+      <span onClick={open} style={{ display: 'contents' }}>
+        {trigger}
+      </span>
     ) : null
   }
 
@@ -205,7 +247,9 @@ export function Dialog({
       role="presentation"
       style={overlayStyle}
       className="fixed inset-0 z-50 flex items-center justify-center p-6"
-      onMouseDown={(e) => { if (closeOnOverlay && e.target === e.currentTarget) close() }}
+      onMouseDown={(e) => {
+        if (closeOnOverlay && e.target === e.currentTarget) close()
+      }}
       onAnimationEnd={() => {
         if (animState === 'closing') setAnimState('closed')
       }}
@@ -213,7 +257,11 @@ export function Dialog({
       {/* Backdrop */}
       <div
         className="absolute inset-0 -z-10"
-        style={{ background: 'rgba(0,0,0,0.38)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
+        style={{
+          background: 'rgba(0,0,0,0.38)',
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+        }}
       />
 
       <div
@@ -295,7 +343,11 @@ export function Dialog({
 
   return (
     <>
-      {trigger && <span onClick={open} style={{ display: 'contents' }}>{trigger}</span>}
+      {trigger && (
+        <span onClick={open} style={{ display: 'contents' }}>
+          {trigger}
+        </span>
+      )}
       {portal}
     </>
   )

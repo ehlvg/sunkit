@@ -24,28 +24,32 @@ const VARIANT_MAP: Record<
   }
 > = {
   info: {
-    gradientLight: 'linear-gradient(135deg, rgba(184,223,254,0.55) 0%, rgba(184,223,254,0.20) 100%)',
+    gradientLight:
+      'linear-gradient(135deg, rgba(184,223,254,0.55) 0%, rgba(184,223,254,0.20) 100%)',
     gradientDark: 'linear-gradient(135deg, rgba(184,223,254,0.14) 0%, rgba(184,223,254,0.05) 100%)',
     iconColor: 'text-pastel-sky-dark dark:text-pastel-sky',
     title: 'text-pastel-sky-dark',
     titleDark: 'dark:text-pastel-sky',
   },
   success: {
-    gradientLight: 'linear-gradient(135deg, rgba(184,240,216,0.55) 0%, rgba(184,240,216,0.20) 100%)',
+    gradientLight:
+      'linear-gradient(135deg, rgba(184,240,216,0.55) 0%, rgba(184,240,216,0.20) 100%)',
     gradientDark: 'linear-gradient(135deg, rgba(184,240,216,0.14) 0%, rgba(184,240,216,0.05) 100%)',
     iconColor: 'text-pastel-mint-dark dark:text-pastel-mint',
     title: 'text-pastel-mint-dark',
     titleDark: 'dark:text-pastel-mint',
   },
   warning: {
-    gradientLight: 'linear-gradient(135deg, rgba(255,241,168,0.60) 0%, rgba(255,241,168,0.22) 100%)',
+    gradientLight:
+      'linear-gradient(135deg, rgba(255,241,168,0.60) 0%, rgba(255,241,168,0.22) 100%)',
     gradientDark: 'linear-gradient(135deg, rgba(255,241,168,0.14) 0%, rgba(255,241,168,0.05) 100%)',
     iconColor: 'text-pastel-lemon-dark dark:text-pastel-lemon',
     title: 'text-pastel-lemon-dark',
     titleDark: 'dark:text-pastel-lemon',
   },
   error: {
-    gradientLight: 'linear-gradient(135deg, rgba(249,197,209,0.55) 0%, rgba(249,197,209,0.20) 100%)',
+    gradientLight:
+      'linear-gradient(135deg, rgba(249,197,209,0.55) 0%, rgba(249,197,209,0.20) 100%)',
     gradientDark: 'linear-gradient(135deg, rgba(249,197,209,0.14) 0%, rgba(249,197,209,0.05) 100%)',
     iconColor: 'text-pastel-rose-dark dark:text-pastel-rose',
     title: 'text-pastel-rose-dark',

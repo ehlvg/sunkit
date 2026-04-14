@@ -227,7 +227,10 @@ export const AllVariants: Story = {
   render: (args) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {(['solid', 'outline', 'ghost'] as const).map((variant) => (
-        <div key={variant} style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+        <div
+          key={variant}
+          style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}
+        >
           <span style={{ fontSize: 11, color: '#aaa', width: 52, flexShrink: 0 }}>{variant}</span>
           {COLORS.map((c) => (
             <Button key={c.id} {...args} variant={variant} color={c.id}>

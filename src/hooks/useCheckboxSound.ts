@@ -61,10 +61,7 @@ function playUncheck(actx: ACtx) {
   } catch (_) {}
 }
 
-export function useCheckboxSound(
-  ref: RefObject<HTMLInputElement | null>,
-  checked: boolean,
-) {
+export function useCheckboxSound(ref: RefObject<HTMLInputElement | null>, checked: boolean) {
   const actx = useRef<AudioContext | null>(null)
   const checkedRef = useRef(checked)
 

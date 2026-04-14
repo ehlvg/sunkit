@@ -26,8 +26,14 @@ export type ShapeType =
   | 'arrow-down'
 
 export type ShapeColor =
-  | 'rose' | 'peach' | 'lemon' | 'mint'
-  | 'sky' | 'lavender' | 'lilac' | 'neutral'
+  | 'rose'
+  | 'peach'
+  | 'lemon'
+  | 'mint'
+  | 'sky'
+  | 'lavender'
+  | 'lilac'
+  | 'neutral'
 
 export interface ShapeProps {
   shape?: ShapeType
@@ -46,28 +52,58 @@ export interface ShapeProps {
 }
 
 const TONE_FILL: Record<ShapeColor, string> = {
-  rose: '#F9C5D1', peach: '#FDDBB4', lemon: '#FFF1A8', mint: '#B8F0D8',
-  sky: '#B8DFFE', lavender: '#D4C5F9', lilac: '#F0C8F0', neutral: '#E8E4DC',
+  rose: '#F9C5D1',
+  peach: '#FDDBB4',
+  lemon: '#FFF1A8',
+  mint: '#B8F0D8',
+  sky: '#B8DFFE',
+  lavender: '#D4C5F9',
+  lilac: '#F0C8F0',
+  neutral: '#E8E4DC',
 }
 const TONE_BORDER: Record<ShapeColor, string> = {
-  rose: '#c2607a', peach: '#b87a3a', lemon: '#8a7820', mint: '#2a7a58',
-  sky: '#2a68a0', lavender: '#5a3eaa', lilac: '#8a3a8a', neutral: '#5a5550',
+  rose: '#c2607a',
+  peach: '#b87a3a',
+  lemon: '#8a7820',
+  mint: '#2a7a58',
+  sky: '#2a68a0',
+  lavender: '#5a3eaa',
+  lilac: '#8a3a8a',
+  neutral: '#5a5550',
 }
 
 const SIZE_MAP: Record<string, number> = {
-  xs: 24, sm: 32, md: 48, lg: 64, xl: 96, '2xl': 128,
+  xs: 24,
+  sm: 32,
+  md: 48,
+  lg: 64,
+  xl: 96,
+  '2xl': 128,
 }
 
 // ── Geometry helpers ──────────────────────────────────────────────────────────
 
 type Pt = [number, number]
 
-function add(a: Pt, b: Pt): Pt { return [a[0] + b[0], a[1] + b[1]] }
-function sub(a: Pt, b: Pt): Pt { return [a[0] - b[0], a[1] - b[1]] }
-function scale(v: Pt, s: number): Pt { return [v[0] * s, v[1] * s] }
-function len(v: Pt): number { return Math.sqrt(v[0] ** 2 + v[1] ** 2) }
-function norm(v: Pt): Pt { const l = len(v) || 1; return [v[0] / l, v[1] / l] }
-function dist(a: Pt, b: Pt): number { return len(sub(b, a)) }
+function add(a: Pt, b: Pt): Pt {
+  return [a[0] + b[0], a[1] + b[1]]
+}
+function sub(a: Pt, b: Pt): Pt {
+  return [a[0] - b[0], a[1] - b[1]]
+}
+function scale(v: Pt, s: number): Pt {
+  return [v[0] * s, v[1] * s]
+}
+function len(v: Pt): number {
+  return Math.sqrt(v[0] ** 2 + v[1] ** 2)
+}
+function norm(v: Pt): Pt {
+  const l = len(v) || 1
+  return [v[0] / l, v[1] / l]
+}
+function dist(a: Pt, b: Pt): number {
+  return len(sub(b, a))
+}
 
 /** Build a polygon clip-path string from % coordinates */
 function pctPolygon(pts: Pt[]): string {
@@ -89,18 +125,18 @@ function roundedPolyPath(pts: Pt[], r: number): string {
     const next = pts[(i + 1) % n]
 
     // Directions along incoming and outgoing edges
-    const dIn  = norm(sub(curr, prev))
+    const dIn = norm(sub(curr, prev))
     const dOut = norm(sub(next, curr))
 
     // Clamp rounding radius to half each adjacent edge length
     const rr = Math.min(r, dist(prev, curr) / 2, dist(curr, next) / 2)
 
     // Points where the curve starts and ends
-    const a = add(curr, scale(dIn,  -rr))  // approaching the corner
-    const b = add(curr, scale(dOut,  rr))  // leaving the corner
+    const a = add(curr, scale(dIn, -rr)) // approaching the corner
+    const b = add(curr, scale(dOut, rr)) // leaving the corner
 
     if (i === 0) segs.push(`M ${a[0].toFixed(2)} ${a[1].toFixed(2)}`)
-    else         segs.push(`L ${a[0].toFixed(2)} ${a[1].toFixed(2)}`)
+    else segs.push(`L ${a[0].toFixed(2)} ${a[1].toFixed(2)}`)
 
     // Quadratic bezier: control point = the vertex itself → smooth round
     segs.push(`Q ${curr[0].toFixed(2)} ${curr[1].toFixed(2)} ${b[0].toFixed(2)} ${b[1].toFixed(2)}`)
@@ -134,39 +170,131 @@ function starPolygon(points: number, innerRatio: number, offsetDeg = -90): Pt[] 
 /** Returns the polygon points in % space (0-100), or null for non-polygon shapes. */
 function getPolygonPts(shape: ShapeType): Pt[] | null {
   switch (shape) {
-    case 'triangle':      return [[50,0],[100,100],[0,100]]
-    case 'triangle-down': return [[0,0],[100,0],[50,100]]
-    case 'diamond':       return [[50,0],[100,50],[50,100],[0,50]]
-    case 'pentagon':      return regularPolygon(5)
-    case 'hexagon':       return regularPolygon(6)
-    case 'hexagon-flat':  return [[25,0],[75,0],[100,50],[75,100],[25,100],[0,50]]
-    case 'octagon':       return regularPolygon(8)
-    case 'star4':         return starPolygon(4, 0.42)
-    case 'star5':         return starPolygon(5, 0.45)
-    case 'star6':         return starPolygon(6, 0.55)
-    case 'parallelogram': return [[18,0],[100,0],[82,100],[0,100]]
-    case 'shield':        return [[50,0],[100,18],[100,62],[50,100],[0,62],[0,18]]
-    case 'cross':         return [
-      [35,0],[65,0],[65,35],[100,35],[100,65],
-      [65,65],[65,100],[35,100],[35,65],[0,65],[0,35],[35,35],
-    ]
-    case 'arrow-right':   return [[0,20],[60,20],[60,0],[100,50],[60,100],[60,80],[0,80]]
-    case 'arrow-left':    return [[100,20],[40,20],[40,0],[0,50],[40,100],[40,80],[100,80]]
-    case 'arrow-up':      return [[20,100],[20,40],[0,40],[50,0],[100,40],[80,40],[80,100]]
-    case 'arrow-down':    return [[20,0],[20,60],[0,60],[50,100],[100,60],[80,60],[80,0]]
-    default:              return null
+    case 'triangle':
+      return [
+        [50, 0],
+        [100, 100],
+        [0, 100],
+      ]
+    case 'triangle-down':
+      return [
+        [0, 0],
+        [100, 0],
+        [50, 100],
+      ]
+    case 'diamond':
+      return [
+        [50, 0],
+        [100, 50],
+        [50, 100],
+        [0, 50],
+      ]
+    case 'pentagon':
+      return regularPolygon(5)
+    case 'hexagon':
+      return regularPolygon(6)
+    case 'hexagon-flat':
+      return [
+        [25, 0],
+        [75, 0],
+        [100, 50],
+        [75, 100],
+        [25, 100],
+        [0, 50],
+      ]
+    case 'octagon':
+      return regularPolygon(8)
+    case 'star4':
+      return starPolygon(4, 0.42)
+    case 'star5':
+      return starPolygon(5, 0.45)
+    case 'star6':
+      return starPolygon(6, 0.55)
+    case 'parallelogram':
+      return [
+        [18, 0],
+        [100, 0],
+        [82, 100],
+        [0, 100],
+      ]
+    case 'shield':
+      return [
+        [50, 0],
+        [100, 18],
+        [100, 62],
+        [50, 100],
+        [0, 62],
+        [0, 18],
+      ]
+    case 'cross':
+      return [
+        [35, 0],
+        [65, 0],
+        [65, 35],
+        [100, 35],
+        [100, 65],
+        [65, 65],
+        [65, 100],
+        [35, 100],
+        [35, 65],
+        [0, 65],
+        [0, 35],
+        [35, 35],
+      ]
+    case 'arrow-right':
+      return [
+        [0, 20],
+        [60, 20],
+        [60, 0],
+        [100, 50],
+        [60, 100],
+        [60, 80],
+        [0, 80],
+      ]
+    case 'arrow-left':
+      return [
+        [100, 20],
+        [40, 20],
+        [40, 0],
+        [0, 50],
+        [40, 100],
+        [40, 80],
+        [100, 80],
+      ]
+    case 'arrow-up':
+      return [
+        [20, 100],
+        [20, 40],
+        [0, 40],
+        [50, 0],
+        [100, 40],
+        [80, 40],
+        [80, 100],
+      ]
+    case 'arrow-down':
+      return [
+        [20, 0],
+        [20, 60],
+        [0, 60],
+        [50, 100],
+        [100, 60],
+        [80, 60],
+        [80, 0],
+      ]
+    default:
+      return null
   }
 }
 
 /** Heart path scaled to the element's pixel size so it never overflows. */
 function heartPath(s: number): string {
   const f = (v: number) => (v * s).toFixed(2)
-  return `path('M${f(0.5)} ${f(0.82)} C${f(0.22)} ${f(0.64)} ${f(0.05)} ${f(0.46)} ${f(0.05)} ${f(0.30)} C${f(0.05)} ${f(0.16)} ${f(0.16)} ${f(0.08)} ${f(0.28)} ${f(0.08)} C${f(0.36)} ${f(0.08)} ${f(0.44)} ${f(0.13)} ${f(0.5)} ${f(0.21)} C${f(0.56)} ${f(0.13)} ${f(0.64)} ${f(0.08)} ${f(0.72)} ${f(0.08)} C${f(0.84)} ${f(0.08)} ${f(0.95)} ${f(0.16)} ${f(0.95)} ${f(0.30)} C${f(0.95)} ${f(0.46)} ${f(0.78)} ${f(0.64)} ${f(0.5)} ${f(0.82)} Z')`
+  return `path('M${f(0.5)} ${f(0.82)} C${f(0.22)} ${f(0.64)} ${f(0.05)} ${f(0.46)} ${f(0.05)} ${f(0.3)} C${f(0.05)} ${f(0.16)} ${f(0.16)} ${f(0.08)} ${f(0.28)} ${f(0.08)} C${f(0.36)} ${f(0.08)} ${f(0.44)} ${f(0.13)} ${f(0.5)} ${f(0.21)} C${f(0.56)} ${f(0.13)} ${f(0.64)} ${f(0.08)} ${f(0.72)} ${f(0.08)} C${f(0.84)} ${f(0.08)} ${f(0.95)} ${f(0.16)} ${f(0.95)} ${f(0.3)} C${f(0.95)} ${f(0.46)} ${f(0.78)} ${f(0.64)} ${f(0.5)} ${f(0.82)} Z')`
 }
 
 function getClipPath(shape: ShapeType, radiusPct: number, sizePx: number): string {
   if (shape === 'circle') return 'circle(50%)'
-  if (shape === 'heart')  return heartPath(sizePx)
+  if (shape === 'heart') return heartPath(sizePx)
   if (shape === 'square') return `inset(0 round ${Math.min(radiusPct, 49)}%)`
 
   const pctPts = getPolygonPts(shape)
@@ -177,7 +305,7 @@ function getClipPath(shape: ShapeType, radiusPct: number, sizePx: number): strin
 
   // Convert % → pixels, then compute rounded path
   const pxPts = pctPts.map(([x, y]): Pt => [(x / 100) * sizePx, (y / 100) * sizePx])
-  const rPx   = (radiusPct / 100) * sizePx  // radius as absolute pixels
+  const rPx = (radiusPct / 100) * sizePx // radius as absolute pixels
   return roundedPolyPath(pxPts, rPx)
 }
 
@@ -201,8 +329,8 @@ export function Shape({
   const resolvedAccentHex = accentColorProp ?? ctxAccent
   const { fill } = resolveAccent(color, TONE_FILL, TONE_BORDER, resolvedAccentHex)
 
-  const sizePx    = typeof size === 'number' ? size : (SIZE_MAP[size] ?? 48)
-  const clipPath  = getClipPath(shape, Math.max(0, Math.min(radius, 49)), sizePx)
+  const sizePx = typeof size === 'number' ? size : (SIZE_MAP[size] ?? 48)
+  const clipPath = getClipPath(shape, Math.max(0, Math.min(radius, 49)), sizePx)
 
   const Tag = as ?? (clickable ? 'button' : 'div')
 

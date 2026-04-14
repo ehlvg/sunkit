@@ -48,7 +48,14 @@ const TONE_FROM_COLOR: Record<
 }
 
 const PREVIEW_SHAPES: ShapeType[] = [
-  'hexagon', 'star5', 'diamond', 'shield', 'octagon', 'heart', 'cross', 'arrow-right',
+  'hexagon',
+  'star5',
+  'diamond',
+  'shield',
+  'octagon',
+  'heart',
+  'cross',
+  'arrow-right',
 ]
 
 // ── Theme control bar ─────────────────────────────────────────────────────────
@@ -144,7 +151,13 @@ function ThemeBar({
         />
       </div>
 
-      <div style={{ width: 1, height: 18, background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.10)' }} />
+      <div
+        style={{
+          width: 1,
+          height: 18,
+          background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.10)',
+        }}
+      />
 
       {/* Accent color picker */}
       <label
@@ -286,7 +299,6 @@ function ProjectSetupApp({ dark, accent }: { dark: boolean; accent: string }) {
       }}
     >
       <div style={{ width: '100%', maxWidth: 560 }}>
-
         {/* Header */}
         <div style={{ marginBottom: 28 }}>
           <h1
@@ -306,9 +318,26 @@ function ProjectSetupApp({ dark, accent }: { dark: boolean; accent: string }) {
         </div>
 
         {/* Shapes showcase */}
-        <div style={{ marginBottom: 28, display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+        <div
+          style={{
+            marginBottom: 28,
+            display: 'flex',
+            gap: 12,
+            flexWrap: 'wrap',
+            alignItems: 'center',
+          }}
+        >
           {PREVIEW_SHAPES.map((shape, i) => {
-            const colors: ButtonColor[] = ['lavender', 'sky', 'mint', 'peach', 'rose', 'lemon', 'lilac', 'neutral']
+            const colors: ButtonColor[] = [
+              'lavender',
+              'sky',
+              'mint',
+              'peach',
+              'rose',
+              'lemon',
+              'lilac',
+              'neutral',
+            ]
             return (
               <Shape
                 key={shape}
@@ -352,7 +381,13 @@ function ProjectSetupApp({ dark, accent }: { dark: boolean; accent: string }) {
         <Card variant="elevated" tone={tone} radius={20}>
           <Card.Header>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.65)' }}>
+              <span
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.65)',
+                }}
+              >
                 Project details
               </span>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -485,7 +520,14 @@ function ProjectSetupApp({ dark, accent }: { dark: boolean; accent: string }) {
         <Card variant="outline" tone={tone} radius={16} style={{ marginTop: 16 }}>
           <Card.Body>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.55)' }}>
+              <p
+                style={{
+                  margin: '0 0 4px',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.55)',
+                }}
+              >
                 Agreements
               </p>
               <Checkbox
@@ -555,11 +597,16 @@ function ProjectSetupApp({ dark, accent }: { dark: boolean; accent: string }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13 }}>
             <Shape shape="circle" size="xs" color={tone} accentColor={accent} />
-            <span>Category: <strong>{category || 'Not set'}</strong></span>
+            <span>
+              Category: <strong>{category || 'Not set'}</strong>
+            </span>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13 }}>
             <Shape shape="circle" size="xs" color={tone} accentColor={accent} />
-            <span>Team size: <strong>{TEAM_OPTIONS.find(o => o.value === team)?.label || 'Not set'}</strong></span>
+            <span>
+              Team size:{' '}
+              <strong>{TEAM_OPTIONS.find((o) => o.value === team)?.label || 'Not set'}</strong>
+            </span>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13 }}>
             <Shape shape="circle" size="xs" color={tone} accentColor={accent} />
@@ -567,7 +614,11 @@ function ProjectSetupApp({ dark, accent }: { dark: boolean; accent: string }) {
               Deadline:{' '}
               <strong>
                 {deadline
-                  ? deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                  ? deadline.toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
                   : 'Not set'}
               </strong>
             </span>
@@ -590,7 +641,12 @@ function ProjectSetupApp({ dark, accent }: { dark: boolean; accent: string }) {
         accentColor={accent}
         size="sm"
         footer={
-          <Button size="sm" color={color} accentColor={accent} onClick={() => setSettingsOpen(false)}>
+          <Button
+            size="sm"
+            color={color}
+            accentColor={accent}
+            onClick={() => setSettingsOpen(false)}
+          >
             Done
           </Button>
         }
@@ -635,12 +691,7 @@ function ProjectSetupWithTheme() {
   return (
     <ThemeProvider dark={dark} accentColor={accent}>
       <div style={{ minHeight: '100vh', background: dark ? '#121216' : '#f7f6f3' }}>
-        <ThemeBar
-          dark={dark}
-          accent={accent}
-          onDarkChange={setDark}
-          onAccentChange={setAccent}
-        />
+        <ThemeBar dark={dark} accent={accent} onDarkChange={setDark} onAccentChange={setAccent} />
         <ProjectSetupApp dark={dark} accent={accent} />
       </div>
     </ThemeProvider>
