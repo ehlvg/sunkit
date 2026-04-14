@@ -7,6 +7,11 @@ const meta: Meta<typeof Button> = {
   component: Button,
   tags: ['autodocs'],
   argTypes: {
+    variant: {
+      control: 'select',
+      options: ['solid', 'outline', 'ghost'],
+      description: 'Button visual style',
+    },
     color: {
       control: 'select',
       options: COLORS.map((c) => c.id),
@@ -32,6 +37,7 @@ const meta: Meta<typeof Button> = {
     },
   },
   args: {
+    variant: 'solid',
     color: 'lavender',
     size: 'default',
     icon: 'none',
@@ -213,5 +219,42 @@ export const SmallVariant: Story = {
     size: 'sm',
     color: 'mint',
     children: 'Small Button',
+  },
+}
+
+export const AllVariants: Story = {
+  name: 'All Variants',
+  render: (args) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {(['solid', 'outline', 'ghost'] as const).map((variant) => (
+        <div key={variant} style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+          <span style={{ fontSize: 11, color: '#aaa', width: 52, flexShrink: 0 }}>{variant}</span>
+          {COLORS.map((c) => (
+            <Button key={c.id} {...args} variant={variant} color={c.id}>
+              {c.label}
+            </Button>
+          ))}
+        </div>
+      ))}
+    </div>
+  ),
+  args: { size: 'default', icon: 'none' },
+}
+
+export const OutlineVariant: Story = {
+  name: 'Outline',
+  args: {
+    variant: 'outline',
+    color: 'sky',
+    children: 'Outline Button',
+  },
+}
+
+export const GhostVariant: Story = {
+  name: 'Ghost',
+  args: {
+    variant: 'ghost',
+    color: 'rose',
+    children: 'Ghost Button',
   },
 }

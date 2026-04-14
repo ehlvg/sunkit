@@ -212,26 +212,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       )}
 
       <div
-        className={cn(
-          'relative w-full',
-          leftAdornment ? 'pl-[34px]' : '',
-          rightAdornment ? 'pr-[34px]' : '',
-        )}
+        className="relative w-full"
         style={{ '--field-radius': `${radius}px` } as CSSProperties}
       >
-        {leftAdornment ? (
-          <div className="absolute left-[10px] top-1/2 -translate-y-1/2 text-[var(--sk-text-muted)] pointer-events-none">
+        {leftAdornment != null && (
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 pl-[11px] flex items-center text-[var(--sk-text-muted)] pointer-events-none z-[1]">
             {leftAdornment}
           </div>
-        ) : null}
+        )}
 
         <input
           ref={setRef}
           id={inputId}
           className={cn(
             inputVariants({ variant, tone: effectiveTone, size, invalid: isInvalid }),
-            leftAdornment ? 'pl-[34px]' : '',
-            rightAdornment ? 'pr-[34px]' : '',
+            leftAdornment != null ? (size === 'sm' ? 'pl-[30px]' : 'pl-[34px]') : '',
+            rightAdornment != null ? (size === 'sm' ? 'pr-[30px]' : 'pr-[36px]') : '',
             className,
           )}
           style={accentStyle}
@@ -250,11 +246,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           {...rest}
         />
 
-        {rightAdornment ? (
-          <div className="absolute right-[10px] top-1/2 -translate-y-1/2 text-[var(--sk-text-muted)] pointer-events-none">
+        {rightAdornment != null && (
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-[11px] flex items-center text-[var(--sk-text-muted)] pointer-events-none z-[1]">
             {rightAdornment}
           </div>
-        ) : null}
+        )}
       </div>
 
       {description != null && (
