@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from 'react'
 import { cn } from '../../lib/utils'
-import { resolveAccent } from '../../lib/accent'
+import { resolveAccent, isColorLight } from '../../lib/accent'
 import { ThemeContext } from '../Theme/ThemeProvider'
 import { useCheckboxSound } from '../../hooks/useCheckboxSound'
 
@@ -130,6 +130,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
       }
     : {}
 
+  // Mark color: white on dark fills, border color on light fills
+  const markColor = isColorLight(fill) ? border : 'rgba(255,255,255,0.90)'
+
   const checkAnim: CSSProperties = {
     strokeDasharray: 20,
     strokeDashoffset: 0,
@@ -193,32 +196,36 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
             aria-hidden="true"
           />
 
-          {/* Checkmark SVG */}
+          {/* Checkmark SVG — absolute so it never affects the box's layout */}
           {checked && !indeterminate && (
             <svg
               width={box.size - 4}
               height={box.size - 4}
               viewBox={box.viewBox}
               fill="none"
-              stroke={border}
+              stroke={markColor}
               strokeWidth={box.stroke}
               strokeLinecap="round"
               strokeLinejoin="round"
               aria-hidden="true"
+              style={{ position: 'absolute', inset: 0, margin: 'auto', display: 'block' }}
             >
               <path d={box.path} style={checkAnim} />
             </svg>
           )}
 
-          {/* Indeterminate dash */}
+          {/* Indeterminate dash — absolute so it never affects the box's layout */}
           {indeterminate && (
             <div
               aria-hidden="true"
               style={{
+                position: 'absolute',
+                inset: 0,
+                margin: 'auto',
                 width: box.size - 6,
                 height: Math.round(box.stroke),
                 borderRadius: 999,
-                background: border,
+                background: markColor,
                 transformOrigin: 'left center',
                 animation: 'checkbox-indeterminate 160ms cubic-bezier(0.34,1.42,0.64,1) both',
               }}

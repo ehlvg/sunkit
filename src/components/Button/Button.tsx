@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import { useButtonSound } from '../../hooks/useButtonSound'
 import type { ButtonColor } from '../../tokens/colors'
-import { hexToAccentPair } from '../../lib/accent'
+import { hexToAccentPair, isColorLight } from '../../lib/accent'
 import { ThemeContext } from '../Theme/ThemeProvider'
 
 export type { ButtonColor }
@@ -304,9 +304,10 @@ export function Button({
   if (resolvedAccent) {
     const { fill, border } = hexToAccentPair(resolvedAccent)
     if (variant === 'solid') {
+      const textColor = isColorLight(fill) ? border : 'rgba(255,255,255,0.92)'
       accentStyle = {
         backgroundColor: fill,
-        color: border,
+        color: textColor,
         borderColor: `${border}38`,
       }
     } else if (variant === 'outline') {
@@ -359,7 +360,8 @@ export function Button({
           )}
           <span
             className={cn(
-              variant === 'solid' && '[text-shadow:0_1px_0_rgba(255,255,255,0.32)]',
+              variant === 'solid' && !resolvedAccent && '[text-shadow:0_1px_0_rgba(255,255,255,0.32)]',
+              variant === 'solid' && resolvedAccent && isColorLight(hexToAccentPair(resolvedAccent).fill) && '[text-shadow:0_1px_0_rgba(255,255,255,0.32)]',
             )}
           >
             {children}

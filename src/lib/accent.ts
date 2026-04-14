@@ -48,6 +48,21 @@ function hslToHex(h: number, s: number, l: number): string {
 }
 
 /**
+ * Returns true if the given hex color is light enough for dark text to be readable on it.
+ * Uses WCAG relative luminance — threshold ~0.23 (geometric mean of black/white luminance).
+ */
+export function isColorLight(hex: string): boolean {
+  if (!hex || !hex.startsWith('#')) return true
+  const h = hex.replace('#', '')
+  const r = parseInt(h.slice(0, 2), 16) / 255
+  const g = parseInt(h.slice(2, 4), 16) / 255
+  const b = parseInt(h.slice(4, 6), 16) / 255
+  const toLinear = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+  const lum = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b)
+  return lum > 0.23
+}
+
+/**
  * Given any hex accent color, returns:
  *   fill   — the accent itself (used as selection / highlight background)
  *   border — darker, more saturated variant (used for borders / icon tinting)
