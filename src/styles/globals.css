@@ -1,21 +1,21 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-pastel-rose:         #F9C5D1;
-  --color-pastel-rose-dark:    #c2607a;
-  --color-pastel-peach:        #FDDBB4;
-  --color-pastel-peach-dark:   #b87a3a;
-  --color-pastel-lemon:        #FFF1A8;
-  --color-pastel-lemon-dark:   #8a7820;
-  --color-pastel-mint:         #B8F0D8;
-  --color-pastel-mint-dark:    #2a7a58;
-  --color-pastel-sky:          #B8DFFE;
-  --color-pastel-sky-dark:     #2a68a0;
-  --color-pastel-lavender:     #D4C5F9;
-  --color-pastel-lavender-dark:#5a3eaa;
-  --color-pastel-lilac:        #F0C8F0;
-  --color-pastel-lilac-dark:   #8a3a8a;
-  --color-pastel-neutral:      #E8E4DC;
+  --color-pastel-rose: #f9c5d1;
+  --color-pastel-rose-dark: #c2607a;
+  --color-pastel-peach: #fddbb4;
+  --color-pastel-peach-dark: #b87a3a;
+  --color-pastel-lemon: #fff1a8;
+  --color-pastel-lemon-dark: #8a7820;
+  --color-pastel-mint: #b8f0d8;
+  --color-pastel-mint-dark: #2a7a58;
+  --color-pastel-sky: #b8dffe;
+  --color-pastel-sky-dark: #2a68a0;
+  --color-pastel-lavender: #d4c5f9;
+  --color-pastel-lavender-dark: #5a3eaa;
+  --color-pastel-lilac: #f0c8f0;
+  --color-pastel-lilac-dark: #8a3a8a;
+  --color-pastel-neutral: #e8e4dc;
   --color-pastel-neutral-dark: #5a5550;
 }
 
@@ -24,77 +24,77 @@
    single .dark class (or OS preference) is enough to flip the whole system.
    ─────────────────────────────────────────────────────────────────────────── */
 :root {
-  --sk-bg:              rgba(255, 255, 255, 0.94);
-  --sk-bg-solid:        #ffffff;
-  --sk-surface:         rgba(255, 255, 255, 0.60);
-  --sk-surface-hover:   rgba(255, 255, 255, 0.80);
-  --sk-surface-filled:  rgba(0, 0, 0, 0.055);
-  --sk-border:          rgba(0, 0, 0, 0.09);
-  --sk-border-subtle:   rgba(0, 0, 0, 0.06);
-  --sk-border-strong:   rgba(0, 0, 0, 0.16);
-  --sk-text:            rgba(0, 0, 0, 0.82);
-  --sk-text-muted:      rgba(0, 0, 0, 0.50);
-  --sk-text-placeholder:rgba(0, 0, 0, 0.30);
-  --sk-text-label:      rgba(0, 0, 0, 0.70);
-  --sk-text-desc:       rgba(0, 0, 0, 0.45);
-  --sk-text-error:      rgba(185, 28, 28, 0.85);
-  --sk-shadow-a:        rgba(0, 0, 0, 0.10);
-  --sk-shadow-b:        rgba(0, 0, 0, 0.09);
-  --sk-shadow-c:        rgba(0, 0, 0, 0.06);
-  --sk-inset-light:     rgba(255, 255, 255, 0.65);
-  --sk-inset-dark:      rgba(0, 0, 0, 0.06);
-  --sk-knob:            #ffffff;
-  --sk-track-empty:     rgba(0, 0, 0, 0.10);
+  --sk-bg: rgba(255, 255, 255, 0.94);
+  --sk-bg-solid: #ffffff;
+  --sk-surface: rgba(255, 255, 255, 0.6);
+  --sk-surface-hover: rgba(255, 255, 255, 0.8);
+  --sk-surface-filled: rgba(0, 0, 0, 0.055);
+  --sk-border: rgba(0, 0, 0, 0.09);
+  --sk-border-subtle: rgba(0, 0, 0, 0.06);
+  --sk-border-strong: rgba(0, 0, 0, 0.16);
+  --sk-text: rgba(0, 0, 0, 0.82);
+  --sk-text-muted: rgba(0, 0, 0, 0.5);
+  --sk-text-placeholder: rgba(0, 0, 0, 0.3);
+  --sk-text-label: rgba(0, 0, 0, 0.7);
+  --sk-text-desc: rgba(0, 0, 0, 0.45);
+  --sk-text-error: rgba(185, 28, 28, 0.85);
+  --sk-shadow-a: rgba(0, 0, 0, 0.1);
+  --sk-shadow-b: rgba(0, 0, 0, 0.09);
+  --sk-shadow-c: rgba(0, 0, 0, 0.06);
+  --sk-inset-light: rgba(255, 255, 255, 0.65);
+  --sk-inset-dark: rgba(0, 0, 0, 0.06);
+  --sk-knob: #ffffff;
+  --sk-track-empty: rgba(0, 0, 0, 0.1);
 }
 
 .dark,
-[data-theme="dark"] {
-  --sk-bg:              rgba(28, 28, 32, 0.97);
-  --sk-bg-solid:        #1c1c20;
-  --sk-surface:         rgba(255, 255, 255, 0.06);
-  --sk-surface-hover:   rgba(255, 255, 255, 0.10);
-  --sk-surface-filled:  rgba(255, 255, 255, 0.08);
-  --sk-border:          rgba(255, 255, 255, 0.12);
-  --sk-border-subtle:   rgba(255, 255, 255, 0.07);
-  --sk-border-strong:   rgba(255, 255, 255, 0.22);
-  --sk-text:            rgba(255, 255, 255, 0.88);
-  --sk-text-muted:      rgba(255, 255, 255, 0.50);
-  --sk-text-placeholder:rgba(255, 255, 255, 0.28);
-  --sk-text-label:      rgba(255, 255, 255, 0.65);
-  --sk-text-desc:       rgba(255, 255, 255, 0.40);
-  --sk-text-error:      rgba(252, 165, 165, 0.90);
-  --sk-shadow-a:        rgba(0, 0, 0, 0.40);
-  --sk-shadow-b:        rgba(0, 0, 0, 0.35);
-  --sk-shadow-c:        rgba(0, 0, 0, 0.25);
-  --sk-inset-light:     rgba(255, 255, 255, 0.10);
-  --sk-inset-dark:      rgba(0, 0, 0, 0.30);
-  --sk-knob:            #e8e8ec;
-  --sk-track-empty:     rgba(255, 255, 255, 0.12);
+[data-theme='dark'] {
+  --sk-bg: rgba(28, 28, 32, 0.97);
+  --sk-bg-solid: #1c1c20;
+  --sk-surface: rgba(255, 255, 255, 0.06);
+  --sk-surface-hover: rgba(255, 255, 255, 0.1);
+  --sk-surface-filled: rgba(255, 255, 255, 0.08);
+  --sk-border: rgba(255, 255, 255, 0.12);
+  --sk-border-subtle: rgba(255, 255, 255, 0.07);
+  --sk-border-strong: rgba(255, 255, 255, 0.22);
+  --sk-text: rgba(255, 255, 255, 0.88);
+  --sk-text-muted: rgba(255, 255, 255, 0.5);
+  --sk-text-placeholder: rgba(255, 255, 255, 0.28);
+  --sk-text-label: rgba(255, 255, 255, 0.65);
+  --sk-text-desc: rgba(255, 255, 255, 0.4);
+  --sk-text-error: rgba(252, 165, 165, 0.9);
+  --sk-shadow-a: rgba(0, 0, 0, 0.4);
+  --sk-shadow-b: rgba(0, 0, 0, 0.35);
+  --sk-shadow-c: rgba(0, 0, 0, 0.25);
+  --sk-inset-light: rgba(255, 255, 255, 0.1);
+  --sk-inset-dark: rgba(0, 0, 0, 0.3);
+  --sk-knob: #e8e8ec;
+  --sk-track-empty: rgba(255, 255, 255, 0.12);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not(.light):not([data-theme="light"]) {
-    --sk-bg:              rgba(28, 28, 32, 0.97);
-    --sk-bg-solid:        #1c1c20;
-    --sk-surface:         rgba(255, 255, 255, 0.06);
-    --sk-surface-hover:   rgba(255, 255, 255, 0.10);
-    --sk-surface-filled:  rgba(255, 255, 255, 0.08);
-    --sk-border:          rgba(255, 255, 255, 0.12);
-    --sk-border-subtle:   rgba(255, 255, 255, 0.07);
-    --sk-border-strong:   rgba(255, 255, 255, 0.22);
-    --sk-text:            rgba(255, 255, 255, 0.88);
-    --sk-text-muted:      rgba(255, 255, 255, 0.50);
-    --sk-text-placeholder:rgba(255, 255, 255, 0.28);
-    --sk-text-label:      rgba(255, 255, 255, 0.65);
-    --sk-text-desc:       rgba(255, 255, 255, 0.40);
-    --sk-text-error:      rgba(252, 165, 165, 0.90);
-    --sk-shadow-a:        rgba(0, 0, 0, 0.40);
-    --sk-shadow-b:        rgba(0, 0, 0, 0.35);
-    --sk-shadow-c:        rgba(0, 0, 0, 0.25);
-    --sk-inset-light:     rgba(255, 255, 255, 0.10);
-    --sk-inset-dark:      rgba(0, 0, 0, 0.30);
-    --sk-knob:            #e8e8ec;
-    --sk-track-empty:     rgba(255, 255, 255, 0.12);
+  :root:not(.light):not([data-theme='light']) {
+    --sk-bg: rgba(28, 28, 32, 0.97);
+    --sk-bg-solid: #1c1c20;
+    --sk-surface: rgba(255, 255, 255, 0.06);
+    --sk-surface-hover: rgba(255, 255, 255, 0.1);
+    --sk-surface-filled: rgba(255, 255, 255, 0.08);
+    --sk-border: rgba(255, 255, 255, 0.12);
+    --sk-border-subtle: rgba(255, 255, 255, 0.07);
+    --sk-border-strong: rgba(255, 255, 255, 0.22);
+    --sk-text: rgba(255, 255, 255, 0.88);
+    --sk-text-muted: rgba(255, 255, 255, 0.5);
+    --sk-text-placeholder: rgba(255, 255, 255, 0.28);
+    --sk-text-label: rgba(255, 255, 255, 0.65);
+    --sk-text-desc: rgba(255, 255, 255, 0.4);
+    --sk-text-error: rgba(252, 165, 165, 0.9);
+    --sk-shadow-a: rgba(0, 0, 0, 0.4);
+    --sk-shadow-b: rgba(0, 0, 0, 0.35);
+    --sk-shadow-c: rgba(0, 0, 0, 0.25);
+    --sk-inset-light: rgba(255, 255, 255, 0.1);
+    --sk-inset-dark: rgba(0, 0, 0, 0.3);
+    --sk-knob: #e8e8ec;
+    --sk-track-empty: rgba(255, 255, 255, 0.12);
   }
 }
 
@@ -120,12 +120,15 @@
   box-shadow:
     0 0px 0 0 var(--sk-shadow-a),
     0 1px 2px -1px var(--sk-shadow-b),
-    inset 0 1px 0 var(--sk-inset-light, rgba(255,255,255,0.25)),
+    inset 0 1px 0 var(--sk-inset-light, rgba(255, 255, 255, 0.25)),
     inset 0 2px 7px var(--sk-inset-dark);
 }
 
 @utility btn-transition {
-  transition: transform 150ms ease-out, box-shadow 150ms ease-out, filter 150ms ease-out;
+  transition:
+    transform 150ms ease-out,
+    box-shadow 150ms ease-out,
+    filter 150ms ease-out;
   &:active {
     transition-duration: 75ms;
     transition-timing-function: ease-in;
@@ -133,17 +136,38 @@
 }
 
 @keyframes progress-indeterminate {
-  0%   { left: -40%; width: 40%; }
-  60%  { left: 100%; width: 40%; }
-  100% { left: 100%; width: 40%; }
+  0% {
+    left: -40%;
+    width: 40%;
+  }
+  60% {
+    left: 100%;
+    width: 40%;
+  }
+  100% {
+    left: 100%;
+    width: 40%;
+  }
 }
 
 @keyframes alert-in {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes alert-out {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-6px); }
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }

@@ -8,7 +8,7 @@ const meta: Meta<typeof DatePicker> = {
   component: DatePicker,
   tags: ['autodocs'],
   argTypes: {
-    tone: { control: 'select', options: COLORS.map(c => c.id) },
+    tone: { control: 'select', options: COLORS.map((c) => c.id) },
     size: { control: 'select', options: ['default', 'sm'] },
     mode: { control: 'select', options: ['single', 'range'] },
     disabled: { control: 'boolean' },
@@ -40,9 +40,9 @@ export const WithMinMax: Story = {
 }
 
 export const AllTones: Story = {
-  render: args => (
+  render: (args) => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, maxWidth: 580 }}>
-      {COLORS.map(c => (
+      {COLORS.map((c) => (
         <DatePicker key={c.id} {...args} tone={c.id} label={c.label} description={undefined} />
       ))}
     </div>
@@ -51,7 +51,7 @@ export const AllTones: Story = {
 }
 
 export const Controlled: Story = {
-  render: args => {
+  render: (args) => {
     const [date, setDate] = useState<Date | null>(null)
     return (
       <div style={{ display: 'grid', gap: 10, maxWidth: 320 }}>
@@ -66,7 +66,7 @@ export const Controlled: Story = {
 }
 
 export const DateRangePicker: Story = {
-  render: args => {
+  render: (args) => {
     const [range, setRange] = useState<DateRange>([null, null])
     return (
       <div style={{ display: 'grid', gap: 10, maxWidth: 580 }}>
@@ -81,7 +81,8 @@ export const DateRangePicker: Story = {
           tone="sky"
         />
         <div style={{ fontSize: 12, color: '#666' }}>
-          From: {range[0]?.toLocaleDateString() ?? '—'} &nbsp; To: {range[1]?.toLocaleDateString() ?? '—'}
+          From: {range[0]?.toLocaleDateString() ?? '—'} &nbsp; To:{' '}
+          {range[1]?.toLocaleDateString() ?? '—'}
         </div>
       </div>
     )

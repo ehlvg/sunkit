@@ -49,30 +49,71 @@ const textareaVariants = cva(
         ].join(' '),
       },
       tone: {
-        rose:     'border-pastel-rose-dark/[0.25]     focus-visible:border-pastel-rose-dark/[0.55]',
-        peach:    'border-pastel-peach-dark/[0.25]    focus-visible:border-pastel-peach-dark/[0.55]',
-        lemon:    'border-pastel-lemon-dark/[0.25]    focus-visible:border-pastel-lemon-dark/[0.55]',
-        mint:     'border-pastel-mint-dark/[0.25]     focus-visible:border-pastel-mint-dark/[0.55]',
-        sky:      'border-pastel-sky-dark/[0.25]      focus-visible:border-pastel-sky-dark/[0.55]',
-        lavender: 'border-pastel-lavender-dark/[0.25] focus-visible:border-pastel-lavender-dark/[0.55]',
-        lilac:    'border-pastel-lilac-dark/[0.25]    focus-visible:border-pastel-lilac-dark/[0.55]',
-        neutral:  'border-pastel-neutral-dark/[0.25]  focus-visible:border-pastel-neutral-dark/[0.55]',
-        custom:   'border-[var(--sk-border)]',
+        rose: 'border-pastel-rose-dark/[0.25]     focus-visible:border-pastel-rose-dark/[0.55]',
+        peach: 'border-pastel-peach-dark/[0.25]    focus-visible:border-pastel-peach-dark/[0.55]',
+        lemon: 'border-pastel-lemon-dark/[0.25]    focus-visible:border-pastel-lemon-dark/[0.55]',
+        mint: 'border-pastel-mint-dark/[0.25]     focus-visible:border-pastel-mint-dark/[0.55]',
+        sky: 'border-pastel-sky-dark/[0.25]      focus-visible:border-pastel-sky-dark/[0.55]',
+        lavender:
+          'border-pastel-lavender-dark/[0.25] focus-visible:border-pastel-lavender-dark/[0.55]',
+        lilac: 'border-pastel-lilac-dark/[0.25]    focus-visible:border-pastel-lilac-dark/[0.55]',
+        neutral:
+          'border-pastel-neutral-dark/[0.25]  focus-visible:border-pastel-neutral-dark/[0.55]',
+        custom: 'border-[var(--sk-border)]',
       },
       invalid: {
-        true:  'border-red-600/50 focus-visible:border-red-600/70',
+        true: 'border-red-600/50 focus-visible:border-red-600/70',
         false: '',
       },
     },
     compoundVariants: [
-      { variant: 'ghost', tone: 'rose',     className: 'border-pastel-rose-dark/[0.40]     focus-visible:border-pastel-rose-dark/[0.70]'     },
-      { variant: 'ghost', tone: 'peach',    className: 'border-pastel-peach-dark/[0.40]    focus-visible:border-pastel-peach-dark/[0.70]'    },
-      { variant: 'ghost', tone: 'lemon',    className: 'border-pastel-lemon-dark/[0.40]    focus-visible:border-pastel-lemon-dark/[0.70]'    },
-      { variant: 'ghost', tone: 'mint',     className: 'border-pastel-mint-dark/[0.40]     focus-visible:border-pastel-mint-dark/[0.70]'     },
-      { variant: 'ghost', tone: 'sky',      className: 'border-pastel-sky-dark/[0.40]      focus-visible:border-pastel-sky-dark/[0.70]'      },
-      { variant: 'ghost', tone: 'lavender', className: 'border-pastel-lavender-dark/[0.40] focus-visible:border-pastel-lavender-dark/[0.70]' },
-      { variant: 'ghost', tone: 'lilac',    className: 'border-pastel-lilac-dark/[0.40]    focus-visible:border-pastel-lilac-dark/[0.70]'    },
-      { variant: 'ghost', tone: 'neutral',  className: 'border-pastel-neutral-dark/[0.35]  focus-visible:border-pastel-neutral-dark/[0.65]'  },
+      {
+        variant: 'ghost',
+        tone: 'rose',
+        className:
+          'border-pastel-rose-dark/[0.40]     focus-visible:border-pastel-rose-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'peach',
+        className:
+          'border-pastel-peach-dark/[0.40]    focus-visible:border-pastel-peach-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'lemon',
+        className:
+          'border-pastel-lemon-dark/[0.40]    focus-visible:border-pastel-lemon-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'mint',
+        className:
+          'border-pastel-mint-dark/[0.40]     focus-visible:border-pastel-mint-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'sky',
+        className: 'border-pastel-sky-dark/[0.40]      focus-visible:border-pastel-sky-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'lavender',
+        className:
+          'border-pastel-lavender-dark/[0.40] focus-visible:border-pastel-lavender-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'lilac',
+        className:
+          'border-pastel-lilac-dark/[0.40]    focus-visible:border-pastel-lilac-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'neutral',
+        className:
+          'border-pastel-neutral-dark/[0.35]  focus-visible:border-pastel-neutral-dark/[0.65]',
+      },
     ],
     defaultVariants: { variant: 'default', tone: 'neutral', invalid: false },
   },
@@ -81,7 +122,8 @@ const textareaVariants = cva(
 export type TextareaVariantProps = VariantProps<typeof textareaVariants>
 
 export interface TextareaProps
-  extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'rows'>,
+  extends
+    Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'rows'>,
     Omit<TextareaVariantProps, 'tone'> {
   tone?: NonNullable<TextareaVariantProps['tone']> | (string & {})
   accentColor?: string
@@ -125,7 +167,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
   const textareaId = id ?? `textarea-${autoId}`
   const descriptionId = description ? `${textareaId}-description` : undefined
   const errorId = error ? `${textareaId}-error` : undefined
-  const describedBy = [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
+  const describedBy =
+    [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
   const isInvalid = invalid ?? Boolean(error)
 
   const { accentColor: ctxAccent } = useContext(ThemeContext)
@@ -138,7 +181,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     (node: HTMLTextAreaElement | null) => {
       ;(innerRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = node
       if (typeof ref === 'function') ref(node)
-      else if (ref != null) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node
+      else if (ref != null)
+        (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node
     },
     [ref],
   )
@@ -151,7 +195,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     onChange?.(e)
   }
 
-  const effectiveTone = resolvedAccent ? 'custom' : (tone as TextareaVariantProps['tone'] | undefined) ?? 'neutral'
+  const effectiveTone = resolvedAccent
+    ? 'custom'
+    : ((tone as TextareaVariantProps['tone'] | undefined) ?? 'neutral')
 
   let accentStyle: CSSProperties | undefined
   if (resolvedAccent && !isInvalid) {
@@ -159,11 +205,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     accentStyle = { borderColor: focused ? `${border}99` : `${border}44` }
   }
 
-  const currentLength = typeof rest.value === 'string'
-    ? rest.value.length
-    : typeof rest.defaultValue === 'string'
-    ? rest.defaultValue.length
-    : 0
+  const currentLength =
+    typeof rest.value === 'string'
+      ? rest.value.length
+      : typeof rest.defaultValue === 'string'
+        ? rest.defaultValue.length
+        : 0
 
   return (
     <div
@@ -202,8 +249,14 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
           required={required}
           disabled={disabled}
           onChange={handleChange}
-          onFocus={e => { setFocused(true); rest.onFocus?.(e) }}
-          onBlur={e => { setFocused(false); rest.onBlur?.(e) }}
+          onFocus={(e) => {
+            setFocused(true)
+            rest.onFocus?.(e)
+          }}
+          onBlur={(e) => {
+            setFocused(false)
+            rest.onBlur?.(e)
+          }}
           {...rest}
         />
         {showCount && maxLength != null && (
@@ -214,7 +267,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       </div>
 
       {description != null && (
-        <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
+        <div
+          id={descriptionId}
+          className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]"
+        >
           {description}
         </div>
       )}

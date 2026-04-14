@@ -5,7 +5,9 @@ type AudioCtxRef = React.MutableRefObject<AudioContext | null>
 
 function getACtx(ref: AudioCtxRef): AudioContext {
   if (!ref.current) {
-    const Ctor = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+    const Ctor =
+      window.AudioContext ??
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
     ref.current = new Ctor()
   }
   return ref.current
@@ -21,7 +23,9 @@ function playPress(actx: AudioCtxRef) {
     const f = ctx.createBiquadFilter()
     f.type = 'lowpass'
     f.frequency.value = 1800
-    o.connect(f); f.connect(g); g.connect(ctx.destination)
+    o.connect(f)
+    f.connect(g)
+    g.connect(ctx.destination)
     o.type = 'sine'
     o.frequency.setValueAtTime(pitch, now)
     o.frequency.exponentialRampToValueAtTime(pitch * 0.72, now + 0.07)
@@ -44,7 +48,9 @@ function playRelease(actx: AudioCtxRef) {
     f.type = 'bandpass'
     f.frequency.value = 900
     f.Q.value = 1.2
-    o.connect(f); f.connect(g); g.connect(ctx.destination)
+    o.connect(f)
+    f.connect(g)
+    g.connect(ctx.destination)
     o.type = 'triangle'
     o.frequency.setValueAtTime(pitch, now)
     o.frequency.exponentialRampToValueAtTime(pitch * 1.25, now + 0.04)

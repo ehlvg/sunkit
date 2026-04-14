@@ -19,7 +19,7 @@ export interface ColorPickerProps {
 }
 
 const SWATCH_D: Record<ColorPickerSize, number> = { default: 32, sm: 24 }
-const CHECK_D:  Record<ColorPickerSize, number> = { default: 14, sm: 11 }
+const CHECK_D: Record<ColorPickerSize, number> = { default: 14, sm: 11 }
 
 const CheckIcon = ({ size }: { size: number }) => (
   <svg
@@ -52,12 +52,14 @@ export function ColorPicker({
   const groupId = id ?? `colorpicker-${autoId}`
   const descId = description ? `${groupId}-desc` : undefined
 
-  const [valueUncontrolled, setValueUncontrolled] = React.useState<ButtonColor | undefined>(defaultValue)
+  const [valueUncontrolled, setValueUncontrolled] = React.useState<ButtonColor | undefined>(
+    defaultValue,
+  )
   const isControlled = valueProp !== undefined
   const value = isControlled ? valueProp : valueUncontrolled
 
   const swatchD = SWATCH_D[size]
-  const checkD  = CHECK_D[size]
+  const checkD = CHECK_D[size]
 
   const handleSelect = (colorId: ButtonColor) => {
     if (disabled) return
@@ -67,9 +69,19 @@ export function ColorPicker({
   }
 
   return (
-    <div className={cn('inline-flex flex-col gap-[8px] font-[system-ui,_-apple-system,_sans-serif]', className)}>
+    <div
+      className={cn(
+        'inline-flex flex-col gap-[8px] font-[system-ui,_-apple-system,_sans-serif]',
+        className,
+      )}
+    >
       {label != null && (
-        <div className={cn('text-[12px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}>
+        <div
+          className={cn(
+            'text-[12px] leading-none font-medium text-[var(--sk-text-label)]',
+            disabled && 'opacity-60',
+          )}
+        >
           {label}
         </div>
       )}
@@ -81,7 +93,7 @@ export function ColorPicker({
         aria-label={typeof label === 'string' ? label : undefined}
         className="flex flex-wrap gap-[8px]"
       >
-        {COLORS.map(color => {
+        {COLORS.map((color) => {
           const isSelected = color.id === value
 
           return (
@@ -104,7 +116,7 @@ export function ColorPicker({
                   : 'btn-shadow',
               )}
               style={{
-                width:  swatchD,
+                width: swatchD,
                 height: swatchD,
                 background: color.hex,
                 display: 'inline-flex',

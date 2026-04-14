@@ -14,45 +14,48 @@ import { Toggle } from '../components/Toggle'
 import type { ButtonColor } from '../components/Button'
 
 const CATEGORY_OPTIONS = [
-  { value: 'design',      label: 'Design'         },
-  { value: 'engineering', label: 'Engineering'     },
-  { value: 'research',    label: 'Research'        },
-  { value: 'marketing',   label: 'Marketing'       },
-  { value: 'ops',         label: 'Operations'      },
+  { value: 'design', label: 'Design' },
+  { value: 'engineering', label: 'Engineering' },
+  { value: 'research', label: 'Research' },
+  { value: 'marketing', label: 'Marketing' },
+  { value: 'ops', label: 'Operations' },
 ]
 
 const TEAM_OPTIONS = [
-  { value: 'solo',    label: 'Just me'         },
-  { value: 'small',   label: 'Small (2–5)'     },
-  { value: 'medium',  label: 'Medium (6–15)'   },
-  { value: 'large',   label: 'Large (16+)'     },
+  { value: 'solo', label: 'Just me' },
+  { value: 'small', label: 'Small (2–5)' },
+  { value: 'medium', label: 'Medium (6–15)' },
+  { value: 'large', label: 'Large (16+)' },
 ]
 
-const TONE_FROM_COLOR: Record<ButtonColor, 'rose' | 'peach' | 'lemon' | 'mint' | 'sky' | 'lavender' | 'lilac' | 'neutral'> = {
-  rose:     'rose',
-  peach:    'peach',
-  lemon:    'lemon',
-  mint:     'mint',
-  sky:      'sky',
+const TONE_FROM_COLOR: Record<
+  ButtonColor,
+  'rose' | 'peach' | 'lemon' | 'mint' | 'sky' | 'lavender' | 'lilac' | 'neutral'
+> = {
+  rose: 'rose',
+  peach: 'peach',
+  lemon: 'lemon',
+  mint: 'mint',
+  sky: 'sky',
   lavender: 'lavender',
-  lilac:    'lilac',
-  neutral:  'neutral',
+  lilac: 'lilac',
+  neutral: 'neutral',
 }
 
 function ProjectSetupApp() {
-  const [name, setName]             = useState('')
-  const [category, setCategory]     = useState('')
-  const [team, setTeam]             = useState('')
-  const [deadline, setDeadline]     = useState<Date | null>(null)
-  const [color, setColor]           = useState<ButtonColor>('lavender')
-  const [priority, setPriority]     = useState(50)
+  const [name, setName] = useState('')
+  const [category, setCategory] = useState('')
+  const [team, setTeam] = useState('')
+  const [deadline, setDeadline] = useState<Date | null>(null)
+  const [color, setColor] = useState<ButtonColor>('lavender')
+  const [priority, setPriority] = useState(50)
   const [description, setDescription] = useState('')
   const [notifications, setNotifications] = useState(true)
-  const [isPublic, setIsPublic]     = useState(false)
-  const [aiAssist, setAiAssist]     = useState(false)
+  const [isPublic, setIsPublic] = useState(false)
+  const [aiAssist, setAiAssist] = useState(false)
 
-  const [submitted, setSubmitted]   = useState(false)
-  const [nameError, setNameError]   = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [nameError, setNameError] = useState('')
 
   const tone = TONE_FROM_COLOR[color]
 
@@ -89,8 +92,7 @@ function ProjectSetupApp() {
     setNameError('')
   }
 
-  const priorityLabel =
-    priority < 34 ? 'Low' : priority < 67 ? 'Medium' : 'High'
+  const priorityLabel = priority < 34 ? 'Low' : priority < 67 ? 'Medium' : 'High'
 
   return (
     <div
@@ -105,10 +107,17 @@ function ProjectSetupApp() {
       }}
     >
       <div style={{ width: '100%', maxWidth: 560 }}>
-
         {/* Header */}
         <div style={{ marginBottom: 28 }}>
-          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: 'rgba(0,0,0,0.80)', letterSpacing: '-0.3px' }}>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 22,
+              fontWeight: 700,
+              color: 'rgba(0,0,0,0.80)',
+              letterSpacing: '-0.3px',
+            }}
+          >
             New project
           </h1>
           <p style={{ margin: '6px 0 0', fontSize: 13, color: 'rgba(0,0,0,0.45)' }}>
@@ -118,26 +127,16 @@ function ProjectSetupApp() {
 
         {/* Completion progress */}
         <div style={{ marginBottom: 24 }}>
-          <Progress
-            value={completion}
-            tone={tone}
-            size="sm"
-            label="Form completion"
-            showValue
-          />
+          <Progress value={completion} tone={tone} size="sm" label="Form completion" showValue />
         </div>
 
         {submitted && (
           <div style={{ marginBottom: 20 }}>
-            <Alert
-              variant="success"
-              title="Project created!"
-              dismissable
-              onDismiss={handleReset}
-            >
-              <strong>{name}</strong> has been created with{' '}
-              {priorityLabel.toLowerCase()} priority.{' '}
-              {deadline ? `Deadline: ${deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}.` : ''}
+            <Alert variant="success" title="Project created!" dismissable onDismiss={handleReset}>
+              <strong>{name}</strong> has been created with {priorityLabel.toLowerCase()} priority.{' '}
+              {deadline
+                ? `Deadline: ${deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}.`
+                : ''}
             </Alert>
           </div>
         )}
@@ -145,7 +144,8 @@ function ProjectSetupApp() {
         {!submitted && priority >= 80 && (
           <div style={{ marginBottom: 20 }}>
             <Alert variant="warning" title="High priority">
-              This project is flagged as high priority. Make sure your team is aligned before launching.
+              This project is flagged as high priority. Make sure your team is aligned before
+              launching.
             </Alert>
           </div>
         )}
@@ -157,22 +157,20 @@ function ProjectSetupApp() {
               <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(0,0,0,0.65)' }}>
                 Project details
               </span>
-              <ColorPicker
-                value={color}
-                onChange={c => setColor(c)}
-                size="sm"
-              />
+              <ColorPicker value={color} onChange={(c) => setColor(c)} size="sm" />
             </div>
           </Card.Header>
 
           <Card.Body>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-
               <Input
                 label="Project name"
                 placeholder="e.g. Brand refresh 2026"
                 value={name}
-                onChange={e => { setName(e.target.value); if (e.target.value) setNameError('') }}
+                onChange={(e) => {
+                  setName(e.target.value)
+                  if (e.target.value) setNameError('')
+                }}
                 tone={tone}
                 error={nameError || undefined}
                 required
@@ -211,7 +209,7 @@ function ProjectSetupApp() {
                 label="Description"
                 placeholder="What is this project about? What's the goal?"
                 value={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
                 tone={tone}
                 rows={3}
                 autoResize
@@ -230,13 +228,12 @@ function ProjectSetupApp() {
                 tone={tone}
                 showValue={false}
                 marks={[
-                  { value: 0,   label: 'Low'    },
-                  { value: 50,  label: 'Medium' },
-                  { value: 100, label: 'High'   },
+                  { value: 0, label: 'Low' },
+                  { value: 50, label: 'Medium' },
+                  { value: 100, label: 'High' },
                 ]}
                 description={`Currently set to ${priorityLabel.toLowerCase()} priority (${priority}/100).`}
               />
-
             </div>
           </Card.Body>
 
@@ -284,7 +281,6 @@ function ProjectSetupApp() {
             Everything here can be edited from the project settings page at any time.
           </Alert>
         </div>
-
       </div>
     </div>
   )

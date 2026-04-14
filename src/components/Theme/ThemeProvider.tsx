@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  type CSSProperties,
-  type ReactNode,
-} from 'react'
+import { createContext, useContext, useMemo, type CSSProperties, type ReactNode } from 'react'
 import { cn } from '../../lib/utils'
 
 export interface ThemeContextValue {
@@ -33,13 +27,10 @@ export function ThemeProvider({
   style,
   children,
 }: ThemeProviderProps) {
-  const value = useMemo<ThemeContextValue>(
-    () => ({ accentColor, dark }),
-    [accentColor, dark],
-  )
+  const value = useMemo<ThemeContextValue>(() => ({ accentColor, dark }), [accentColor, dark])
 
   const wrapperStyle: CSSProperties = {
-    ...(accentColor ? { '--sk-accent': accentColor } as CSSProperties : {}),
+    ...(accentColor ? ({ '--sk-accent': accentColor } as CSSProperties) : {}),
     ...style,
   }
 

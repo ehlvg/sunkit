@@ -19,9 +19,15 @@ function hexToHsl(hex: string): [number, number, number] {
     const d = max - min
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
     switch (max) {
-      case r: hue = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
-      case g: hue = ((b - r) / d + 2) / 6; break
-      case b: hue = ((r - g) / d + 4) / 6; break
+      case r:
+        hue = ((g - b) / d + (g < b ? 6 : 0)) / 6
+        break
+      case g:
+        hue = ((b - r) / d + 2) / 6
+        break
+      case b:
+        hue = ((r - g) / d + 4) / 6
+        break
     }
   }
   return [Math.round(hue * 360), Math.round(s * 100), Math.round(l * 100)]
@@ -34,7 +40,9 @@ function hslToHex(h: number, s: number, l: number): string {
   const f = (n: number) => {
     const k = (n + h / 30) % 12
     const color = ln - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
-    return Math.round(255 * color).toString(16).padStart(2, '0')
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, '0')
   }
   return `#${f(0)}${f(8)}${f(4)}`
 }

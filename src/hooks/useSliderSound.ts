@@ -37,11 +37,7 @@ function playScrub(actx: ACtx, normalizedValue: number) {
   } catch (_) {}
 }
 
-export function useSliderSound(
-  ref: RefObject<HTMLInputElement | null>,
-  min: number,
-  max: number,
-) {
+export function useSliderSound(ref: RefObject<HTMLInputElement | null>, min: number, max: number) {
   const actx = useRef<AudioContext | null>(null)
   const lastFired = useRef(0)
 

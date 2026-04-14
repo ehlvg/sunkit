@@ -26,21 +26,21 @@ const buttonVariants = cva(
   {
     variants: {
       color: {
-        rose:     'bg-pastel-rose     text-pastel-rose-dark     border-pastel-rose-dark/[0.22]',
-        peach:    'bg-pastel-peach    text-pastel-peach-dark    border-pastel-peach-dark/[0.22]',
-        lemon:    'bg-pastel-lemon    text-pastel-lemon-dark    border-pastel-lemon-dark/[0.22]',
-        mint:     'bg-pastel-mint     text-pastel-mint-dark     border-pastel-mint-dark/[0.22]',
-        sky:      'bg-pastel-sky      text-pastel-sky-dark      border-pastel-sky-dark/[0.22]',
+        rose: 'bg-pastel-rose     text-pastel-rose-dark     border-pastel-rose-dark/[0.22]',
+        peach: 'bg-pastel-peach    text-pastel-peach-dark    border-pastel-peach-dark/[0.22]',
+        lemon: 'bg-pastel-lemon    text-pastel-lemon-dark    border-pastel-lemon-dark/[0.22]',
+        mint: 'bg-pastel-mint     text-pastel-mint-dark     border-pastel-mint-dark/[0.22]',
+        sky: 'bg-pastel-sky      text-pastel-sky-dark      border-pastel-sky-dark/[0.22]',
         lavender: 'bg-pastel-lavender text-pastel-lavender-dark border-pastel-lavender-dark/[0.22]',
-        lilac:    'bg-pastel-lilac    text-pastel-lilac-dark    border-pastel-lilac-dark/[0.22]',
-        neutral:  'bg-pastel-neutral  text-pastel-neutral-dark  border-pastel-neutral-dark/[0.22]',
-        custom:   '',
+        lilac: 'bg-pastel-lilac    text-pastel-lilac-dark    border-pastel-lilac-dark/[0.22]',
+        neutral: 'bg-pastel-neutral  text-pastel-neutral-dark  border-pastel-neutral-dark/[0.22]',
+        custom: '',
       },
       size: {
-        default:    'px-[18px] py-[10px] text-sm',
-        sm:         'px-[13px] py-[7px] text-xs',
+        default: 'px-[18px] py-[10px] text-sm',
+        sm: 'px-[13px] py-[7px] text-xs',
         'icon-only': 'p-[10px] w-10 h-10 text-sm',
-        'icon-sm':  'p-[7px] w-8 h-8 text-xs',
+        'icon-sm': 'p-[7px] w-8 h-8 text-xs',
       },
     },
     defaultVariants: {
@@ -72,13 +72,31 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const PlayIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <polygon points="5 3 19 12 5 21 5 3" />
   </svg>
 )
 
 const StarIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
   </svg>
 )
@@ -139,9 +157,7 @@ export function Button({
       {...rest}
     >
       {isIconOnly ? (
-        <span className="flex items-center leading-none shrink-0">
-          {iconOnly ?? <StarIcon />}
-        </span>
+        <span className="flex items-center leading-none shrink-0">{iconOnly ?? <StarIcon />}</span>
       ) : (
         <>
           {icon === 'left' && (

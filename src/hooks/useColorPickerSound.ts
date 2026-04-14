@@ -14,14 +14,14 @@ function getCtx(ref: ACtx): AudioContext {
 
 // Each color maps to a musical note (C4–B4 pentatonic)
 const COLOR_FREQ: Record<string, number> = {
-  rose:     523.25, // C5
-  peach:    587.33, // D5
-  lemon:    659.25, // E5
-  mint:     698.46, // F5
-  sky:      783.99, // G5
-  lavender: 880.00, // A5
-  lilac:    987.77, // B5
-  neutral:  261.63, // C4
+  rose: 523.25, // C5
+  peach: 587.33, // D5
+  lemon: 659.25, // E5
+  mint: 698.46, // F5
+  sky: 783.99, // G5
+  lavender: 880.0, // A5
+  lilac: 987.77, // B5
+  neutral: 261.63, // C4
 }
 
 function playPluck(actx: ACtx, freq: number) {

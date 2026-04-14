@@ -15,8 +15,14 @@ import { resolveAccent } from '../../lib/accent'
 import { ThemeContext } from '../Theme/ThemeProvider'
 
 export type DatePickerTone =
-  | 'rose' | 'peach' | 'lemon' | 'mint'
-  | 'sky'  | 'lavender' | 'lilac' | 'neutral'
+  | 'rose'
+  | 'peach'
+  | 'lemon'
+  | 'mint'
+  | 'sky'
+  | 'lavender'
+  | 'lilac'
+  | 'neutral'
 
 export type DatePickerSize = 'default' | 'sm'
 export type DatePickerMode = 'single' | 'range'
@@ -46,46 +52,62 @@ export interface DatePickerProps {
 
 const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ]
 
 const TONE_FILL: Record<DatePickerTone, string> = {
-  rose:     '#F9C5D1',
-  peach:    '#FDDBB4',
-  lemon:    '#FFF1A8',
-  mint:     '#B8F0D8',
-  sky:      '#B8DFFE',
+  rose: '#F9C5D1',
+  peach: '#FDDBB4',
+  lemon: '#FFF1A8',
+  mint: '#B8F0D8',
+  sky: '#B8DFFE',
   lavender: '#D4C5F9',
-  lilac:    '#F0C8F0',
-  neutral:  '#E8E4DC',
+  lilac: '#F0C8F0',
+  neutral: '#E8E4DC',
 }
 
 const TONE_BORDER: Record<DatePickerTone, string> = {
-  rose:     '#c2607a',
-  peach:    '#b87a3a',
-  lemon:    '#8a7820',
-  mint:     '#2a7a58',
-  sky:      '#2a68a0',
+  rose: '#c2607a',
+  peach: '#b87a3a',
+  lemon: '#8a7820',
+  mint: '#2a7a58',
+  sky: '#2a68a0',
   lavender: '#5a3eaa',
-  lilac:    '#8a3a8a',
-  neutral:  '#5a5550',
+  lilac: '#8a3a8a',
+  neutral: '#5a5550',
 }
 
 function isSameDay(a: Date, b: Date) {
-  return a.getFullYear() === b.getFullYear() &&
+  return (
+    a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate()
+  )
 }
 
 function isBeforeDay(a: Date, b: Date) {
-  return new Date(a.getFullYear(), a.getMonth(), a.getDate()) <
+  return (
+    new Date(a.getFullYear(), a.getMonth(), a.getDate()) <
     new Date(b.getFullYear(), b.getMonth(), b.getDate())
+  )
 }
 
 function isAfterDay(a: Date, b: Date) {
-  return new Date(a.getFullYear(), a.getMonth(), a.getDate()) >
+  return (
+    new Date(a.getFullYear(), a.getMonth(), a.getDate()) >
     new Date(b.getFullYear(), b.getMonth(), b.getDate())
+  )
 }
 
 function formatDate(d: Date) {
@@ -103,7 +125,8 @@ function parseDate(s: string): Date | null {
   const t = s.trim()
   if (!t) return null
   const native = new Date(t)
-  if (!isNaN(native.getTime()) && native.getFullYear() > 1000 && native.getFullYear() < 3000) return native
+  if (!isNaN(native.getTime()) && native.getFullYear() > 1000 && native.getFullYear() < 3000)
+    return native
   const mdy = t.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/)
   if (mdy) {
     const d = new Date(+mdy[3], +mdy[1] - 1, +mdy[2])
@@ -132,7 +155,16 @@ function nextMonthOf(year: number, month: number): [number, number] {
 // ── icons ──────────────────────────────────────────────────────────────────────
 
 const CalendarIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <rect x="3" y="4" width="18" height="18" rx="2" />
     <line x1="16" y1="2" x2="16" y2="6" />
     <line x1="8" y1="2" x2="8" y2="6" />
@@ -141,13 +173,31 @@ const CalendarIcon = () => (
 )
 
 const ChevronLeft = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M15 18l-6-6 6-6" />
   </svg>
 )
 
 const ChevronRight = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M9 18l6-6-6-6" />
   </svg>
 )
@@ -174,22 +224,24 @@ function YearGrid({
       <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-[var(--sk-border-subtle)]">
         <button
           type="button"
-          onClick={() => setBase(b => b - 12)}
+          onClick={() => setBase((b) => b - 12)}
           className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-[var(--sk-text-muted)] hover:bg-[var(--sk-surface-filled)] hover:text-[var(--sk-text)] outline-none cursor-pointer transition-colors duration-100"
         >
           <ChevronLeft />
         </button>
-        <span className="text-[13px] font-semibold text-[var(--sk-text-label)] select-none">{base}–{base + 11}</span>
+        <span className="text-[13px] font-semibold text-[var(--sk-text-label)] select-none">
+          {base}–{base + 11}
+        </span>
         <button
           type="button"
-          onClick={() => setBase(b => b + 12)}
+          onClick={() => setBase((b) => b + 12)}
           className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-[var(--sk-text-muted)] hover:bg-[var(--sk-surface-filled)] hover:text-[var(--sk-text)] outline-none cursor-pointer transition-colors duration-100"
         >
           <ChevronRight />
         </button>
       </div>
       <div className="grid grid-cols-3 gap-[4px] p-[12px]">
-        {years.map(y => {
+        {years.map((y) => {
           const isActive = y === activeYear
           const isCurrent = y === currentYear
           return (
@@ -199,7 +251,9 @@ function YearGrid({
               onClick={() => onSelect(y)}
               className={cn(
                 'rounded-[8px] py-[9px] text-[13px] cursor-pointer transition-colors duration-75 outline-none',
-                isActive ? 'font-semibold' : 'text-[var(--sk-text)] hover:bg-[var(--sk-surface-filled)]',
+                isActive
+                  ? 'font-semibold'
+                  : 'text-[var(--sk-text)] hover:bg-[var(--sk-surface-filled)]',
                 isCurrent && !isActive && 'font-semibold',
               )}
               style={isActive ? { background: fill, border: `1.5px solid ${border}55` } : undefined}
@@ -255,11 +309,10 @@ function MonthCalendar({
   for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d))
 
   const isDisabled = (d: Date) =>
-    (minDate != null && isBeforeDay(d, minDate)) ||
-    (maxDate != null && isAfterDay(d, maxDate))
+    (minDate != null && isBeforeDay(d, minDate)) || (maxDate != null && isAfterDay(d, maxDate))
 
   let effStart = rangeStart ?? null
-  let effEnd = rangeEnd ?? (rangeStart && !rangeEnd ? hoverDate ?? null : null)
+  let effEnd = rangeEnd ?? (rangeStart && !rangeEnd ? (hoverDate ?? null) : null)
   if (effStart && effEnd && isAfterDay(effStart, effEnd)) {
     ;[effStart, effEnd] = [effEnd, effStart]
   }
@@ -267,8 +320,11 @@ function MonthCalendar({
   return (
     <div>
       <div className="grid grid-cols-7 px-[10px] pt-[10px] pb-[4px]">
-        {DAYS.map(d => (
-          <div key={d} className="text-center text-[11px] font-semibold text-[var(--sk-text-muted)] leading-none py-[2px]">
+        {DAYS.map((d) => (
+          <div
+            key={d}
+            className="text-center text-[11px] font-semibold text-[var(--sk-text-muted)] leading-none py-[2px]"
+          >
             {d}
           </div>
         ))}
@@ -285,22 +341,30 @@ function MonthCalendar({
                 (rangeEnd != null && isSameDay(date, rangeEnd))
 
           const isRangeStart = mode === 'range' && effStart != null && isSameDay(date, effStart)
-          const isRangeEnd   = mode === 'range' && effEnd != null && isSameDay(date, effEnd)
-          const isInRange    = mode === 'range' && effStart != null && effEnd != null &&
-            isAfterDay(date, effStart) && isBeforeDay(date, effEnd)
+          const isRangeEnd = mode === 'range' && effEnd != null && isSameDay(date, effEnd)
+          const isInRange =
+            mode === 'range' &&
+            effStart != null &&
+            effEnd != null &&
+            isAfterDay(date, effStart) &&
+            isBeforeDay(date, effEnd)
 
-          const isEdge    = isSelected || isRangeStart || isRangeEnd
+          const isEdge = isSelected || isRangeStart || isRangeEnd
           const isFocused = focusedDate != null && isSameDay(date, focusedDate)
-          const isToday   = isSameDay(date, today)
-          const isDis     = isDisabled(date)
+          const isToday = isSameDay(date, today)
+          const isDis = isDisabled(date)
 
           const cellStyle: CSSProperties = isEdge
-            ? { background: fill, border: `1.5px solid ${border}55`, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.35)' }
+            ? {
+                background: fill,
+                border: `1.5px solid ${border}55`,
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.35)',
+              }
             : isInRange
-            ? { background: `${fill}99` }
-            : isFocused && !isDis
-            ? { background: 'var(--sk-surface-filled)' }
-            : {}
+              ? { background: `${fill}99` }
+              : isFocused && !isDis
+                ? { background: 'var(--sk-surface-filled)' }
+                : {}
 
           return (
             <button
@@ -458,14 +522,18 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   // ── nav ───────────────────────────────────────────────────────────────────────
 
   const prevMonth = () => {
-    if (viewMonth === 0) { setViewMonth(11); setViewYear(y => y - 1) }
-    else setViewMonth(m => m - 1)
+    if (viewMonth === 0) {
+      setViewMonth(11)
+      setViewYear((y) => y - 1)
+    } else setViewMonth((m) => m - 1)
     playPickerNav(actx, 'prev')
   }
 
   const nextMonth = () => {
-    if (viewMonth === 11) { setViewMonth(0); setViewYear(y => y + 1) }
-    else setViewMonth(m => m + 1)
+    if (viewMonth === 11) {
+      setViewMonth(0)
+      setViewYear((y) => y + 1)
+    } else setViewMonth((m) => m + 1)
     playPickerNav(actx, 'next')
   }
 
@@ -532,7 +600,8 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
         if (!isRangeControlled) setRangeUncontrolled(next)
         onRangeChange?.(next)
         setInputText(formatRange(next))
-        setViewYear(s.getFullYear()); setViewMonth(s.getMonth())
+        setViewYear(s.getFullYear())
+        setViewMonth(s.getMonth())
       } else {
         setInputText(formatRange(rangeValue))
       }
@@ -542,7 +611,8 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
         if (!isSingleControlled) setSingleUncontrolled(d)
         onChange?.(d)
         setInputText(formatDate(d))
-        setViewYear(d.getFullYear()); setViewMonth(d.getMonth())
+        setViewYear(d.getFullYear())
+        setViewMonth(d.getMonth())
       } else {
         setInputText(getDisplayText())
       }
@@ -551,7 +621,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
 
   // ── dimensions ────────────────────────────────────────────────────────────────
 
-  const triggerH  = size === 'sm' ? 32 : 40
+  const triggerH = size === 'sm' ? 32 : 40
   const triggerPx = size === 'sm' ? 10 : 12
   const triggerFz = size === 'sm' ? 12 : 13
 
@@ -569,19 +639,30 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
     background: 'var(--sk-bg)',
     backdropFilter: 'blur(14px)',
     WebkitBackdropFilter: 'blur(14px)',
-    boxShadow: '0 8px 32px -6px var(--sk-shadow-b), 0 2px 6px var(--sk-shadow-c), inset 0 0 0 1px var(--sk-border)',
+    boxShadow:
+      '0 8px 32px -6px var(--sk-shadow-b), 0 2px 6px var(--sk-shadow-c), inset 0 0 0 1px var(--sk-border)',
     overflow: 'hidden',
   }
 
-  const navBtnClass = 'w-[28px] h-[28px] rounded-full flex items-center justify-center text-[var(--sk-text-muted)] hover:bg-[var(--sk-surface-filled)] hover:text-[var(--sk-text)] outline-none cursor-pointer transition-colors duration-100'
-  const headingBtnClass = 'text-[13px] font-semibold text-[var(--sk-text-label)] select-none hover:text-[var(--sk-text)] cursor-pointer transition-colors duration-100 outline-none rounded-[6px] px-[6px] py-[2px] hover:bg-[var(--sk-surface-filled)]'
+  const navBtnClass =
+    'w-[28px] h-[28px] rounded-full flex items-center justify-center text-[var(--sk-text-muted)] hover:bg-[var(--sk-surface-filled)] hover:text-[var(--sk-text)] outline-none cursor-pointer transition-colors duration-100'
+  const headingBtnClass =
+    'text-[13px] font-semibold text-[var(--sk-text-label)] select-none hover:text-[var(--sk-text)] cursor-pointer transition-colors duration-100 outline-none rounded-[6px] px-[6px] py-[2px] hover:bg-[var(--sk-surface-filled)]'
 
   return (
-    <div className={cn('w-full font-[system-ui,_-apple-system,_sans-serif] dp-root', containerClassName)}>
+    <div
+      className={cn(
+        'w-full font-[system-ui,_-apple-system,_sans-serif] dp-root',
+        containerClassName,
+      )}
+    >
       {label != null && (
         <label
           htmlFor={inputId}
-          className={cn('block mb-[6px] text-[12px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}
+          className={cn(
+            'block mb-[6px] text-[12px] leading-none font-medium text-[var(--sk-text-label)]',
+            disabled && 'opacity-60',
+          )}
         >
           {label}
         </label>
@@ -614,12 +695,24 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
             aria-controls={open ? panelId : undefined}
             aria-describedby={descId}
             value={inputText}
-            onChange={e => { setInputText(e.target.value); setIsEditing(true) }}
-            onFocus={() => { setIsEditing(true); openPanel() }}
-            onBlur={() => { setIsEditing(false); commitInput() }}
-            onKeyDown={e => {
+            onChange={(e) => {
+              setInputText(e.target.value)
+              setIsEditing(true)
+            }}
+            onFocus={() => {
+              setIsEditing(true)
+              openPanel()
+            }}
+            onBlur={() => {
+              setIsEditing(false)
+              commitInput()
+            }}
+            onKeyDown={(e) => {
               if (e.key === 'Enter') e.currentTarget.blur()
-              if (e.key === 'Escape') { closePanel(); e.currentTarget.blur() }
+              if (e.key === 'Escape') {
+                closePanel()
+                e.currentTarget.blur()
+              }
             }}
             className={cn(
               'flex-1 min-w-0 bg-transparent outline-none cursor-text select-text',
@@ -631,7 +724,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
             type="button"
             tabIndex={-1}
             aria-label="Toggle calendar"
-            onMouseDown={e => {
+            onMouseDown={(e) => {
               e.preventDefault()
               if (open) {
                 closePanel()
@@ -647,27 +740,56 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
         </div>
 
         {open && (
-          <div ref={panelRef} id={panelId} role="dialog" aria-label="Date picker" tabIndex={-1} style={panelStyle}>
+          <div
+            ref={panelRef}
+            id={panelId}
+            role="dialog"
+            aria-label="Date picker"
+            tabIndex={-1}
+            style={panelStyle}
+          >
             {calView === 'years' ? (
               <YearGrid
                 activeYear={viewYear}
                 fill={fill}
                 border={border}
-                onSelect={y => { setViewYear(y); setCalView('days') }}
+                onSelect={(y) => {
+                  setViewYear(y)
+                  setCalView('days')
+                }}
               />
             ) : (
-              <div className={cn('flex', mode === 'range' && 'divide-x divide-[var(--sk-border-subtle)]')}>
+              <div
+                className={cn(
+                  'flex',
+                  mode === 'range' && 'divide-x divide-[var(--sk-border-subtle)]',
+                )}
+              >
                 {/* Left / only month */}
                 <div className={cn(mode === 'range' ? 'w-[280px]' : 'w-full')}>
                   <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-[var(--sk-border-subtle)]">
-                    <button type="button" aria-label="Previous month" onClick={prevMonth} className={navBtnClass}>
+                    <button
+                      type="button"
+                      aria-label="Previous month"
+                      onClick={prevMonth}
+                      className={navBtnClass}
+                    >
                       <ChevronLeft />
                     </button>
-                    <button type="button" onClick={() => setCalView('years')} className={headingBtnClass}>
+                    <button
+                      type="button"
+                      onClick={() => setCalView('years')}
+                      className={headingBtnClass}
+                    >
                       {headerTitle}
                     </button>
                     {mode === 'single' && (
-                      <button type="button" aria-label="Next month" onClick={nextMonth} className={navBtnClass}>
+                      <button
+                        type="button"
+                        aria-label="Next month"
+                        onClick={nextMonth}
+                        className={navBtnClass}
+                      >
                         <ChevronRight />
                       </button>
                     )}
@@ -695,10 +817,19 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
                   <div className="w-[280px]">
                     <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-[var(--sk-border-subtle)]">
                       <div className="w-[28px]" />
-                      <button type="button" onClick={() => setCalView('years')} className={headingBtnClass}>
+                      <button
+                        type="button"
+                        onClick={() => setCalView('years')}
+                        className={headingBtnClass}
+                      >
                         {rightTitle}
                       </button>
-                      <button type="button" aria-label="Next month" onClick={nextMonth} className={navBtnClass}>
+                      <button
+                        type="button"
+                        aria-label="Next month"
+                        onClick={nextMonth}
+                        className={navBtnClass}
+                      >
                         <ChevronRight />
                       </button>
                     </div>

@@ -14,7 +14,11 @@ describe('Card', () => {
   })
 
   it('renders as custom element via as prop', () => {
-    render(<Card as="section" data-testid="card">Content</Card>)
+    render(
+      <Card as="section" data-testid="card">
+        Content
+      </Card>,
+    )
     expect(screen.getByTestId('card').tagName).toBe('SECTION')
   })
 

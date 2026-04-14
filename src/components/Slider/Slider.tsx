@@ -17,8 +17,14 @@ const SPRING = 'cubic-bezier(0.34, 1.42, 0.64, 1)'
 const EASE_IN = 'cubic-bezier(0.4, 0, 1, 1)'
 
 export type SliderTone =
-  | 'rose' | 'peach' | 'lemon' | 'mint'
-  | 'sky'  | 'lavender' | 'lilac' | 'neutral'
+  | 'rose'
+  | 'peach'
+  | 'lemon'
+  | 'mint'
+  | 'sky'
+  | 'lavender'
+  | 'lilac'
+  | 'neutral'
 
 export type SliderSize = 'default' | 'sm'
 
@@ -51,25 +57,25 @@ const TRACK_H: Record<SliderSize, number> = { default: 6, sm: 4 }
 const THUMB_D: Record<SliderSize, number> = { default: 20, sm: 15 }
 
 const TONE_FILL: Record<SliderTone, string> = {
-  rose:     '#F9C5D1',
-  peach:    '#FDDBB4',
-  lemon:    '#FFF1A8',
-  mint:     '#B8F0D8',
-  sky:      '#B8DFFE',
+  rose: '#F9C5D1',
+  peach: '#FDDBB4',
+  lemon: '#FFF1A8',
+  mint: '#B8F0D8',
+  sky: '#B8DFFE',
   lavender: '#D4C5F9',
-  lilac:    '#F0C8F0',
-  neutral:  '#E8E4DC',
+  lilac: '#F0C8F0',
+  neutral: '#E8E4DC',
 }
 
 const TONE_BORDER: Record<SliderTone, string> = {
-  rose:     '#c2607a',
-  peach:    '#b87a3a',
-  lemon:    '#8a7820',
-  mint:     '#2a7a58',
-  sky:      '#2a68a0',
+  rose: '#c2607a',
+  peach: '#b87a3a',
+  lemon: '#8a7820',
+  mint: '#2a7a58',
+  sky: '#2a68a0',
   lavender: '#5a3eaa',
-  lilac:    '#8a3a8a',
-  neutral:  '#5a5550',
+  lilac: '#8a3a8a',
+  neutral: '#5a5550',
 }
 
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
@@ -129,7 +135,12 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
   const thumbD = THUMB_D[size]
   const pct = ((value - min) / (max - min || 1)) * 100
 
-  const { fill: fillColor, border: borderColor } = resolveAccent(tone, TONE_FILL, TONE_BORDER, resolvedAccentHex)
+  const { fill: fillColor, border: borderColor } = resolveAccent(
+    tone,
+    TONE_FILL,
+    TONE_BORDER,
+    resolvedAccentHex,
+  )
 
   const thumbSize = pressing ? Math.round(thumbD * 1.18) : thumbD
 
@@ -172,19 +183,30 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
   }
 
   return (
-    <div className={cn('w-full select-none font-[system-ui,_-apple-system,_sans-serif]', disabled && 'opacity-50 cursor-not-allowed', className)}>
+    <div
+      className={cn(
+        'w-full select-none font-[system-ui,_-apple-system,_sans-serif]',
+        disabled && 'opacity-50 cursor-not-allowed',
+        className,
+      )}
+    >
       {(label != null || showValue) && (
         <div className="flex items-center justify-between mb-[8px]">
           {label != null && (
             <label
               htmlFor={inputId}
-              className={cn('text-[12px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}
+              className={cn(
+                'text-[12px] leading-none font-medium text-[var(--sk-text-label)]',
+                disabled && 'opacity-60',
+              )}
             >
               {label}
             </label>
           )}
           {showValue && (
-            <span className="text-[12px] leading-none text-[var(--sk-text-muted)] tabular-nums">{value}</span>
+            <span className="text-[12px] leading-none text-[var(--sk-text-muted)] tabular-nums">
+              {value}
+            </span>
           )}
         </div>
       )}
@@ -220,7 +242,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
 
         {marks && marks.length > 0 && (
           <div className="relative mt-[4px]" style={{ height: 16 }}>
-            {marks.map(m => {
+            {marks.map((m) => {
               const mPct = ((m.value - min) / (max - min || 1)) * 100
               return (
                 <div
@@ -230,7 +252,9 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
                 >
                   <div className="w-[1px] h-[4px] bg-[var(--sk-border-strong)] rounded-full" />
                   {m.label && (
-                    <span className="text-[10px] leading-none text-[var(--sk-text-muted)]">{m.label}</span>
+                    <span className="text-[10px] leading-none text-[var(--sk-text-muted)]">
+                      {m.label}
+                    </span>
                   )}
                 </div>
               )
@@ -240,8 +264,12 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
 
         {showMinMax && !marks && (
           <div className="flex justify-between mt-[4px]">
-            <span className="text-[10px] leading-none text-[var(--sk-text-desc)] tabular-nums">{min}</span>
-            <span className="text-[10px] leading-none text-[var(--sk-text-desc)] tabular-nums">{max}</span>
+            <span className="text-[10px] leading-none text-[var(--sk-text-desc)] tabular-nums">
+              {min}
+            </span>
+            <span className="text-[10px] leading-none text-[var(--sk-text-desc)] tabular-nums">
+              {max}
+            </span>
           </div>
         )}
       </div>

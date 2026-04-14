@@ -8,7 +8,7 @@ const meta: Meta<typeof Textarea> = {
   component: Textarea,
   tags: ['autodocs'],
   argTypes: {
-    tone: { control: 'select', options: COLORS.map(c => c.id) },
+    tone: { control: 'select', options: COLORS.map((c) => c.id) },
     variant: { control: 'select', options: ['default', 'filled', 'ghost'] },
     autoResize: { control: 'boolean' },
     showCount: { control: 'boolean' },
@@ -33,7 +33,7 @@ type Story = StoryObj<typeof Textarea>
 export const Default: Story = {}
 
 export const Variants: Story = {
-  render: args => (
+  render: (args) => (
     <div style={{ display: 'grid', gap: 20, maxWidth: 400 }}>
       <Textarea {...args} variant="default" label="Default — elevated" description={undefined} />
       <Textarea {...args} variant="filled" label="Filled — recessed" description={undefined} />
@@ -54,13 +54,13 @@ export const AutoResize: Story = {
 }
 
 export const WithCharCount: Story = {
-  render: args => {
+  render: (args) => {
     const [val, setVal] = useState('')
     return (
       <Textarea
         {...args}
         value={val}
-        onChange={e => setVal(e.target.value)}
+        onChange={(e) => setVal(e.target.value)}
         label="Bio"
         maxLength={200}
         showCount

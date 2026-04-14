@@ -20,7 +20,7 @@ const EASE_IN = 'cubic-bezier(0.4, 0, 1, 1)'
 
 const TRACK_SIZES = {
   default: { w: 46, h: 28, knob: 22, left: 3, travel: 18 },
-  sm:      { w: 38, h: 22, knob: 17, left: 3, travel: 15 },
+  sm: { w: 38, h: 22, knob: 17, left: 3, travel: 15 },
 } as const
 
 const toggleVariants = cva(
@@ -29,7 +29,7 @@ const toggleVariants = cva(
     variants: {
       size: { default: '', sm: '' },
       disabled: {
-        true:  'opacity-60 cursor-not-allowed',
+        true: 'opacity-60 cursor-not-allowed',
         false: 'cursor-pointer',
       },
     },
@@ -38,20 +38,45 @@ const toggleVariants = cva(
 )
 
 const trackTones: Record<string, { off: string; on: string }> = {
-  rose:     { off: 'border-pastel-rose-dark/[0.22]',     on: 'bg-pastel-rose/55     border-pastel-rose-dark/[0.30]'     },
-  peach:    { off: 'border-pastel-peach-dark/[0.22]',    on: 'bg-pastel-peach/55    border-pastel-peach-dark/[0.30]'    },
-  lemon:    { off: 'border-pastel-lemon-dark/[0.22]',    on: 'bg-pastel-lemon/60    border-pastel-lemon-dark/[0.30]'    },
-  mint:     { off: 'border-pastel-mint-dark/[0.22]',     on: 'bg-pastel-mint/55     border-pastel-mint-dark/[0.30]'     },
-  sky:      { off: 'border-pastel-sky-dark/[0.22]',      on: 'bg-pastel-sky/55      border-pastel-sky-dark/[0.30]'      },
-  lavender: { off: 'border-pastel-lavender-dark/[0.22]', on: 'bg-pastel-lavender/55 border-pastel-lavender-dark/[0.30]' },
-  lilac:    { off: 'border-pastel-lilac-dark/[0.22]',    on: 'bg-pastel-lilac/55    border-pastel-lilac-dark/[0.30]'    },
-  neutral:  { off: 'border-pastel-neutral-dark/[0.22]',  on: 'bg-pastel-neutral/55  border-pastel-neutral-dark/[0.30]'  },
+  rose: {
+    off: 'border-pastel-rose-dark/[0.22]',
+    on: 'bg-pastel-rose/55     border-pastel-rose-dark/[0.30]',
+  },
+  peach: {
+    off: 'border-pastel-peach-dark/[0.22]',
+    on: 'bg-pastel-peach/55    border-pastel-peach-dark/[0.30]',
+  },
+  lemon: {
+    off: 'border-pastel-lemon-dark/[0.22]',
+    on: 'bg-pastel-lemon/60    border-pastel-lemon-dark/[0.30]',
+  },
+  mint: {
+    off: 'border-pastel-mint-dark/[0.22]',
+    on: 'bg-pastel-mint/55     border-pastel-mint-dark/[0.30]',
+  },
+  sky: {
+    off: 'border-pastel-sky-dark/[0.22]',
+    on: 'bg-pastel-sky/55      border-pastel-sky-dark/[0.30]',
+  },
+  lavender: {
+    off: 'border-pastel-lavender-dark/[0.22]',
+    on: 'bg-pastel-lavender/55 border-pastel-lavender-dark/[0.30]',
+  },
+  lilac: {
+    off: 'border-pastel-lilac-dark/[0.22]',
+    on: 'bg-pastel-lilac/55    border-pastel-lilac-dark/[0.30]',
+  },
+  neutral: {
+    off: 'border-pastel-neutral-dark/[0.22]',
+    on: 'bg-pastel-neutral/55  border-pastel-neutral-dark/[0.30]',
+  },
 }
 
 export type ToggleTone = keyof typeof trackTones
 
 export interface ToggleProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange' | 'disabled'>,
+  extends
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange' | 'disabled'>,
     Omit<VariantProps<typeof toggleVariants>, 'disabled'> {
   tone?: ToggleTone
   accentColor?: string
@@ -128,16 +153,16 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
   const knobX = checked ? dims.travel - (knobW - dims.knob) : 0
 
   const knobStyle: CSSProperties = {
-    position:     'absolute',
-    top:          '50%',
-    left:         dims.left,
-    width:        knobW,
-    height:       dims.knob,
+    position: 'absolute',
+    top: '50%',
+    left: dims.left,
+    width: knobW,
+    height: dims.knob,
     borderRadius: '999px',
-    background:   'var(--sk-knob)',
-    boxShadow:    '0 2px 10px rgba(0,0,0,0.10), 0 1px 0 rgba(0,0,0,0.10)',
-    transform:    `translateX(${knobX}px) translateY(-50%)`,
-    transition:   pressing
+    background: 'var(--sk-knob)',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.10), 0 1px 0 rgba(0,0,0,0.10)',
+    transform: `translateX(${knobX}px) translateY(-50%)`,
+    transition: pressing
       ? `transform 80ms ${EASE_IN}, width 80ms ${EASE_IN}`
       : `transform 260ms ${SPRING}, width 200ms ${SPRING}`,
   }
@@ -155,10 +180,11 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
   }
 
   const trackStyle: CSSProperties = {
-    width:      dims.w,
-    height:     dims.h,
-    boxShadow:  trackCheckedShadow,
-    transition: 'background-color 180ms ease-out, border-color 180ms ease-out, box-shadow 150ms ease-out',
+    width: dims.w,
+    height: dims.h,
+    boxShadow: trackCheckedShadow,
+    transition:
+      'background-color 180ms ease-out, border-color 180ms ease-out, box-shadow 150ms ease-out',
     ...accentTrackStyle,
   }
 
@@ -196,12 +222,20 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
       {(label != null || description != null) && (
         <div className="min-w-0">
           {label != null && (
-            <div className={cn('text-[13px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}>
+            <div
+              className={cn(
+                'text-[13px] leading-none font-medium text-[var(--sk-text-label)]',
+                disabled && 'opacity-60',
+              )}
+            >
               {label}
             </div>
           )}
           {description != null && (
-            <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
+            <div
+              id={descriptionId}
+              className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]"
+            >
               {description}
             </div>
           )}

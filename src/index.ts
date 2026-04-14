@@ -26,7 +26,13 @@ export { ColorPicker } from './components/ColorPicker'
 export type { ColorPickerProps, ColorPickerSize } from './components/ColorPicker'
 
 export { DatePicker } from './components/DatePicker'
-export type { DatePickerProps, DatePickerTone, DatePickerSize, DatePickerMode, DateRange } from './components/DatePicker'
+export type {
+  DatePickerProps,
+  DatePickerTone,
+  DatePickerSize,
+  DatePickerMode,
+  DateRange,
+} from './components/DatePicker'
 
 export { Alert } from './components/Alert'
 export type { AlertProps, AlertVariant } from './components/Alert'

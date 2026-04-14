@@ -31,7 +31,7 @@ export const Small: Story = {
 }
 
 export const Controlled: Story = {
-  render: args => {
+  render: (args) => {
     const [color, setColor] = useState<ButtonColor>('sky')
     return (
       <div style={{ display: 'grid', gap: 10 }}>

@@ -12,7 +12,11 @@ Object.defineProperty(window, 'AudioContext', {
     }),
     createGain: vi.fn().mockReturnValue({
       connect: vi.fn(),
-      gain: { setValueAtTime: vi.fn(), exponentialRampToValueAtTime: vi.fn(), linearRampToValueAtTime: vi.fn() },
+      gain: {
+        setValueAtTime: vi.fn(),
+        exponentialRampToValueAtTime: vi.fn(),
+        linearRampToValueAtTime: vi.fn(),
+      },
     }),
     destination: {},
     currentTime: 0,

@@ -28,7 +28,11 @@ describe('Alert', () => {
 
   it('calls onDismiss callback', async () => {
     const handler = vi.fn()
-    render(<Alert dismissable onDismiss={handler}>Message</Alert>)
+    render(
+      <Alert dismissable onDismiss={handler}>
+        Message
+      </Alert>,
+    )
     await userEvent.click(screen.getByRole('button', { name: 'Dismiss' }))
     expect(handler).toHaveBeenCalledTimes(1)
   })

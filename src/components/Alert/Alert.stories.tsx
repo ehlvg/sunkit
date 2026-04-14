@@ -27,10 +27,18 @@ export const Default: Story = {}
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
-      <Alert variant="info"    title="Information"  dismissable>Your session will expire in 10 minutes.</Alert>
-      <Alert variant="success" title="Success"       dismissable>Your changes have been saved.</Alert>
-      <Alert variant="warning" title="Warning"       dismissable>You are running low on storage space.</Alert>
-      <Alert variant="error"   title="Error"         dismissable>Unable to connect to the server. Please try again.</Alert>
+      <Alert variant="info" title="Information" dismissable>
+        Your session will expire in 10 minutes.
+      </Alert>
+      <Alert variant="success" title="Success" dismissable>
+        Your changes have been saved.
+      </Alert>
+      <Alert variant="warning" title="Warning" dismissable>
+        You are running low on storage space.
+      </Alert>
+      <Alert variant="error" title="Error" dismissable>
+        Unable to connect to the server. Please try again.
+      </Alert>
     </div>
   ),
 }
@@ -50,16 +58,16 @@ export const Dismissable: Story = {
   render: () => {
     const variants = ['info', 'success', 'warning', 'error'] as const
     const [dismissed, setDismissed] = useState<string[]>([])
-    const remaining = variants.filter(v => !dismissed.includes(v))
+    const remaining = variants.filter((v) => !dismissed.includes(v))
     return (
       <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
-        {remaining.map(v => (
+        {remaining.map((v) => (
           <Alert
             key={v}
             variant={v}
             title={v.charAt(0).toUpperCase() + v.slice(1)}
             dismissable
-            onDismiss={() => setDismissed(d => [...d, v])}
+            onDismiss={() => setDismissed((d) => [...d, v])}
           >
             Click × to dismiss this alert.
           </Alert>

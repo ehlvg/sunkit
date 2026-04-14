@@ -53,22 +53,24 @@ const triggerVariants = cva(
         ].join(' '),
       },
       tone: {
-        rose:     'border-pastel-rose-dark/[0.25]     focus-visible:border-pastel-rose-dark/[0.55]',
-        peach:    'border-pastel-peach-dark/[0.25]    focus-visible:border-pastel-peach-dark/[0.55]',
-        lemon:    'border-pastel-lemon-dark/[0.25]    focus-visible:border-pastel-lemon-dark/[0.55]',
-        mint:     'border-pastel-mint-dark/[0.25]     focus-visible:border-pastel-mint-dark/[0.55]',
-        sky:      'border-pastel-sky-dark/[0.25]      focus-visible:border-pastel-sky-dark/[0.55]',
-        lavender: 'border-pastel-lavender-dark/[0.25] focus-visible:border-pastel-lavender-dark/[0.55]',
-        lilac:    'border-pastel-lilac-dark/[0.25]    focus-visible:border-pastel-lilac-dark/[0.55]',
-        neutral:  'border-pastel-neutral-dark/[0.25]  focus-visible:border-pastel-neutral-dark/[0.55]',
-        custom:   'border-[var(--sk-border)]',
+        rose: 'border-pastel-rose-dark/[0.25]     focus-visible:border-pastel-rose-dark/[0.55]',
+        peach: 'border-pastel-peach-dark/[0.25]    focus-visible:border-pastel-peach-dark/[0.55]',
+        lemon: 'border-pastel-lemon-dark/[0.25]    focus-visible:border-pastel-lemon-dark/[0.55]',
+        mint: 'border-pastel-mint-dark/[0.25]     focus-visible:border-pastel-mint-dark/[0.55]',
+        sky: 'border-pastel-sky-dark/[0.25]      focus-visible:border-pastel-sky-dark/[0.55]',
+        lavender:
+          'border-pastel-lavender-dark/[0.25] focus-visible:border-pastel-lavender-dark/[0.55]',
+        lilac: 'border-pastel-lilac-dark/[0.25]    focus-visible:border-pastel-lilac-dark/[0.55]',
+        neutral:
+          'border-pastel-neutral-dark/[0.25]  focus-visible:border-pastel-neutral-dark/[0.55]',
+        custom: 'border-[var(--sk-border)]',
       },
       size: {
         default: 'h-[40px] px-[12px] py-[10px]',
-        sm:      'h-[32px] px-[10px] py-[8px] text-[12px]',
+        sm: 'h-[32px] px-[10px] py-[8px] text-[12px]',
       },
       invalid: {
-        true:  'border-red-600/50 focus-visible:border-red-600/70',
+        true: 'border-red-600/50 focus-visible:border-red-600/70',
         false: '',
       },
     },
@@ -119,7 +121,16 @@ const ChevronIcon = ({ open }: { open: boolean }) => (
 )
 
 const CheckIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M20 6L9 17l-5-5" />
   </svg>
 )
@@ -155,7 +166,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   const listId = `${triggerId}-list`
   const descriptionId = description ? `${triggerId}-description` : undefined
   const errorId = error ? `${triggerId}-error` : undefined
-  const describedBy = [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
+  const describedBy =
+    [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
   const isInvalid = invalid ?? Boolean(error)
 
   const { accentColor: ctxAccent } = useContext(ThemeContext)
@@ -182,15 +194,16 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     [ref],
   )
 
-  const filtered = searchable && search
-    ? options.filter(o => o.label.toLowerCase().includes(search.toLowerCase()))
-    : options
+  const filtered =
+    searchable && search
+      ? options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase()))
+      : options
 
   const openPanel = useCallback(() => {
     if (disabled) return
     setOpen(true)
     setSearch('')
-    const idx = filtered.findIndex(o => o.value === value)
+    const idx = filtered.findIndex((o) => o.value === value)
     setActiveIdx(idx >= 0 ? idx : 0)
     playSelectOpen(actx)
   }, [disabled, filtered, value, actx])
@@ -218,7 +231,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       if (
         !triggerRef.current?.contains(e.target as Node) &&
         !panelRef.current?.contains(e.target as Node)
-      ) closePanel()
+      )
+        closePanel()
     }
     document.addEventListener('mousedown', handle)
     return () => document.removeEventListener('mousedown', handle)
@@ -232,25 +246,34 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
       e.preventDefault()
       if (!open) openPanel()
-      else setActiveIdx(i => Math.min(i + 1, filtered.length - 1))
+      else setActiveIdx((i) => Math.min(i + 1, filtered.length - 1))
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
-      if (open) setActiveIdx(i => Math.max(i - 1, 0))
+      if (open) setActiveIdx((i) => Math.max(i - 1, 0))
     } else if (e.key === 'Escape') {
       closePanel()
     }
   }
 
   const onPanelKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(i + 1, filtered.length - 1)) }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => Math.max(i - 1, 0)) }
-    else if (e.key === 'Enter') { e.preventDefault(); const opt = filtered[activeIdx]; if (opt) selectOption(opt) }
-    else if (e.key === 'Escape') closePanel()
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setActiveIdx((i) => Math.min(i + 1, filtered.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setActiveIdx((i) => Math.max(i - 1, 0))
+    } else if (e.key === 'Enter') {
+      e.preventDefault()
+      const opt = filtered[activeIdx]
+      if (opt) selectOption(opt)
+    } else if (e.key === 'Escape') closePanel()
   }
 
-  const selectedLabel = options.find(o => o.value === value)?.label
+  const selectedLabel = options.find((o) => o.value === value)?.label
 
-  const effectiveTone = resolvedAccent ? 'custom' : (tone as SelectVariantProps['tone'] | undefined) ?? 'neutral'
+  const effectiveTone = resolvedAccent
+    ? 'custom'
+    : ((tone as SelectVariantProps['tone'] | undefined) ?? 'neutral')
 
   let accentBorderStyle: CSSProperties | undefined
   if (resolvedAccent && !isInvalid) {
@@ -274,7 +297,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     background: 'var(--sk-bg)',
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
-    boxShadow: '0 4px 24px -4px var(--sk-shadow-b), 0 1px 3px var(--sk-shadow-c), inset 0 0 0 1px var(--sk-border)',
+    boxShadow:
+      '0 4px 24px -4px var(--sk-shadow-b), 0 1px 3px var(--sk-shadow-c), inset 0 0 0 1px var(--sk-border)',
     overflow: 'hidden',
     maxHeight: 260,
     display: 'flex',
@@ -282,11 +306,17 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   }
 
   return (
-    <div className={cn('w-full', containerClassName)} style={{ '--field-radius': `${radius}px` } as CSSProperties}>
+    <div
+      className={cn('w-full', containerClassName)}
+      style={{ '--field-radius': `${radius}px` } as CSSProperties}
+    >
       {label != null && (
         <label
           htmlFor={triggerId}
-          className={cn('block mb-[6px] text-[12px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}
+          className={cn(
+            'block mb-[6px] text-[12px] leading-none font-medium text-[var(--sk-text-label)]',
+            disabled && 'opacity-60',
+          )}
         >
           {label}
         </label>
@@ -335,14 +365,19 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
                   type="text"
                   placeholder="Search…"
                   value={search}
-                  onChange={e => { setSearch(e.target.value); setActiveIdx(0) }}
+                  onChange={(e) => {
+                    setSearch(e.target.value)
+                    setActiveIdx(0)
+                  }}
                   className="w-full outline-none bg-transparent text-[13px] text-[var(--sk-text)] placeholder:text-[var(--sk-text-placeholder)] px-[6px] py-[4px]"
                 />
               </div>
             )}
             <div className="overflow-y-auto p-[4px]" style={{ maxHeight: searchable ? 210 : 252 }}>
               {filtered.length === 0 ? (
-                <div className="text-[12px] text-[var(--sk-text-muted)] px-[10px] py-[8px]">No options</div>
+                <div className="text-[12px] text-[var(--sk-text-muted)] px-[10px] py-[8px]">
+                  No options
+                </div>
               ) : (
                 filtered.map((opt, idx) => (
                   <button
@@ -365,7 +400,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
                   >
                     <span className="truncate">{opt.label}</span>
                     {opt.value === value && (
-                      <span className="text-[var(--sk-text-muted)] shrink-0" style={accentCheckStyle}>
+                      <span
+                        className="text-[var(--sk-text-muted)] shrink-0"
+                        style={accentCheckStyle}
+                      >
                         <CheckIcon />
                       </span>
                     )}
@@ -378,7 +416,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       </div>
 
       {description != null && (
-        <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
+        <div
+          id={descriptionId}
+          className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]"
+        >
           {description}
         </div>
       )}

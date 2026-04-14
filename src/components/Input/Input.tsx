@@ -40,34 +40,75 @@ const inputVariants = cva(
         ].join(' '),
       },
       tone: {
-        rose:     'border-pastel-rose-dark/[0.25]     focus-visible:border-pastel-rose-dark/[0.55]',
-        peach:    'border-pastel-peach-dark/[0.25]    focus-visible:border-pastel-peach-dark/[0.55]',
-        lemon:    'border-pastel-lemon-dark/[0.25]    focus-visible:border-pastel-lemon-dark/[0.55]',
-        mint:     'border-pastel-mint-dark/[0.25]     focus-visible:border-pastel-mint-dark/[0.55]',
-        sky:      'border-pastel-sky-dark/[0.25]      focus-visible:border-pastel-sky-dark/[0.55]',
-        lavender: 'border-pastel-lavender-dark/[0.25] focus-visible:border-pastel-lavender-dark/[0.55]',
-        lilac:    'border-pastel-lilac-dark/[0.25]    focus-visible:border-pastel-lilac-dark/[0.55]',
-        neutral:  'border-pastel-neutral-dark/[0.25]  focus-visible:border-pastel-neutral-dark/[0.55]',
-        custom:   'border-[var(--sk-border)]',
+        rose: 'border-pastel-rose-dark/[0.25]     focus-visible:border-pastel-rose-dark/[0.55]',
+        peach: 'border-pastel-peach-dark/[0.25]    focus-visible:border-pastel-peach-dark/[0.55]',
+        lemon: 'border-pastel-lemon-dark/[0.25]    focus-visible:border-pastel-lemon-dark/[0.55]',
+        mint: 'border-pastel-mint-dark/[0.25]     focus-visible:border-pastel-mint-dark/[0.55]',
+        sky: 'border-pastel-sky-dark/[0.25]      focus-visible:border-pastel-sky-dark/[0.55]',
+        lavender:
+          'border-pastel-lavender-dark/[0.25] focus-visible:border-pastel-lavender-dark/[0.55]',
+        lilac: 'border-pastel-lilac-dark/[0.25]    focus-visible:border-pastel-lilac-dark/[0.55]',
+        neutral:
+          'border-pastel-neutral-dark/[0.25]  focus-visible:border-pastel-neutral-dark/[0.55]',
+        custom: 'border-[var(--sk-border)]',
       },
       size: {
         default: 'h-[40px] px-[12px] py-[10px]',
-        sm:      'h-[32px] px-[10px] py-[8px] text-[12px]',
+        sm: 'h-[32px] px-[10px] py-[8px] text-[12px]',
       },
       invalid: {
-        true:  'border-red-600/50 focus-visible:border-red-600/70',
+        true: 'border-red-600/50 focus-visible:border-red-600/70',
         false: '',
       },
     },
     compoundVariants: [
-      { variant: 'ghost', tone: 'rose',     className: 'border-pastel-rose-dark/[0.40]     focus-visible:border-pastel-rose-dark/[0.70]'     },
-      { variant: 'ghost', tone: 'peach',    className: 'border-pastel-peach-dark/[0.40]    focus-visible:border-pastel-peach-dark/[0.70]'    },
-      { variant: 'ghost', tone: 'lemon',    className: 'border-pastel-lemon-dark/[0.40]    focus-visible:border-pastel-lemon-dark/[0.70]'    },
-      { variant: 'ghost', tone: 'mint',     className: 'border-pastel-mint-dark/[0.40]     focus-visible:border-pastel-mint-dark/[0.70]'     },
-      { variant: 'ghost', tone: 'sky',      className: 'border-pastel-sky-dark/[0.40]      focus-visible:border-pastel-sky-dark/[0.70]'      },
-      { variant: 'ghost', tone: 'lavender', className: 'border-pastel-lavender-dark/[0.40] focus-visible:border-pastel-lavender-dark/[0.70]' },
-      { variant: 'ghost', tone: 'lilac',    className: 'border-pastel-lilac-dark/[0.40]    focus-visible:border-pastel-lilac-dark/[0.70]'    },
-      { variant: 'ghost', tone: 'neutral',  className: 'border-pastel-neutral-dark/[0.35]  focus-visible:border-pastel-neutral-dark/[0.65]'  },
+      {
+        variant: 'ghost',
+        tone: 'rose',
+        className:
+          'border-pastel-rose-dark/[0.40]     focus-visible:border-pastel-rose-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'peach',
+        className:
+          'border-pastel-peach-dark/[0.40]    focus-visible:border-pastel-peach-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'lemon',
+        className:
+          'border-pastel-lemon-dark/[0.40]    focus-visible:border-pastel-lemon-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'mint',
+        className:
+          'border-pastel-mint-dark/[0.40]     focus-visible:border-pastel-mint-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'sky',
+        className: 'border-pastel-sky-dark/[0.40]      focus-visible:border-pastel-sky-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'lavender',
+        className:
+          'border-pastel-lavender-dark/[0.40] focus-visible:border-pastel-lavender-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'lilac',
+        className:
+          'border-pastel-lilac-dark/[0.40]    focus-visible:border-pastel-lilac-dark/[0.70]',
+      },
+      {
+        variant: 'ghost',
+        tone: 'neutral',
+        className:
+          'border-pastel-neutral-dark/[0.35]  focus-visible:border-pastel-neutral-dark/[0.65]',
+      },
     ],
     defaultVariants: {
       variant: 'default',
@@ -81,8 +122,7 @@ const inputVariants = cva(
 export type InputVariantProps = VariantProps<typeof inputVariants>
 
 export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
-    Omit<InputVariantProps, 'tone'> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>, Omit<InputVariantProps, 'tone'> {
   tone?: NonNullable<InputVariantProps['tone']> | (string & {})
   accentColor?: string
   label?: ReactNode
@@ -122,7 +162,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const inputId = id ?? `input-${autoId}`
   const descriptionId = description ? `${inputId}-description` : undefined
   const errorId = error ? `${inputId}-error` : undefined
-  const describedBy = [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
+  const describedBy =
+    [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
   const isInvalid = invalid ?? Boolean(error)
 
   const { accentColor: ctxAccent } = useContext(ThemeContext)
@@ -140,7 +181,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     [ref],
   )
 
-  const effectiveTone = resolvedAccent ? 'custom' : (tone as InputVariantProps['tone'] | undefined) ?? 'neutral'
+  const effectiveTone = resolvedAccent
+    ? 'custom'
+    : ((tone as InputVariantProps['tone'] | undefined) ?? 'neutral')
 
   let accentStyle: CSSProperties | undefined
   if (resolvedAccent && focused && !isInvalid) {
@@ -196,8 +239,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           aria-describedby={describedBy}
           required={required}
           disabled={disabled}
-          onFocus={e => { setFocused(true); rest.onFocus?.(e) }}
-          onBlur={e => { setFocused(false); rest.onBlur?.(e) }}
+          onFocus={(e) => {
+            setFocused(true)
+            rest.onFocus?.(e)
+          }}
+          onBlur={(e) => {
+            setFocused(false)
+            rest.onBlur?.(e)
+          }}
           {...rest}
         />
 
@@ -209,7 +258,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       </div>
 
       {description != null && (
-        <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
+        <div
+          id={descriptionId}
+          className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]"
+        >
           {description}
         </div>
       )}

@@ -15,8 +15,8 @@ import type { ButtonColor } from '../components/Button'
 
 const CATEGORY_OPTIONS = [
   { value: 'design', label: 'Design' },
-  { value: 'eng',    label: 'Engineering' },
-  { value: 'ops',    label: 'Operations' },
+  { value: 'eng', label: 'Engineering' },
+  { value: 'ops', label: 'Operations' },
 ]
 
 function KitchenSink({ accentColor }: { accentColor?: string }) {
@@ -29,9 +29,15 @@ function KitchenSink({ accentColor }: { accentColor?: string }) {
   return (
     <div style={{ display: 'grid', gap: 20, maxWidth: 380 }}>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-        <Button accentColor={accentColor} size="default">Primary</Button>
-        <Button accentColor={accentColor} size="sm">Small</Button>
-        <Button accentColor={accentColor} size="sm" disabled>Disabled</Button>
+        <Button accentColor={accentColor} size="default">
+          Primary
+        </Button>
+        <Button accentColor={accentColor} size="sm">
+          Small
+        </Button>
+        <Button accentColor={accentColor} size="sm" disabled>
+          Disabled
+        </Button>
       </div>
 
       <Input label="Project name" placeholder="Enter name…" accentColor={accentColor} />
@@ -64,7 +70,13 @@ function KitchenSink({ accentColor }: { accentColor?: string }) {
 
       <Progress value={slider} label="Progress" showValue accentColor={accentColor} />
 
-      <DatePicker label="Deadline" placeholder="Pick a date…" value={date} onChange={setDate} accentColor={accentColor} />
+      <DatePicker
+        label="Deadline"
+        placeholder="Pick a date…"
+        value={date}
+        onChange={setDate}
+        accentColor={accentColor}
+      />
 
       <Card accentColor={accentColor} padding={16}>
         <Card.Body>
@@ -107,7 +119,10 @@ export const DarkMode: Story = {
 
 export const CustomAccentLight: Story = {
   render: () => (
-    <ThemeProvider accentColor="#6366f1" style={{ padding: 24, background: '#f7f6f3', borderRadius: 16 }}>
+    <ThemeProvider
+      accentColor="#6366f1"
+      style={{ padding: 24, background: '#f7f6f3', borderRadius: 16 }}
+    >
       <KitchenSink accentColor="#6366f1" />
     </ThemeProvider>
   ),
@@ -115,7 +130,11 @@ export const CustomAccentLight: Story = {
 
 export const CustomAccentDark: Story = {
   render: () => (
-    <ThemeProvider accentColor="#6366f1" dark={true} style={{ padding: 24, background: '#18181c', borderRadius: 16 }}>
+    <ThemeProvider
+      accentColor="#6366f1"
+      dark={true}
+      style={{ padding: 24, background: '#18181c', borderRadius: 16 }}
+    >
       <KitchenSink accentColor="#6366f1" />
     </ThemeProvider>
   ),
@@ -134,12 +153,14 @@ export const AccentPicker: Story = {
             <input
               type="color"
               value={accent}
-              onChange={e => setAccent(e.target.value)}
+              onChange={(e) => setAccent(e.target.value)}
               style={{ width: 40, height: 28, border: 'none', cursor: 'pointer' }}
             />
           </label>
-          <label style={{ fontSize: 13, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6 }}>
-            <input type="checkbox" checked={dark} onChange={e => setDark(e.target.checked)} />
+          <label
+            style={{ fontSize: 13, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            <input type="checkbox" checked={dark} onChange={(e) => setDark(e.target.checked)} />
             Dark mode
           </label>
           <code style={{ fontSize: 12, opacity: 0.6 }}>{accent}</code>
