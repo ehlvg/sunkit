@@ -19,30 +19,109 @@
   --color-pastel-neutral-dark: #5a5550;
 }
 
+/* ── Semantic surface tokens ─────────────────────────────────────────────────
+   Components reference these vars instead of hard-coded rgba values so a
+   single .dark class (or OS preference) is enough to flip the whole system.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --sk-bg:              rgba(255, 255, 255, 0.94);
+  --sk-bg-solid:        #ffffff;
+  --sk-surface:         rgba(255, 255, 255, 0.60);
+  --sk-surface-hover:   rgba(255, 255, 255, 0.80);
+  --sk-surface-filled:  rgba(0, 0, 0, 0.055);
+  --sk-border:          rgba(0, 0, 0, 0.09);
+  --sk-border-subtle:   rgba(0, 0, 0, 0.06);
+  --sk-border-strong:   rgba(0, 0, 0, 0.16);
+  --sk-text:            rgba(0, 0, 0, 0.82);
+  --sk-text-muted:      rgba(0, 0, 0, 0.50);
+  --sk-text-placeholder:rgba(0, 0, 0, 0.30);
+  --sk-text-label:      rgba(0, 0, 0, 0.70);
+  --sk-text-desc:       rgba(0, 0, 0, 0.45);
+  --sk-text-error:      rgba(185, 28, 28, 0.85);
+  --sk-shadow-a:        rgba(0, 0, 0, 0.10);
+  --sk-shadow-b:        rgba(0, 0, 0, 0.09);
+  --sk-shadow-c:        rgba(0, 0, 0, 0.06);
+  --sk-inset-light:     rgba(255, 255, 255, 0.65);
+  --sk-inset-dark:      rgba(0, 0, 0, 0.06);
+  --sk-knob:            #ffffff;
+  --sk-track-empty:     rgba(0, 0, 0, 0.10);
+}
+
+.dark,
+[data-theme="dark"] {
+  --sk-bg:              rgba(28, 28, 32, 0.97);
+  --sk-bg-solid:        #1c1c20;
+  --sk-surface:         rgba(255, 255, 255, 0.06);
+  --sk-surface-hover:   rgba(255, 255, 255, 0.10);
+  --sk-surface-filled:  rgba(255, 255, 255, 0.08);
+  --sk-border:          rgba(255, 255, 255, 0.12);
+  --sk-border-subtle:   rgba(255, 255, 255, 0.07);
+  --sk-border-strong:   rgba(255, 255, 255, 0.22);
+  --sk-text:            rgba(255, 255, 255, 0.88);
+  --sk-text-muted:      rgba(255, 255, 255, 0.50);
+  --sk-text-placeholder:rgba(255, 255, 255, 0.28);
+  --sk-text-label:      rgba(255, 255, 255, 0.65);
+  --sk-text-desc:       rgba(255, 255, 255, 0.40);
+  --sk-text-error:      rgba(252, 165, 165, 0.90);
+  --sk-shadow-a:        rgba(0, 0, 0, 0.40);
+  --sk-shadow-b:        rgba(0, 0, 0, 0.35);
+  --sk-shadow-c:        rgba(0, 0, 0, 0.25);
+  --sk-inset-light:     rgba(255, 255, 255, 0.10);
+  --sk-inset-dark:      rgba(0, 0, 0, 0.30);
+  --sk-knob:            #e8e8ec;
+  --sk-track-empty:     rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not([data-theme="light"]) {
+    --sk-bg:              rgba(28, 28, 32, 0.97);
+    --sk-bg-solid:        #1c1c20;
+    --sk-surface:         rgba(255, 255, 255, 0.06);
+    --sk-surface-hover:   rgba(255, 255, 255, 0.10);
+    --sk-surface-filled:  rgba(255, 255, 255, 0.08);
+    --sk-border:          rgba(255, 255, 255, 0.12);
+    --sk-border-subtle:   rgba(255, 255, 255, 0.07);
+    --sk-border-strong:   rgba(255, 255, 255, 0.22);
+    --sk-text:            rgba(255, 255, 255, 0.88);
+    --sk-text-muted:      rgba(255, 255, 255, 0.50);
+    --sk-text-placeholder:rgba(255, 255, 255, 0.28);
+    --sk-text-label:      rgba(255, 255, 255, 0.65);
+    --sk-text-desc:       rgba(255, 255, 255, 0.40);
+    --sk-text-error:      rgba(252, 165, 165, 0.90);
+    --sk-shadow-a:        rgba(0, 0, 0, 0.40);
+    --sk-shadow-b:        rgba(0, 0, 0, 0.35);
+    --sk-shadow-c:        rgba(0, 0, 0, 0.25);
+    --sk-inset-light:     rgba(255, 255, 255, 0.10);
+    --sk-inset-dark:      rgba(0, 0, 0, 0.30);
+    --sk-knob:            #e8e8ec;
+    --sk-track-empty:     rgba(255, 255, 255, 0.12);
+  }
+}
+
 @utility btn-shadow {
   box-shadow:
-    0 1px 0 0 rgba(0, 0, 0, 0.10),
-    0 3px 8px -1px rgba(0, 0, 0, 0.09),
-    0 6px 16px -4px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.06);
+    0 1px 0 0 var(--sk-shadow-a),
+    0 3px 8px -1px var(--sk-shadow-b),
+    0 6px 16px -4px var(--sk-shadow-c),
+    inset 0 1px 0 var(--sk-inset-light),
+    inset 0 -2px 0 var(--sk-inset-dark);
 }
 
 @utility btn-shadow-hover {
   box-shadow:
-    0 1px 0 0 rgba(0, 0, 0, 0.10),
-    0 2px 5px -1px rgba(0, 0, 0, 0.09),
-    0 4px 10px -3px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.06);
+    0 1px 0 0 var(--sk-shadow-a),
+    0 2px 5px -1px var(--sk-shadow-b),
+    0 4px 10px -3px var(--sk-shadow-c),
+    inset 0 1px 0 var(--sk-inset-light),
+    inset 0 -2px 0 var(--sk-inset-dark);
 }
 
 @utility btn-shadow-active {
   box-shadow:
-    0 0px 0 0 rgba(0, 0, 0, 0.10),
-    0 1px 2px -1px rgba(0, 0, 0, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    inset 0 2px 7px rgba(0, 0, 0, 0.13);
+    0 0px 0 0 var(--sk-shadow-a),
+    0 1px 2px -1px var(--sk-shadow-b),
+    inset 0 1px 0 var(--sk-inset-light, rgba(255,255,255,0.25)),
+    inset 0 2px 7px var(--sk-inset-dark);
 }
 
 @utility btn-transition {

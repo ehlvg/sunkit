@@ -1,9 +1,11 @@
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useContext } from 'react'
 import type { ButtonHTMLAttributes, ReactNode, CSSProperties, Ref } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import { useButtonSound } from '../../hooks/useButtonSound'
 import type { ButtonColor } from '../../tokens/colors'
+import { hexToAccentPair } from '../../lib/accent'
+import { ThemeContext } from '../Theme/ThemeProvider'
 
 export type { ButtonColor }
 export type ButtonSize = 'default' | 'sm' | 'icon-only'
@@ -32,6 +34,7 @@ const buttonVariants = cva(
         lavender: 'bg-pastel-lavender text-pastel-lavender-dark border-pastel-lavender-dark/[0.22]',
         lilac:    'bg-pastel-lilac    text-pastel-lilac-dark    border-pastel-lilac-dark/[0.22]',
         neutral:  'bg-pastel-neutral  text-pastel-neutral-dark  border-pastel-neutral-dark/[0.22]',
+        custom:   '',
       },
       size: {
         default:    'px-[18px] py-[10px] text-sm',
@@ -58,6 +61,7 @@ function resolveSize(size: ButtonSize, icon: ButtonIconPosition): CVASize {
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>
   color?: ButtonColor
+  accentColor?: string
   size?: ButtonSize
   icon?: ButtonIconPosition
   iconLeft?: ReactNode
@@ -82,6 +86,7 @@ const StarIcon = () => (
 export function Button({
   ref: externalRef,
   color = 'lavender',
+  accentColor: accentColorProp,
   size = 'default',
   icon = 'none',
   iconLeft,
@@ -94,6 +99,7 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const innerRef = useRef<HTMLButtonElement>(null)
+  const { accentColor: ctxAccent } = useContext(ThemeContext)
 
   const setRef = useCallback(
     (node: HTMLButtonElement | null) => {
@@ -110,12 +116,26 @@ export function Button({
   useButtonSound(innerRef)
 
   const isIconOnly = size === 'icon-only' || icon === 'only'
+  const resolvedAccent = accentColorProp ?? ctxAccent
+
+  let accentStyle: CSSProperties | undefined
+  if (resolvedAccent) {
+    const { fill, border } = hexToAccentPair(resolvedAccent)
+    accentStyle = {
+      backgroundColor: fill,
+      color: border,
+      borderColor: `${border}38`,
+    }
+  }
 
   return (
     <button
       ref={setRef}
-      className={cn(buttonVariants({ color, size: resolveSize(size, icon) }), className)}
-      style={{ '--btn-radius': `${radius}px`, ...style } as CSSProperties}
+      className={cn(
+        buttonVariants({ color: resolvedAccent ? 'custom' : color, size: resolveSize(size, icon) }),
+        className,
+      )}
+      style={{ '--btn-radius': `${radius}px`, ...accentStyle, ...style } as CSSProperties}
       {...rest}
     >
       {isIconOnly ? (
@@ -129,7 +149,7 @@ export function Button({
               {iconLeft ?? <PlayIcon />}
             </span>
           )}
-          <span className="[text-shadow:0_1px_0_rgba(255,255,255,0.55)]">{children}</span>
+          <span className="[text-shadow:0_1px_0_rgba(255,255,255,0.35)]">{children}</span>
           {icon === 'right' && (
             <span className="flex items-center leading-none shrink-0">
               {iconRight ?? <PlayIcon />}

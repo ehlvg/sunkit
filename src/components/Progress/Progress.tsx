@@ -1,5 +1,7 @@
-import React, { type CSSProperties, type ReactNode } from 'react'
+import React, { useContext, type CSSProperties, type ReactNode } from 'react'
 import { cn } from '../../lib/utils'
+import { resolveAccent } from '../../lib/accent'
+import { ThemeContext } from '../Theme/ThemeProvider'
 
 export type ProgressTone =
   | 'rose' | 'peach' | 'lemon' | 'mint'
@@ -10,6 +12,7 @@ export type ProgressSize = 'sm' | 'default' | 'lg'
 export interface ProgressProps {
   value?: number
   tone?: ProgressTone
+  accentColor?: string
   size?: ProgressSize
   label?: ReactNode
   showValue?: boolean
@@ -19,50 +22,54 @@ export interface ProgressProps {
 
 const TRACK_H: Record<ProgressSize, number> = { sm: 4, default: 8, lg: 12 }
 
-const TONE_BG: Record<ProgressTone, string> = {
-  rose:     'var(--color-pastel-rose)',
-  peach:    'var(--color-pastel-peach)',
-  lemon:    'var(--color-pastel-lemon)',
-  mint:     'var(--color-pastel-mint)',
-  sky:      'var(--color-pastel-sky)',
-  lavender: 'var(--color-pastel-lavender)',
-  lilac:    'var(--color-pastel-lilac)',
-  neutral:  'var(--color-pastel-neutral)',
+const TONE_FILL: Record<ProgressTone, string> = {
+  rose:     '#F9C5D1',
+  peach:    '#FDDBB4',
+  lemon:    '#FFF1A8',
+  mint:     '#B8F0D8',
+  sky:      '#B8DFFE',
+  lavender: '#D4C5F9',
+  lilac:    '#F0C8F0',
+  neutral:  '#E8E4DC',
 }
 
 const TONE_BORDER: Record<ProgressTone, string> = {
-  rose:     'var(--color-pastel-rose-dark)',
-  peach:    'var(--color-pastel-peach-dark)',
-  lemon:    'var(--color-pastel-lemon-dark)',
-  mint:     'var(--color-pastel-mint-dark)',
-  sky:      'var(--color-pastel-sky-dark)',
-  lavender: 'var(--color-pastel-lavender-dark)',
-  lilac:    'var(--color-pastel-lilac-dark)',
-  neutral:  'var(--color-pastel-neutral-dark)',
+  rose:     '#c2607a',
+  peach:    '#b87a3a',
+  lemon:    '#8a7820',
+  mint:     '#2a7a58',
+  sky:      '#2a68a0',
+  lavender: '#5a3eaa',
+  lilac:    '#8a3a8a',
+  neutral:  '#5a5550',
 }
 
 export function Progress({
   value,
   tone = 'lavender',
+  accentColor: accentColorProp,
   size = 'default',
   label,
   showValue = false,
   animated = true,
   className,
 }: ProgressProps) {
+  const { accentColor: ctxAccent } = useContext(ThemeContext)
+  const resolvedAccentHex = accentColorProp ?? ctxAccent
+
   const isIndeterminate = value === undefined
   const clamped = isIndeterminate ? 0 : Math.max(0, Math.min(100, value))
   const trackH = TRACK_H[size]
-  const fillColor = TONE_BG[tone]
-  const borderColor = TONE_BORDER[tone]
+
+  const { fill: fillColor, border: borderColor } = resolveAccent(tone, TONE_FILL, TONE_BORDER, resolvedAccentHex)
 
   const trackStyle: CSSProperties = {
     position: 'relative',
     height: trackH,
     borderRadius: 999,
-    background: 'rgba(0,0,0,0.08)',
+    background: 'var(--sk-track-empty)',
     overflow: 'hidden',
-    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.07)',
+    boxShadow: 'inset 0 1px 2px var(--sk-shadow-c)',
   }
 
   const fillStyle: CSSProperties = isIndeterminate
@@ -93,10 +100,10 @@ export function Progress({
       {(label != null || (showValue && !isIndeterminate)) && (
         <div className="flex items-center justify-between mb-[6px]">
           {label != null && (
-            <span className="text-[12px] leading-none font-medium text-black/60">{label}</span>
+            <span className="text-[12px] leading-none font-medium text-[var(--sk-text-label)]">{label}</span>
           )}
           {showValue && !isIndeterminate && (
-            <span className="text-[12px] leading-none text-black/40 tabular-nums">{clamped}%</span>
+            <span className="text-[12px] leading-none text-[var(--sk-text-muted)] tabular-nums">{clamped}%</span>
           )}
         </div>
       )}

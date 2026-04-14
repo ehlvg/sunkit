@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   useCallback,
+  useContext,
   useId,
   useRef,
   useState,
@@ -9,6 +10,8 @@ import React, {
 } from 'react'
 import { cn } from '../../lib/utils'
 import { useSliderSound } from '../../hooks/useSliderSound'
+import { resolveAccent } from '../../lib/accent'
+import { ThemeContext } from '../Theme/ThemeProvider'
 
 const SPRING = 'cubic-bezier(0.34, 1.42, 0.64, 1)'
 const EASE_IN = 'cubic-bezier(0.4, 0, 1, 1)'
@@ -32,6 +35,7 @@ export interface SliderProps {
   defaultValue?: number
   onValueChange?: (value: number) => void
   tone?: SliderTone
+  accentColor?: string
   size?: SliderSize
   label?: ReactNode
   description?: ReactNode
@@ -46,15 +50,26 @@ export interface SliderProps {
 const TRACK_H: Record<SliderSize, number> = { default: 6, sm: 4 }
 const THUMB_D: Record<SliderSize, number> = { default: 20, sm: 15 }
 
-const TONE_BG: Record<SliderTone, string> = {
-  rose:     'var(--color-pastel-rose)',
-  peach:    'var(--color-pastel-peach)',
-  lemon:    'var(--color-pastel-lemon)',
-  mint:     'var(--color-pastel-mint)',
-  sky:      'var(--color-pastel-sky)',
-  lavender: 'var(--color-pastel-lavender)',
-  lilac:    'var(--color-pastel-lilac)',
-  neutral:  'var(--color-pastel-neutral)',
+const TONE_FILL: Record<SliderTone, string> = {
+  rose:     '#F9C5D1',
+  peach:    '#FDDBB4',
+  lemon:    '#FFF1A8',
+  mint:     '#B8F0D8',
+  sky:      '#B8DFFE',
+  lavender: '#D4C5F9',
+  lilac:    '#F0C8F0',
+  neutral:  '#E8E4DC',
+}
+
+const TONE_BORDER: Record<SliderTone, string> = {
+  rose:     '#c2607a',
+  peach:    '#b87a3a',
+  lemon:    '#8a7820',
+  mint:     '#2a7a58',
+  sky:      '#2a68a0',
+  lavender: '#5a3eaa',
+  lilac:    '#8a3a8a',
+  neutral:  '#5a5550',
 }
 
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
@@ -66,6 +81,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
     defaultValue = 0,
     onValueChange,
     tone = 'lavender',
+    accentColor: accentColorProp,
     size = 'default',
     label,
     description,
@@ -82,6 +98,9 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
   const autoId = useId()
   const inputId = id ?? `slider-${autoId}`
   const descId = description ? `${inputId}-desc` : undefined
+
+  const { accentColor: ctxAccent } = useContext(ThemeContext)
+  const resolvedAccentHex = accentColorProp ?? ctxAccent
 
   const isControlled = valueProp !== undefined
   const [valueUncontrolled, setValueUncontrolled] = useState(defaultValue)
@@ -109,7 +128,8 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
   const trackH = TRACK_H[size]
   const thumbD = THUMB_D[size]
   const pct = ((value - min) / (max - min || 1)) * 100
-  const fillColor = TONE_BG[tone]
+
+  const { fill: fillColor, border: borderColor } = resolveAccent(tone, TONE_FILL, TONE_BORDER, resolvedAccentHex)
 
   const thumbSize = pressing ? Math.round(thumbD * 1.18) : thumbD
 
@@ -118,8 +138,8 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
     width: '100%',
     height: trackH,
     borderRadius: 999,
-    background: 'rgba(0,0,0,0.10)',
-    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.10)',
+    background: 'var(--sk-track-empty)',
+    boxShadow: 'inset 0 1px 2px var(--sk-shadow-c)',
   }
 
   const fillStyle: CSSProperties = {
@@ -130,7 +150,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
     width: `${pct}%`,
     borderRadius: 999,
     background: fillColor,
-    boxShadow: `0 0 0 1px ${fillColor}66`,
+    boxShadow: `0 0 0 1px ${borderColor}33`,
     transition: 'width 60ms ease-out',
   }
 
@@ -141,14 +161,14 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
     width: thumbSize,
     height: thumbSize,
     borderRadius: 999,
-    background: '#fff',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.15), 0 1px 0 rgba(0,0,0,0.08)',
+    background: 'var(--sk-knob)',
+    boxShadow: '0 2px 8px var(--sk-shadow-b), 0 1px 0 var(--sk-shadow-c)',
     transform: `translate(-50%, -50%)`,
     transition: pressing
       ? `width 60ms ${EASE_IN}, height 60ms ${EASE_IN}, box-shadow 60ms ease`
       : `width 200ms ${SPRING}, height 200ms ${SPRING}, box-shadow 150ms ease`,
     pointerEvents: 'none',
-    border: '1.5px solid rgba(0,0,0,0.07)',
+    border: '1.5px solid var(--sk-border)',
   }
 
   return (
@@ -158,13 +178,13 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
           {label != null && (
             <label
               htmlFor={inputId}
-              className={cn('text-[12px] leading-none font-medium', disabled ? 'opacity-60' : 'text-black/70')}
+              className={cn('text-[12px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}
             >
               {label}
             </label>
           )}
           {showValue && (
-            <span className="text-[12px] leading-none text-black/50 tabular-nums">{value}</span>
+            <span className="text-[12px] leading-none text-[var(--sk-text-muted)] tabular-nums">{value}</span>
           )}
         </div>
       )}
@@ -208,9 +228,9 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
                   className="absolute flex flex-col items-center gap-[2px]"
                   style={{ left: `${mPct}%`, transform: 'translateX(-50%)' }}
                 >
-                  <div className="w-[1px] h-[4px] bg-black/20 rounded-full" />
+                  <div className="w-[1px] h-[4px] bg-[var(--sk-border-strong)] rounded-full" />
                   {m.label && (
-                    <span className="text-[10px] leading-none text-black/40">{m.label}</span>
+                    <span className="text-[10px] leading-none text-[var(--sk-text-muted)]">{m.label}</span>
                   )}
                 </div>
               )
@@ -220,14 +240,14 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
 
         {showMinMax && !marks && (
           <div className="flex justify-between mt-[4px]">
-            <span className="text-[10px] leading-none text-black/35 tabular-nums">{min}</span>
-            <span className="text-[10px] leading-none text-black/35 tabular-nums">{max}</span>
+            <span className="text-[10px] leading-none text-[var(--sk-text-desc)] tabular-nums">{min}</span>
+            <span className="text-[10px] leading-none text-[var(--sk-text-desc)] tabular-nums">{max}</span>
           </div>
         )}
       </div>
 
       {description != null && (
-        <div id={descId} className="mt-[4px] text-[12px] leading-snug text-black/45">
+        <div id={descId} className="mt-[4px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
           {description}
         </div>
       )}

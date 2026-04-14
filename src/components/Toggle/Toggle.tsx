@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   useCallback,
+  useContext,
   useId,
   useMemo,
   useRef,
@@ -11,8 +12,9 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import { useToggleSound } from '../../hooks/useToggleSound'
+import { hexToAccentPair } from '../../lib/accent'
+import { ThemeContext } from '../Theme/ThemeProvider'
 
-// Spring easing — slight overshoot for a satisfying snap
 const SPRING = 'cubic-bezier(0.34, 1.42, 0.64, 1)'
 const EASE_IN = 'cubic-bezier(0.4, 0, 1, 1)'
 
@@ -52,6 +54,7 @@ export interface ToggleProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'>,
     VariantProps<typeof toggleVariants> {
   tone?: ToggleTone
+  accentColor?: string
   label?: ReactNode
   description?: ReactNode
   checked?: boolean
@@ -71,6 +74,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
     defaultChecked = false,
     onCheckedChange,
     className,
+    accentColor: accentColorProp,
     'aria-describedby': ariaDescribedBy,
     ...rest
   },
@@ -81,6 +85,9 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
   const switchId = id ?? `toggle-${autoId}`
   const descriptionId = description ? `${switchId}-description` : undefined
   const describedBy = [ariaDescribedBy, descriptionId].filter(Boolean).join(' ') || undefined
+
+  const { accentColor: ctxAccent } = useContext(ThemeContext)
+  const resolvedAccent = accentColorProp ?? ctxAccent
 
   const isControlled = checkedProp != null
   const [checkedUncontrolled, setCheckedUncontrolled] = useState(defaultChecked)
@@ -110,28 +117,40 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
     [ref],
   )
 
-  const toneClasses = trackTones[tone ?? 'neutral']
+  const toneClasses = trackTones[tone ?? 'neutral'] ?? trackTones['neutral']
+
   const trackCheckedShadow = checked
     ? 'inset 0 1px 0 rgba(255,255,255,0.25), inset 0 2px 7px rgba(0,0,0,0.13)'
-    : '0 1px 0 0 rgba(0,0,0,0.10), 0 3px 8px -1px rgba(0,0,0,0.09), 0 6px 16px -4px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -2px 0 rgba(0,0,0,0.06)'
+    : 'var(--sk-shadow-a) 0 1px 0 0, 0 3px 8px -1px var(--sk-shadow-b), 0 6px 16px -4px var(--sk-shadow-c), inset 0 1px 0 var(--sk-inset-light), inset 0 -2px 0 var(--sk-inset-dark)'
 
-  // Knob squishes wider when pressing, snaps to position with spring
   const knobW = pressing ? Math.round(dims.knob * 1.22) : dims.knob
   const knobX = checked ? dims.travel - (knobW - dims.knob) : 0
 
   const knobStyle: CSSProperties = {
-    position:   'absolute',
-    top:        '50%',
-    left:       dims.left,
-    width:      knobW,
-    height:     dims.knob,
+    position:     'absolute',
+    top:          '50%',
+    left:         dims.left,
+    width:        knobW,
+    height:       dims.knob,
     borderRadius: '999px',
-    background: '#fff',
-    boxShadow:  '0 2px 10px rgba(0,0,0,0.10), 0 1px 0 rgba(0,0,0,0.10)',
-    transform:  `translateX(${knobX}px) translateY(-50%)`,
-    transition: pressing
+    background:   'var(--sk-knob)',
+    boxShadow:    '0 2px 10px rgba(0,0,0,0.10), 0 1px 0 rgba(0,0,0,0.10)',
+    transform:    `translateX(${knobX}px) translateY(-50%)`,
+    transition:   pressing
       ? `transform 80ms ${EASE_IN}, width 80ms ${EASE_IN}`
       : `transform 260ms ${SPRING}, width 200ms ${SPRING}`,
+  }
+
+  let accentTrackStyle: CSSProperties | undefined
+  if (resolvedAccent && checked) {
+    const { fill, border } = hexToAccentPair(resolvedAccent)
+    accentTrackStyle = {
+      backgroundColor: `${fill}cc`,
+      borderColor: `${border}55`,
+    }
+  } else if (resolvedAccent && !checked) {
+    const { border } = hexToAccentPair(resolvedAccent)
+    accentTrackStyle = { borderColor: `${border}38` }
   }
 
   const trackStyle: CSSProperties = {
@@ -139,6 +158,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
     height:     dims.h,
     boxShadow:  trackCheckedShadow,
     transition: 'background-color 180ms ease-out, border-color 180ms ease-out, box-shadow 150ms ease-out',
+    ...accentTrackStyle,
   }
 
   return (
@@ -161,10 +181,10 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
         onTouchEnd={() => setPressing(false)}
         className={cn(
           'relative shrink-0 rounded-full border outline-none',
-          'focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-black/20',
-          'bg-white/55',
-          toneClasses.off,
-          checked ? toneClasses.on : '',
+          'focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-[var(--sk-border-strong)]',
+          'bg-[var(--sk-surface)]',
+          !resolvedAccent && toneClasses.off,
+          !resolvedAccent && checked ? toneClasses.on : '',
           disabled ? 'pointer-events-none' : 'cursor-pointer',
         )}
         style={trackStyle}
@@ -175,12 +195,12 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
       {(label != null || description != null) && (
         <div className="min-w-0">
           {label != null && (
-            <div className={cn('text-[13px] leading-none font-medium', disabled ? 'opacity-60' : 'text-black/70')}>
+            <div className={cn('text-[13px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}>
               {label}
             </div>
           )}
           {description != null && (
-            <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-black/45">
+            <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
               {description}
             </div>
           )}

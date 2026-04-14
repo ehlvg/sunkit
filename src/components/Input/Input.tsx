@@ -1,44 +1,42 @@
-import React, { forwardRef, useCallback, useId, useRef } from 'react'
-import type { InputHTMLAttributes, ReactNode } from 'react'
+import React, { forwardRef, useCallback, useContext, useId, useRef, useState } from 'react'
+import type { InputHTMLAttributes, CSSProperties, ReactNode } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import { useInputSound } from '../../hooks/useInputSound'
+import { hexToAccentPair } from '../../lib/accent'
+import { ThemeContext } from '../Theme/ThemeProvider'
 
 const inputVariants = cva(
   [
     'w-full min-w-0',
-    'font-[system-ui,_-apple-system,_sans-serif] text-[13px] text-black/80 leading-none',
+    'font-[system-ui,_-apple-system,_sans-serif] text-[13px] leading-none',
+    'text-[var(--sk-text)] placeholder:text-[var(--sk-text-placeholder)]',
     'outline-none',
-    'placeholder:text-black/30',
     'disabled:opacity-50 disabled:cursor-not-allowed',
     'transition-[box-shadow,border-color,background-color,opacity] duration-[150ms] ease-out',
   ].join(' '),
   {
     variants: {
       variant: {
-        // Elevated — glassy card lifted off the surface
         default: [
-          'bg-white/60 border',
+          'bg-[var(--sk-surface)] border',
           'rounded-[var(--field-radius)]',
           'btn-shadow hover:btn-shadow-hover',
           'focus-visible:btn-shadow-hover',
           'hover:brightness-[1.03]',
         ].join(' '),
-        // Filled — recessed/sunken, no elevation shadow
         filled: [
-          'bg-black/[0.055] border border-black/[0.10]',
+          'bg-[var(--sk-surface-filled)] border border-[var(--sk-border)]',
           'rounded-[var(--field-radius)]',
-          'shadow-[inset_0_1px_3px_rgba(0,0,0,0.09)]',
-          'hover:bg-black/[0.075]',
-          'focus-visible:bg-white/70 focus-visible:shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)]',
+          'shadow-[inset_0_1px_3px_var(--sk-shadow-b)]',
+          'hover:bg-[var(--sk-surface-hover)]',
+          'focus-visible:bg-[var(--sk-surface)] focus-visible:shadow-[inset_0_1px_2px_var(--sk-shadow-c)]',
         ].join(' '),
-        // Ghost — underline only, no box at all
         ghost: [
-          'bg-transparent border-0 border-b-[1.5px] border-black/25',
-          'rounded-none',
-          'shadow-none',
-          'hover:border-black/40',
-          'focus-visible:border-b-2 focus-visible:border-black/55 focus-visible:bg-white/30',
+          'bg-transparent border-0 border-b-[1.5px] border-[var(--sk-border-strong)]',
+          'rounded-none shadow-none',
+          'hover:border-[var(--sk-border-strong)]',
+          'focus-visible:border-b-2 focus-visible:bg-[var(--sk-surface)]',
         ].join(' '),
       },
       tone: {
@@ -50,6 +48,7 @@ const inputVariants = cva(
         lavender: 'border-pastel-lavender-dark/[0.25] focus-visible:border-pastel-lavender-dark/[0.55]',
         lilac:    'border-pastel-lilac-dark/[0.25]    focus-visible:border-pastel-lilac-dark/[0.55]',
         neutral:  'border-pastel-neutral-dark/[0.25]  focus-visible:border-pastel-neutral-dark/[0.55]',
+        custom:   'border-[var(--sk-border)]',
       },
       size: {
         default: 'h-[40px] px-[12px] py-[10px]',
@@ -61,7 +60,6 @@ const inputVariants = cva(
       },
     },
     compoundVariants: [
-      // Ghost ignores tone border overrides — it uses a single bottom border
       { variant: 'ghost', tone: 'rose',     className: 'border-pastel-rose-dark/[0.40]     focus-visible:border-pastel-rose-dark/[0.70]'     },
       { variant: 'ghost', tone: 'peach',    className: 'border-pastel-peach-dark/[0.40]    focus-visible:border-pastel-peach-dark/[0.70]'    },
       { variant: 'ghost', tone: 'lemon',    className: 'border-pastel-lemon-dark/[0.40]    focus-visible:border-pastel-lemon-dark/[0.70]'    },
@@ -84,7 +82,9 @@ export type InputVariantProps = VariantProps<typeof inputVariants>
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
-    InputVariantProps {
+    Omit<InputVariantProps, 'tone'> {
+  tone?: NonNullable<InputVariantProps['tone']> | (string & {})
+  accentColor?: string
   label?: ReactNode
   description?: ReactNode
   error?: ReactNode
@@ -111,6 +111,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     invalid,
     required,
     disabled,
+    accentColor: accentColorProp,
     'aria-describedby': ariaDescribedBy,
     ...rest
   },
@@ -124,19 +125,31 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const describedBy = [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
   const isInvalid = invalid ?? Boolean(error)
 
+  const { accentColor: ctxAccent } = useContext(ThemeContext)
+  const resolvedAccent = accentColorProp ?? ctxAccent
+  const [focused, setFocused] = useState(false)
+
   useInputSound(innerRef)
 
   const setRef = useCallback(
     (node: HTMLInputElement | null) => {
       ;(innerRef as React.MutableRefObject<HTMLInputElement | null>).current = node
-      if (typeof ref === 'function') {
-        ref(node)
-      } else if (ref != null) {
-        ;(ref as React.MutableRefObject<HTMLInputElement | null>).current = node
-      }
+      if (typeof ref === 'function') ref(node)
+      else if (ref != null) (ref as React.MutableRefObject<HTMLInputElement | null>).current = node
     },
     [ref],
   )
+
+  const effectiveTone = resolvedAccent ? 'custom' : (tone as InputVariantProps['tone'] | undefined) ?? 'neutral'
+
+  let accentStyle: CSSProperties | undefined
+  if (resolvedAccent && focused && !isInvalid) {
+    const { border } = hexToAccentPair(resolvedAccent)
+    accentStyle = { borderColor: `${border}99` }
+  } else if (resolvedAccent && !isInvalid) {
+    const { border } = hexToAccentPair(resolvedAccent)
+    accentStyle = { borderColor: `${border}44` }
+  }
 
   return (
     <div className={cn('w-full', containerClassName)}>
@@ -144,13 +157,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         <label
           htmlFor={inputId}
           className={cn(
-            'block mb-[6px] text-[12px] leading-none font-medium',
-            disabled ? 'opacity-60' : 'text-black/70',
+            'block mb-[6px] text-[12px] leading-none font-medium text-[var(--sk-text-label)]',
+            disabled && 'opacity-60',
           )}
         >
           <span className="inline-flex items-center gap-2">
             {label}
-            {required ? <span className="text-black/35">*</span> : null}
+            {required ? <span className="text-[var(--sk-text-muted)]">*</span> : null}
           </span>
         </label>
       )}
@@ -161,10 +174,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           leftAdornment ? 'pl-[34px]' : '',
           rightAdornment ? 'pr-[34px]' : '',
         )}
-        style={{ '--field-radius': `${radius}px` } as React.CSSProperties}
+        style={{ '--field-radius': `${radius}px` } as CSSProperties}
       >
         {leftAdornment ? (
-          <div className="absolute left-[10px] top-1/2 -translate-y-1/2 text-black/45 pointer-events-none">
+          <div className="absolute left-[10px] top-1/2 -translate-y-1/2 text-[var(--sk-text-muted)] pointer-events-none">
             {leftAdornment}
           </div>
         ) : null}
@@ -173,36 +186,38 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           ref={setRef}
           id={inputId}
           className={cn(
-            inputVariants({ variant, tone, size, invalid: isInvalid }),
+            inputVariants({ variant, tone: effectiveTone, size, invalid: isInvalid }),
             leftAdornment ? 'pl-[34px]' : '',
             rightAdornment ? 'pr-[34px]' : '',
             className,
           )}
+          style={accentStyle}
           aria-invalid={isInvalid || undefined}
           aria-describedby={describedBy}
           required={required}
           disabled={disabled}
+          onFocus={e => { setFocused(true); rest.onFocus?.(e) }}
+          onBlur={e => { setFocused(false); rest.onBlur?.(e) }}
           {...rest}
         />
 
         {rightAdornment ? (
-          <div className="absolute right-[10px] top-1/2 -translate-y-1/2 text-black/45 pointer-events-none">
+          <div className="absolute right-[10px] top-1/2 -translate-y-1/2 text-[var(--sk-text-muted)] pointer-events-none">
             {rightAdornment}
           </div>
         ) : null}
       </div>
 
       {description != null && (
-        <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-black/45">
+        <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
           {description}
         </div>
       )}
       {error != null && (
-        <div id={errorId} className="mt-[6px] text-[12px] leading-snug text-red-700/80">
+        <div id={errorId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-error)]">
           {error}
         </div>
       )}
     </div>
   )
 })
-

@@ -13,6 +13,9 @@ export interface AlertProps {
   className?: string
 }
 
+// Tailwind classes for light mode; dark mode overrides via CSS vars where possible.
+// For these semantic colors we keep the pastel class names since they're variant-specific,
+// but we add a dark-mode-friendly text contrast fallback using opacity adjustments.
 const VARIANT_MAP: Record<AlertVariant, {
   bg: string
   border: string
@@ -20,26 +23,26 @@ const VARIANT_MAP: Record<AlertVariant, {
   title: string
 }> = {
   info: {
-    bg:        'bg-pastel-sky/45',
-    border:    'border-pastel-sky-dark/[0.20]',
+    bg:        'bg-pastel-sky/45 dark:bg-pastel-sky/20',
+    border:    'border-pastel-sky-dark/[0.20] dark:border-pastel-sky-dark/[0.35]',
     iconColor: 'text-pastel-sky-dark',
     title:     'text-pastel-sky-dark',
   },
   success: {
-    bg:        'bg-pastel-mint/45',
-    border:    'border-pastel-mint-dark/[0.20]',
+    bg:        'bg-pastel-mint/45 dark:bg-pastel-mint/20',
+    border:    'border-pastel-mint-dark/[0.20] dark:border-pastel-mint-dark/[0.35]',
     iconColor: 'text-pastel-mint-dark',
     title:     'text-pastel-mint-dark',
   },
   warning: {
-    bg:        'bg-pastel-lemon/50',
-    border:    'border-pastel-lemon-dark/[0.20]',
+    bg:        'bg-pastel-lemon/50 dark:bg-pastel-lemon/20',
+    border:    'border-pastel-lemon-dark/[0.20] dark:border-pastel-lemon-dark/[0.35]',
     iconColor: 'text-pastel-lemon-dark',
     title:     'text-pastel-lemon-dark',
   },
   error: {
-    bg:        'bg-pastel-rose/45',
-    border:    'border-pastel-rose-dark/[0.20]',
+    bg:        'bg-pastel-rose/45 dark:bg-pastel-rose/20',
+    border:    'border-pastel-rose-dark/[0.20] dark:border-pastel-rose-dark/[0.35]',
     iconColor: 'text-pastel-rose-dark',
     title:     'text-pastel-rose-dark',
   },
@@ -137,7 +140,7 @@ export function Alert({
           </div>
         )}
         {children != null && (
-          <div className="text-[12px] leading-snug text-black/60">
+          <div className="text-[12px] leading-snug text-[var(--sk-text-muted)]">
             {children}
           </div>
         )}
@@ -148,7 +151,7 @@ export function Alert({
           type="button"
           aria-label="Dismiss"
           onClick={handleDismiss}
-          className="shrink-0 mt-[1px] text-black/35 hover:text-black/60 outline-none focus-visible:ring-2 focus-visible:ring-black/20 rounded-[4px] cursor-pointer transition-colors duration-100"
+          className="shrink-0 mt-[1px] text-[var(--sk-text-muted)] hover:text-[var(--sk-text)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--sk-border-strong)] rounded-[4px] cursor-pointer transition-colors duration-100"
         >
           <CloseIcon />
         </button>

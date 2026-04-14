@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   useCallback,
+  useContext,
   useEffect,
   useId,
   useRef,
@@ -10,6 +11,8 @@ import React, {
 } from 'react'
 import { cn } from '../../lib/utils'
 import { playPickerNav, playPickerSelect, usePickerSoundCtx } from '../../hooks/usePickerSound'
+import { resolveAccent } from '../../lib/accent'
+import { ThemeContext } from '../Theme/ThemeProvider'
 
 export type DatePickerTone =
   | 'rose' | 'peach' | 'lemon' | 'mint'
@@ -33,6 +36,7 @@ export interface DatePickerProps {
   label?: ReactNode
   description?: ReactNode
   tone?: DatePickerTone
+  accentColor?: string
   size?: DatePickerSize
   placeholder?: string
   id?: string
@@ -46,7 +50,6 @@ const MONTHS = [
   'July', 'August', 'September', 'October', 'November', 'December',
 ]
 
-// Actual hex values (matching globals.css @theme vars) so inline styles work correctly
 const TONE_FILL: Record<DatePickerTone, string> = {
   rose:     '#F9C5D1',
   peach:    '#FDDBB4',
@@ -153,34 +156,34 @@ const ChevronRight = () => (
 
 function YearGrid({
   activeYear,
-  tone,
+  fill,
+  border,
   onSelect,
 }: {
   activeYear: number
-  tone: DatePickerTone
+  fill: string
+  border: string
   onSelect: (y: number) => void
 }) {
   const currentYear = new Date().getFullYear()
   const [base, setBase] = useState(activeYear - (activeYear % 12))
   const years = Array.from({ length: 12 }, (_, i) => base + i)
-  const fill = TONE_FILL[tone]
-  const border = TONE_BORDER[tone]
 
   return (
     <div>
-      <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-black/[0.06]">
+      <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-[var(--sk-border-subtle)]">
         <button
           type="button"
           onClick={() => setBase(b => b - 12)}
-          className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-black/50 hover:bg-black/[0.06] hover:text-black/70 outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer transition-colors duration-100"
+          className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-[var(--sk-text-muted)] hover:bg-[var(--sk-surface-filled)] hover:text-[var(--sk-text)] outline-none cursor-pointer transition-colors duration-100"
         >
           <ChevronLeft />
         </button>
-        <span className="text-[13px] font-semibold text-black/70 select-none">{base}–{base + 11}</span>
+        <span className="text-[13px] font-semibold text-[var(--sk-text-label)] select-none">{base}–{base + 11}</span>
         <button
           type="button"
           onClick={() => setBase(b => b + 12)}
-          className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-black/50 hover:bg-black/[0.06] hover:text-black/70 outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer transition-colors duration-100"
+          className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-[var(--sk-text-muted)] hover:bg-[var(--sk-surface-filled)] hover:text-[var(--sk-text)] outline-none cursor-pointer transition-colors duration-100"
         >
           <ChevronRight />
         </button>
@@ -196,8 +199,8 @@ function YearGrid({
               onClick={() => onSelect(y)}
               className={cn(
                 'rounded-[8px] py-[9px] text-[13px] cursor-pointer transition-colors duration-75 outline-none',
-                isActive ? 'font-semibold' : 'text-black/70 hover:bg-black/[0.05]',
-                isCurrent && !isActive && 'font-semibold text-black/80',
+                isActive ? 'font-semibold' : 'text-[var(--sk-text)] hover:bg-[var(--sk-surface-filled)]',
+                isCurrent && !isActive && 'font-semibold',
               )}
               style={isActive ? { background: fill, border: `1.5px solid ${border}55` } : undefined}
             >
@@ -222,7 +225,8 @@ function MonthCalendar({
   hoverDate,
   minDate,
   maxDate,
-  tone,
+  fill,
+  border,
   focusedDate,
   onDayClick,
   onDayHover,
@@ -236,14 +240,13 @@ function MonthCalendar({
   hoverDate?: Date | null
   minDate?: Date
   maxDate?: Date
-  tone: DatePickerTone
+  fill: string
+  border: string
   focusedDate?: Date | null
   onDayClick: (d: Date) => void
   onDayHover: (d: Date | null) => void
 }) {
   const today = new Date()
-  const fill = TONE_FILL[tone]
-  const border = TONE_BORDER[tone]
 
   const daysInMonth = getDaysInMonth(year, month)
   const firstDay = getFirstDayOfMonth(year, month)
@@ -255,7 +258,6 @@ function MonthCalendar({
     (minDate != null && isBeforeDay(d, minDate)) ||
     (maxDate != null && isAfterDay(d, maxDate))
 
-  // Effective range for highlighting (preview while hovering)
   let effStart = rangeStart ?? null
   let effEnd = rangeEnd ?? (rangeStart && !rangeEnd ? hoverDate ?? null : null)
   if (effStart && effEnd && isAfterDay(effStart, effEnd)) {
@@ -266,7 +268,7 @@ function MonthCalendar({
     <div>
       <div className="grid grid-cols-7 px-[10px] pt-[10px] pb-[4px]">
         {DAYS.map(d => (
-          <div key={d} className="text-center text-[11px] font-semibold text-black/30 leading-none py-[2px]">
+          <div key={d} className="text-center text-[11px] font-semibold text-[var(--sk-text-muted)] leading-none py-[2px]">
             {d}
           </div>
         ))}
@@ -293,11 +295,11 @@ function MonthCalendar({
           const isDis     = isDisabled(date)
 
           const cellStyle: CSSProperties = isEdge
-            ? { background: fill, border: `1.5px solid ${border}55`, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.55)' }
+            ? { background: fill, border: `1.5px solid ${border}55`, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.35)' }
             : isInRange
             ? { background: `${fill}99` }
             : isFocused && !isDis
-            ? { background: 'rgba(0,0,0,0.06)' }
+            ? { background: 'var(--sk-surface-filled)' }
             : {}
 
           return (
@@ -313,13 +315,13 @@ function MonthCalendar({
               onMouseLeave={() => onDayHover(null)}
               className={cn(
                 'relative flex items-center justify-center',
-                'text-[12px] leading-none aspect-square',
+                'text-[12px] text-[var(--sk-text)] leading-none aspect-square',
                 'outline-none transition-colors duration-75',
                 !isDis && 'cursor-pointer',
                 isDis && 'opacity-30 cursor-not-allowed',
                 isEdge ? 'rounded-[8px] font-semibold' : 'rounded-[8px]',
                 isToday && !isEdge && 'font-semibold',
-                !isEdge && !isInRange && !isDis && 'hover:bg-black/[0.05]',
+                !isEdge && !isInRange && !isDis && 'hover:bg-[var(--sk-surface-filled)]',
                 isInRange && !isRangeStart && !isRangeEnd && 'rounded-none',
                 isRangeStart && !isRangeEnd && 'rounded-l-[8px] rounded-r-none',
                 !isRangeStart && isRangeEnd && 'rounded-r-[8px] rounded-l-none',
@@ -358,6 +360,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
     label,
     description,
     tone = 'lavender',
+    accentColor: accentColorProp,
     size = 'default',
     placeholder,
     id,
@@ -371,6 +374,10 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   const inputId = id ?? `datepicker-${autoId}`
   const panelId = `${inputId}-panel`
   const descId = description ? `${inputId}-desc` : undefined
+
+  const { accentColor: ctxAccent } = useContext(ThemeContext)
+  const resolvedAccentHex = accentColorProp ?? ctxAccent
+  const { fill, border } = resolveAccent(tone, TONE_FILL, TONE_BORDER, resolvedAccentHex)
 
   // ── value state ──────────────────────────────────────────────────────────────
 
@@ -390,10 +397,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   const [viewMonth, setViewMonth] = useState(baseDate.getMonth())
   const [calView, setCalView] = useState<'days' | 'years'>('days')
   const [hoverDate, setHoverDate] = useState<Date | null>(null)
-  // range picking: which "slot" is being set next
   const [rangePicking, setRangePicking] = useState<'start' | 'end'>('start')
-
-  // ── panel open state ─────────────────────────────────────────────────────────
 
   const [open, setOpen] = useState(false)
 
@@ -410,7 +414,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   const [inputText, setInputText] = useState(getDisplayText)
   const [isEditing, setIsEditing] = useState(false)
 
-  // Sync input text when value changes externally
   useEffect(() => {
     if (!isEditing) setInputText(getDisplayText())
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -446,9 +449,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   useEffect(() => {
     if (!open) return
     const handle = (e: MouseEvent) => {
-      if (
-        !inputRef.current?.closest('.dp-root')?.contains(e.target as Node)
-      ) closePanel()
+      if (!inputRef.current?.closest('.dp-root')?.contains(e.target as Node)) closePanel()
     }
     document.addEventListener('mousedown', handle)
     return () => document.removeEventListener('mousedown', handle)
@@ -480,7 +481,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
 
   const selectRange = (date: Date) => {
     if (rangePicking === 'start' || (rangeValue[0] && rangeValue[1])) {
-      // start fresh
       const next: DateRange = [date, null]
       if (!isRangeControlled) setRangeUncontrolled(next)
       onRangeChange?.(next)
@@ -488,7 +488,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
       setRangePicking('end')
       playPickerSelect(actx)
     } else {
-      // set end
       let start = rangeValue[0]!
       let end = date
       if (isAfterDay(start, end)) [start, end] = [end, start]
@@ -525,7 +524,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
     }
 
     if (mode === 'range') {
-      // try to parse "Start – End"
       const parts = text.split(/\s*[–\-]\s*(?=\w)/)
       const s = parseDate(parts[0] ?? '')
       const e = parts[1] ? parseDate(parts[1]) : null
@@ -557,8 +555,9 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
   const triggerPx = size === 'sm' ? 10 : 12
   const triggerFz = size === 'sm' ? 12 : 13
 
-  const fill   = TONE_FILL[tone]
-  const border = TONE_BORDER[tone]
+  const headerTitle = `${MONTHS[viewMonth]} ${viewYear}`
+  const [rightYear, rightMonth] = nextMonthOf(viewYear, viewMonth)
+  const rightTitle = `${MONTHS[rightMonth]} ${rightYear}`
 
   const panelStyle: CSSProperties = {
     position: 'absolute',
@@ -567,34 +566,32 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
     zIndex: 50,
     width: mode === 'range' ? 560 : 280,
     borderRadius: 16,
-    background: 'rgba(255,255,255,0.96)',
+    background: 'var(--sk-bg)',
     backdropFilter: 'blur(14px)',
     WebkitBackdropFilter: 'blur(14px)',
-    boxShadow: '0 8px 32px -6px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.07)',
+    boxShadow: '0 8px 32px -6px var(--sk-shadow-b), 0 2px 6px var(--sk-shadow-c), inset 0 0 0 1px var(--sk-border)',
     overflow: 'hidden',
   }
 
-  const headerTitle = `${MONTHS[viewMonth]} ${viewYear}`
-  const [rightYear, rightMonth] = nextMonthOf(viewYear, viewMonth)
-  const rightTitle = `${MONTHS[rightMonth]} ${rightYear}`
+  const navBtnClass = 'w-[28px] h-[28px] rounded-full flex items-center justify-center text-[var(--sk-text-muted)] hover:bg-[var(--sk-surface-filled)] hover:text-[var(--sk-text)] outline-none cursor-pointer transition-colors duration-100'
+  const headingBtnClass = 'text-[13px] font-semibold text-[var(--sk-text-label)] select-none hover:text-[var(--sk-text)] cursor-pointer transition-colors duration-100 outline-none rounded-[6px] px-[6px] py-[2px] hover:bg-[var(--sk-surface-filled)]'
 
   return (
     <div className={cn('w-full font-[system-ui,_-apple-system,_sans-serif] dp-root', containerClassName)}>
       {label != null && (
         <label
           htmlFor={inputId}
-          className={cn('block mb-[6px] text-[12px] leading-none font-medium', disabled ? 'opacity-60' : 'text-black/70')}
+          className={cn('block mb-[6px] text-[12px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}
         >
           {label}
         </label>
       )}
 
       <div className="relative">
-        {/* Text input trigger */}
         <div
           className={cn(
             'relative w-full inline-flex items-center',
-            'bg-white/60 border rounded-[12px]',
+            'bg-[var(--sk-surface)] border rounded-[12px]',
             'btn-shadow hover:btn-shadow-hover hover:brightness-[1.03]',
             'transition-[box-shadow,border-color,background-color] duration-150 ease-out',
             disabled && 'opacity-50 pointer-events-none',
@@ -619,17 +616,14 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
             value={inputText}
             onChange={e => { setInputText(e.target.value); setIsEditing(true) }}
             onFocus={() => { setIsEditing(true); openPanel() }}
-            onBlur={() => {
-              setIsEditing(false)
-              commitInput()
-            }}
+            onBlur={() => { setIsEditing(false); commitInput() }}
             onKeyDown={e => {
-              if (e.key === 'Enter') { e.currentTarget.blur() }
+              if (e.key === 'Enter') e.currentTarget.blur()
               if (e.key === 'Escape') { closePanel(); e.currentTarget.blur() }
             }}
             className={cn(
               'flex-1 min-w-0 bg-transparent outline-none cursor-text select-text',
-              'placeholder:text-black/30 text-black/80',
+              'placeholder:text-[var(--sk-text-placeholder)] text-[var(--sk-text)]',
             )}
             style={{ paddingInline: triggerPx, fontSize: triggerFz }}
           />
@@ -641,55 +635,34 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
               e.preventDefault()
               open ? closePanel() : (inputRef.current?.focus(), openPanel())
             }}
-            className="shrink-0 flex items-center justify-center text-black/40 hover:text-black/60 cursor-pointer pr-[10px] transition-colors duration-100 outline-none"
+            className="shrink-0 flex items-center justify-center text-[var(--sk-text-muted)] hover:text-[var(--sk-text)] cursor-pointer pr-[10px] transition-colors duration-100 outline-none"
           >
             <CalendarIcon />
           </button>
         </div>
 
-        {/* Calendar panel */}
         {open && (
-          <div
-            ref={panelRef}
-            id={panelId}
-            role="dialog"
-            aria-label="Date picker"
-            tabIndex={-1}
-            style={panelStyle}
-          >
+          <div ref={panelRef} id={panelId} role="dialog" aria-label="Date picker" tabIndex={-1} style={panelStyle}>
             {calView === 'years' ? (
               <YearGrid
                 activeYear={viewYear}
-                tone={tone}
+                fill={fill}
+                border={border}
                 onSelect={y => { setViewYear(y); setCalView('days') }}
               />
             ) : (
-              <div className={cn('flex', mode === 'range' && 'divide-x divide-black/[0.06]')}>
+              <div className={cn('flex', mode === 'range' && 'divide-x divide-[var(--sk-border-subtle)]')}>
                 {/* Left / only month */}
                 <div className={cn(mode === 'range' ? 'w-[280px]' : 'w-full')}>
-                  <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-black/[0.06]">
-                    <button
-                      type="button"
-                      aria-label="Previous month"
-                      onClick={prevMonth}
-                      className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-black/50 hover:bg-black/[0.06] hover:text-black/70 outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer transition-colors duration-100"
-                    >
+                  <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-[var(--sk-border-subtle)]">
+                    <button type="button" aria-label="Previous month" onClick={prevMonth} className={navBtnClass}>
                       <ChevronLeft />
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => setCalView('years')}
-                      className="text-[13px] font-semibold text-black/70 select-none hover:text-black/90 cursor-pointer transition-colors duration-100 outline-none rounded-[6px] px-[6px] py-[2px] hover:bg-black/[0.05]"
-                    >
+                    <button type="button" onClick={() => setCalView('years')} className={headingBtnClass}>
                       {headerTitle}
                     </button>
                     {mode === 'single' && (
-                      <button
-                        type="button"
-                        aria-label="Next month"
-                        onClick={nextMonth}
-                        className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-black/50 hover:bg-black/[0.06] hover:text-black/70 outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer transition-colors duration-100"
-                      >
+                      <button type="button" aria-label="Next month" onClick={nextMonth} className={navBtnClass}>
                         <ChevronRight />
                       </button>
                     )}
@@ -705,7 +678,8 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
                     hoverDate={hoverDate}
                     minDate={minDate}
                     maxDate={maxDate}
-                    tone={tone}
+                    fill={fill}
+                    border={border}
                     onDayClick={handleDayClick}
                     onDayHover={setHoverDate}
                   />
@@ -714,21 +688,12 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
                 {/* Right month (range mode only) */}
                 {mode === 'range' && (
                   <div className="w-[280px]">
-                    <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-black/[0.06]">
+                    <div className="flex items-center justify-between px-[14px] py-[12px] border-b border-[var(--sk-border-subtle)]">
                       <div className="w-[28px]" />
-                      <button
-                        type="button"
-                        onClick={() => setCalView('years')}
-                        className="text-[13px] font-semibold text-black/70 select-none hover:text-black/90 cursor-pointer transition-colors duration-100 outline-none rounded-[6px] px-[6px] py-[2px] hover:bg-black/[0.05]"
-                      >
+                      <button type="button" onClick={() => setCalView('years')} className={headingBtnClass}>
                         {rightTitle}
                       </button>
-                      <button
-                        type="button"
-                        aria-label="Next month"
-                        onClick={nextMonth}
-                        className="w-[28px] h-[28px] rounded-full flex items-center justify-center text-black/50 hover:bg-black/[0.06] hover:text-black/70 outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer transition-colors duration-100"
-                      >
+                      <button type="button" aria-label="Next month" onClick={nextMonth} className={navBtnClass}>
                         <ChevronRight />
                       </button>
                     </div>
@@ -741,7 +706,8 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
                       hoverDate={hoverDate}
                       minDate={minDate}
                       maxDate={maxDate}
-                      tone={tone}
+                      fill={fill}
+                      border={border}
                       onDayClick={handleDayClick}
                       onDayHover={setHoverDate}
                     />
@@ -750,9 +716,8 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
               </div>
             )}
 
-            {/* Range footer hint */}
             {mode === 'range' && calView === 'days' && (
-              <div className="px-[14px] py-[10px] border-t border-black/[0.06] text-[11px] text-black/40 text-center">
+              <div className="px-[14px] py-[10px] border-t border-[var(--sk-border-subtle)] text-[11px] text-[var(--sk-text-muted)] text-center">
                 {rangePicking === 'start' || (rangeValue[0] && rangeValue[1])
                   ? 'Click to set start date'
                   : 'Click to set end date'}
@@ -763,7 +728,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
       </div>
 
       {description != null && (
-        <div id={descId} className="mt-[6px] text-[12px] leading-snug text-black/45">
+        <div id={descId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
           {description}
         </div>
       )}

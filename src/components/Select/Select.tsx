@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   useCallback,
+  useContext,
   useEffect,
   useId,
   useRef,
@@ -11,11 +12,9 @@ import React, {
 } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
-import {
-  playSelectOpen,
-  playSelectChoose,
-  useSelectSoundCtx,
-} from '../../hooks/useSelectSound'
+import { playSelectOpen, playSelectChoose, useSelectSoundCtx } from '../../hooks/useSelectSound'
+import { hexToAccentPair } from '../../lib/accent'
+import { ThemeContext } from '../Theme/ThemeProvider'
 
 export interface SelectOption {
   value: string
@@ -27,6 +26,7 @@ const triggerVariants = cva(
   [
     'w-full min-w-0 inline-flex items-center justify-between gap-2',
     'font-[system-ui,_-apple-system,_sans-serif] text-[13px] leading-none',
+    'text-[var(--sk-text)]',
     'outline-none cursor-pointer select-none',
     'transition-[box-shadow,border-color,background-color,opacity] duration-[150ms] ease-out',
     'disabled:opacity-50 disabled:cursor-not-allowed',
@@ -35,21 +35,21 @@ const triggerVariants = cva(
     variants: {
       variant: {
         default: [
-          'bg-white/60 border rounded-[var(--field-radius)]',
+          'bg-[var(--sk-surface)] border rounded-[var(--field-radius)]',
           'btn-shadow hover:btn-shadow-hover',
           'hover:brightness-[1.03]',
           'focus-visible:btn-shadow-hover',
         ].join(' '),
         filled: [
-          'bg-black/[0.055] border border-black/[0.10] rounded-[var(--field-radius)]',
-          'shadow-[inset_0_1px_3px_rgba(0,0,0,0.09)]',
-          'hover:bg-black/[0.075]',
-          'focus-visible:bg-white/70',
+          'bg-[var(--sk-surface-filled)] border border-[var(--sk-border)] rounded-[var(--field-radius)]',
+          'shadow-[inset_0_1px_3px_var(--sk-shadow-b)]',
+          'hover:bg-[var(--sk-surface-hover)]',
+          'focus-visible:bg-[var(--sk-surface)]',
         ].join(' '),
         ghost: [
-          'bg-transparent border-0 border-b-[1.5px] border-black/25 rounded-none',
-          'hover:border-black/40',
-          'focus-visible:border-b-2 focus-visible:border-black/55 focus-visible:bg-white/30',
+          'bg-transparent border-0 border-b-[1.5px] border-[var(--sk-border-strong)] rounded-none',
+          'hover:border-[var(--sk-border-strong)]',
+          'focus-visible:border-b-2 focus-visible:bg-[var(--sk-surface)]',
         ].join(' '),
       },
       tone: {
@@ -61,6 +61,7 @@ const triggerVariants = cva(
         lavender: 'border-pastel-lavender-dark/[0.25] focus-visible:border-pastel-lavender-dark/[0.55]',
         lilac:    'border-pastel-lilac-dark/[0.25]    focus-visible:border-pastel-lilac-dark/[0.55]',
         neutral:  'border-pastel-neutral-dark/[0.25]  focus-visible:border-pastel-neutral-dark/[0.55]',
+        custom:   'border-[var(--sk-border)]',
       },
       size: {
         default: 'h-[40px] px-[12px] py-[10px]',
@@ -77,7 +78,9 @@ const triggerVariants = cva(
 
 export type SelectVariantProps = VariantProps<typeof triggerVariants>
 
-export interface SelectProps extends SelectVariantProps {
+export interface SelectProps extends Omit<SelectVariantProps, 'tone'> {
+  tone?: NonNullable<SelectVariantProps['tone']> | (string & {})
+  accentColor?: string
   options: SelectOption[]
   value?: string
   defaultValue?: string
@@ -139,9 +142,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     containerClassName,
     className,
     variant = 'default',
-    tone = 'neutral',
+    tone,
     size = 'default',
     invalid,
+    accentColor: accentColorProp,
   },
   ref,
 ) {
@@ -153,6 +157,9 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   const errorId = error ? `${triggerId}-error` : undefined
   const describedBy = [ariaDescribedBy, descriptionId, errorId].filter(Boolean).join(' ') || undefined
   const isInvalid = invalid ?? Boolean(error)
+
+  const { accentColor: ctxAccent } = useContext(ThemeContext)
+  const resolvedAccent = accentColorProp ?? ctxAccent
 
   const isControlled = valueProp !== undefined
   const [valueUncontrolled, setValueUncontrolled] = useState(defaultValue ?? '')
@@ -205,35 +212,27 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     [isControlled, onChange, actx, closePanel],
   )
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return
     const handle = (e: MouseEvent) => {
       if (
         !triggerRef.current?.contains(e.target as Node) &&
         !panelRef.current?.contains(e.target as Node)
-      ) {
-        closePanel()
-      }
+      ) closePanel()
     }
     document.addEventListener('mousedown', handle)
     return () => document.removeEventListener('mousedown', handle)
   }, [open, closePanel])
 
-  // Focus search on open
   useEffect(() => {
-    if (open && searchable) {
-      setTimeout(() => searchRef.current?.focus(), 10)
-    }
+    if (open && searchable) setTimeout(() => searchRef.current?.focus(), 10)
   }, [open, searchable])
 
   const onTriggerKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
       e.preventDefault()
       if (!open) openPanel()
-      else {
-        setActiveIdx(i => Math.min(i + 1, filtered.length - 1))
-      }
+      else setActiveIdx(i => Math.min(i + 1, filtered.length - 1))
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
       if (open) setActiveIdx(i => Math.max(i - 1, 0))
@@ -243,22 +242,27 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   }
 
   const onPanelKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      setActiveIdx(i => Math.min(i + 1, filtered.length - 1))
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      setActiveIdx(i => Math.max(i - 1, 0))
-    } else if (e.key === 'Enter') {
-      e.preventDefault()
-      const opt = filtered[activeIdx]
-      if (opt) selectOption(opt)
-    } else if (e.key === 'Escape') {
-      closePanel()
-    }
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(i + 1, filtered.length - 1)) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => Math.max(i - 1, 0)) }
+    else if (e.key === 'Enter') { e.preventDefault(); const opt = filtered[activeIdx]; if (opt) selectOption(opt) }
+    else if (e.key === 'Escape') closePanel()
   }
 
   const selectedLabel = options.find(o => o.value === value)?.label
+
+  const effectiveTone = resolvedAccent ? 'custom' : (tone as SelectVariantProps['tone'] | undefined) ?? 'neutral'
+
+  let accentBorderStyle: CSSProperties | undefined
+  if (resolvedAccent && !isInvalid) {
+    const { border } = hexToAccentPair(resolvedAccent)
+    accentBorderStyle = { borderColor: open ? `${border}99` : `${border}44` }
+  }
+
+  let accentCheckStyle: CSSProperties | undefined
+  if (resolvedAccent) {
+    const { border } = hexToAccentPair(resolvedAccent)
+    accentCheckStyle = { color: border }
+  }
 
   const dropdownStyle: CSSProperties = {
     position: 'absolute',
@@ -267,10 +271,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     right: 0,
     zIndex: 50,
     borderRadius: radius,
-    background: 'rgba(255,255,255,0.92)',
+    background: 'var(--sk-bg)',
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
-    boxShadow: '0 4px 24px -4px rgba(0,0,0,0.13), 0 1px 3px rgba(0,0,0,0.07), inset 0 0 0 1px rgba(0,0,0,0.07)',
+    boxShadow: '0 4px 24px -4px var(--sk-shadow-b), 0 1px 3px var(--sk-shadow-c), inset 0 0 0 1px var(--sk-border)',
     overflow: 'hidden',
     maxHeight: 260,
     display: 'flex',
@@ -282,7 +286,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       {label != null && (
         <label
           htmlFor={triggerId}
-          className={cn('block mb-[6px] text-[12px] leading-none font-medium', disabled ? 'opacity-60' : 'text-black/70')}
+          className={cn('block mb-[6px] text-[12px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}
         >
           {label}
         </label>
@@ -303,14 +307,17 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           onClick={() => (open ? closePanel() : openPanel())}
           onKeyDown={onTriggerKeyDown}
           className={cn(
-            triggerVariants({ variant, tone, size, invalid: isInvalid }),
+            triggerVariants({ variant, tone: effectiveTone, size, invalid: isInvalid }),
             className,
           )}
+          style={accentBorderStyle}
         >
-          <span className={cn('truncate', !selectedLabel && 'text-black/30')}>
+          <span className={cn('truncate', !selectedLabel && 'text-[var(--sk-text-placeholder)]')}>
             {selectedLabel ?? placeholder}
           </span>
-          <ChevronIcon open={open} />
+          <span className="text-[var(--sk-text-muted)]">
+            <ChevronIcon open={open} />
+          </span>
         </button>
 
         {open && (
@@ -322,23 +329,20 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
             style={dropdownStyle}
           >
             {searchable && (
-              <div className="p-[6px] border-b border-black/[0.06]">
+              <div className="p-[6px] border-b border-[var(--sk-border-subtle)]">
                 <input
                   ref={searchRef}
                   type="text"
                   placeholder="Search…"
                   value={search}
-                  onChange={e => {
-                    setSearch(e.target.value)
-                    setActiveIdx(0)
-                  }}
-                  className="w-full outline-none bg-transparent text-[13px] text-black/80 placeholder:text-black/30 px-[6px] py-[4px]"
+                  onChange={e => { setSearch(e.target.value); setActiveIdx(0) }}
+                  className="w-full outline-none bg-transparent text-[13px] text-[var(--sk-text)] placeholder:text-[var(--sk-text-placeholder)] px-[6px] py-[4px]"
                 />
               </div>
             )}
             <div className="overflow-y-auto p-[4px]" style={{ maxHeight: searchable ? 210 : 252 }}>
               {filtered.length === 0 ? (
-                <div className="text-[12px] text-black/35 px-[10px] py-[8px]">No options</div>
+                <div className="text-[12px] text-[var(--sk-text-muted)] px-[10px] py-[8px]">No options</div>
               ) : (
                 filtered.map((opt, idx) => (
                   <button
@@ -352,15 +356,19 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
                     onClick={() => selectOption(opt)}
                     className={cn(
                       'w-full flex items-center justify-between gap-2 px-[10px] py-[7px] rounded-[8px]',
-                      'text-[13px] leading-none text-left outline-none cursor-pointer',
+                      'text-[13px] text-[var(--sk-text)] leading-none text-left outline-none cursor-pointer',
                       'transition-colors duration-75',
-                      idx === activeIdx && !opt.disabled && 'bg-black/[0.055]',
+                      idx === activeIdx && !opt.disabled && 'bg-[var(--sk-surface-filled)]',
                       opt.value === value && 'font-medium',
                       opt.disabled && 'opacity-40 cursor-not-allowed',
                     )}
                   >
                     <span className="truncate">{opt.label}</span>
-                    {opt.value === value && <span className="text-black/50 shrink-0"><CheckIcon /></span>}
+                    {opt.value === value && (
+                      <span className="text-[var(--sk-text-muted)] shrink-0" style={accentCheckStyle}>
+                        <CheckIcon />
+                      </span>
+                    )}
                   </button>
                 ))
               )}
@@ -370,12 +378,12 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       </div>
 
       {description != null && (
-        <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-black/45">
+        <div id={descriptionId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-desc)]">
           {description}
         </div>
       )}
       {error != null && (
-        <div id={errorId} className="mt-[6px] text-[12px] leading-snug text-red-700/80">
+        <div id={errorId} className="mt-[6px] text-[12px] leading-snug text-[var(--sk-text-error)]">
           {error}
         </div>
       )}

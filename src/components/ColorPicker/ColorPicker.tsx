@@ -1,4 +1,5 @@
-import React, { useId, type ReactNode } from 'react'
+import React, { useId } from 'react'
+import type { ReactNode } from 'react'
 import { cn } from '../../lib/utils'
 import { COLORS, type ButtonColor } from '../../tokens/colors'
 import { useColorPickerSoundCtx, playColorPluck } from '../../hooks/useColorPickerSound'
@@ -68,7 +69,7 @@ export function ColorPicker({
   return (
     <div className={cn('inline-flex flex-col gap-[8px] font-[system-ui,_-apple-system,_sans-serif]', className)}>
       {label != null && (
-        <div className={cn('text-[12px] leading-none font-medium', disabled ? 'opacity-60' : 'text-black/70')}>
+        <div className={cn('text-[12px] leading-none font-medium text-[var(--sk-text-label)]', disabled && 'opacity-60')}>
           {label}
         </div>
       )}
@@ -96,10 +97,10 @@ export function ColorPicker({
                 'rounded-full outline-none cursor-pointer',
                 'transition-[transform,box-shadow] duration-150 ease-out',
                 'hover:scale-[1.12]',
-                'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/25',
+                'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--sk-border-strong)]',
                 disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
                 isSelected
-                  ? 'scale-[1.08] shadow-[0_0_0_2.5px_rgba(0,0,0,0.18),inset_0_2px_6px_rgba(0,0,0,0.15)]'
+                  ? 'scale-[1.08] shadow-[0_0_0_2.5px_var(--sk-border-strong),inset_0_2px_6px_rgba(0,0,0,0.15)]'
                   : 'btn-shadow',
               )}
               style={{
@@ -123,7 +124,7 @@ export function ColorPicker({
       </div>
 
       {description != null && (
-        <div id={descId} className="text-[12px] leading-snug text-black/45">
+        <div id={descId} className="text-[12px] leading-snug text-[var(--sk-text-desc)]">
           {description}
         </div>
       )}
