@@ -1,6 +1,6 @@
 {
   "name": "sunkit-ui",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "Sunkit — pastel React component library",
   "type": "module",
   "main": "dist/sunkit.cjs",
