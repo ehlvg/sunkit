@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pastel-rose:         #F9C5D1;
+  --color-pastel-rose-dark:    #c2607a;
+  --color-pastel-peach:        #FDDBB4;
+  --color-pastel-peach-dark:   #b87a3a;
+  --color-pastel-lemon:        #FFF1A8;
+  --color-pastel-lemon-dark:   #8a7820;
+  --color-pastel-mint:         #B8F0D8;
+  --color-pastel-mint-dark:    #2a7a58;
+  --color-pastel-sky:          #B8DFFE;
+  --color-pastel-sky-dark:     #2a68a0;
+  --color-pastel-lavender:     #D4C5F9;
+  --color-pastel-lavender-dark:#5a3eaa;
+  --color-pastel-lilac:        #F0C8F0;
+  --color-pastel-lilac-dark:   #8a3a8a;
+  --color-pastel-neutral:      #E8E4DC;
+  --color-pastel-neutral-dark: #5a5550;
+}
+
+@utility btn-shadow {
+  box-shadow:
+    0 1px 0 0 rgba(0, 0, 0, 0.10),
+    0 3px 8px -1px rgba(0, 0, 0, 0.09),
+    0 6px 16px -4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.06);
+}
+
+@utility btn-shadow-hover {
+  box-shadow:
+    0 1px 0 0 rgba(0, 0, 0, 0.10),
+    0 2px 5px -1px rgba(0, 0, 0, 0.09),
+    0 4px 10px -3px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.06);
+}
+
+@utility btn-shadow-active {
+  box-shadow:
+    0 0px 0 0 rgba(0, 0, 0, 0.10),
+    0 1px 2px -1px rgba(0, 0, 0, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 2px 7px rgba(0, 0, 0, 0.13);
+}

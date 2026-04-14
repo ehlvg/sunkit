@@ -1,0 +1,21 @@
+---
+description: Use pnpm as the package manager for this project
+alwaysApply: true
+---
+
+# Package Manager
+
+Always use **pnpm** in this project, never npm or yarn.
+
+```bash
+# ✅ GOOD
+pnpm install
+pnpm add <package>
+pnpm run storybook
+
+# ❌ BAD
+npm install
+yarn add <package>
+```
+
+The lockfile is `pnpm-lock.yaml`. Do not generate or reference `package-lock.json` or `yarn.lock`.
