@@ -1,3 +1,5 @@
+import './styles/globals.css'
+
 export { Button } from './components/Button'
 export type { ButtonProps, ButtonSize, ButtonIconPosition, ButtonColor } from './components/Button'
 

@@ -27,14 +27,14 @@ Add the sunkit CSS layer to your global stylesheet:
 ```css
 /* app/globals.css */
 @import "tailwindcss";
-@import "sunkit/dist/sunkit.css";
+@import "sunkit-ui/sunkit.css";
 ```
 
 ### Without Tailwind (standalone)
 
 ```tsx
 // main.tsx or _app.tsx
-import 'sunkit/dist/sunkit.css'
+import 'sunkit-ui/sunkit.css'
 ```
 
 ## Sound design

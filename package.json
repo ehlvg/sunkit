@@ -6,6 +6,10 @@
   "main": "dist/sunkit.cjs",
   "module": "dist/sunkit.js",
   "types": "dist/index.d.ts",
+  "style": "dist/sunkit.css",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
     "dist"
   ],
@@ -15,6 +19,7 @@
       "import": "./dist/sunkit.js",
       "require": "./dist/sunkit.cjs"
     },
+    "./sunkit.css": "./dist/sunkit.css",
     "./dist/sunkit.css": "./dist/sunkit.css"
   },
   "scripts": {
